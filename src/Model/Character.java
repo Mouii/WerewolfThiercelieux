@@ -7,15 +7,15 @@ import java.io.IOException;
 
 public abstract class Character {
 
-    private final String _name;
+    protected final String _name;
 
-    private Image _image;
+    protected Image _image;
 
-    private final String _description;
+    protected String _description;
 
-    private boolean _nocturnal = false;
+    protected boolean _nocturnal = false;
 
-    private PowerEnum _power = PowerEnum.Constant;
+    protected PowerEnum _power = PowerEnum.Constant;
 
     public Character(String name, String description, boolean isNocturnal, PowerEnum powerType, String imagePath) {
         _name = name;
