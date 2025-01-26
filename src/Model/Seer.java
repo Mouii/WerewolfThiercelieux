@@ -1,6 +1,8 @@
 package Model;
 
-public class Seer extends Character {
+import Technical.PowerEnum;
+
+public class Seer extends GameCharacter {
     public Seer() {
         super("Seer",
                 "The Seer can see the card of another player one time per turn.",

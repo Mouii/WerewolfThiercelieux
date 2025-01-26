@@ -1,12 +1,14 @@
 package Model;
 
+import Technical.PowerEnum;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-public abstract class Character {
+public abstract class GameCharacter {
 
     protected final String name;
 
@@ -16,9 +18,11 @@ public abstract class Character {
 
     protected boolean nocturnal = false;
 
+    protected boolean infected = false;
+
     protected PowerEnum power = PowerEnum.Constant;
 
-    public Character(String name, String description, boolean isNocturnal, PowerEnum powerType, String imagePath) {
+    public GameCharacter(String name, String description, boolean isNocturnal, PowerEnum powerType, String imagePath) {
         this.name = name;
         this.description = description;
         nocturnal = isNocturnal;
@@ -50,6 +54,10 @@ public abstract class Character {
         return nocturnal;
     }
 
+    public boolean isInfected() {
+        return infected;
+    }
+
     public void changeNocturnal() {
         nocturnal = !nocturnal;
     }
@@ -59,19 +67,23 @@ public abstract class Character {
     }
 
     public void setPower(PowerEnum power) {
-        power = power;
+        this.power = power;
+    }
+
+    public void SetInfected(boolean infected) {
+        this.infected = infected;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Character character = (Character) o;
-        return nocturnal == character.nocturnal &&
-                name.equals(character.name) &&
-                image.equals(character.image) &&
-                description.equals(character.description) &&
-                power == character.power;
+        GameCharacter gameCharacter = (GameCharacter) o;
+        return nocturnal == gameCharacter.nocturnal &&
+                name.equals(gameCharacter.name) &&
+                image.equals(gameCharacter.image) &&
+                description.equals(gameCharacter.description) &&
+                power == gameCharacter.power;
     }
 
     @Override

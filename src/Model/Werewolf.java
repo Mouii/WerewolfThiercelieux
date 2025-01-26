@@ -1,6 +1,8 @@
 package Model;
 
-public class Werewolf extends Character {
+import Technical.PowerEnum;
+
+public class Werewolf extends GameCharacter {
 
     public Werewolf() {
         super("Werewolf",

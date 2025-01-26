@@ -1,6 +1,8 @@
 package Model;
 
-public class Idiot extends Character {
+import Technical.PowerEnum;
+
+public class Idiot extends GameCharacter {
 
     public Idiot() {
         super("Idiot",

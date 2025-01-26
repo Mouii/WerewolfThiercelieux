@@ -1,6 +1,8 @@
 package Model;
 
-public class BearTamer extends Character {
+import Technical.PowerEnum;
+
+public class BearTamer extends GameCharacter {
 
     public BearTamer() {
         super("BearTamer",

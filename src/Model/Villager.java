@@ -1,6 +1,8 @@
 package Model;
 
-public class Villager extends Character {
+import Technical.PowerEnum;
+
+public class Villager extends GameCharacter {
 
     public Villager() {
         super("Villager",

@@ -1,6 +1,8 @@
 package Model;
 
-public class Elder extends Character {
+import Technical.PowerEnum;
+
+public class Elder extends GameCharacter {
 
     public Elder() {
         super("Elder",

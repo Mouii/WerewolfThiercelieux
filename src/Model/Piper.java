@@ -1,6 +1,8 @@
 package Model;
 
-public class Piper extends Character {
+import Technical.PowerEnum;
+
+public class Piper extends GameCharacter {
 
     public Piper() {
         super("Piper",

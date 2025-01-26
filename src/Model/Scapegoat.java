@@ -1,6 +1,8 @@
 package Model;
 
-public class Scapegoat extends Character {
+import Technical.PowerEnum;
+
+public class Scapegoat extends GameCharacter {
 
     public Scapegoat() {
         super("Scapegoat",
