@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:clipChildren="false"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:id="@+id/menuLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alignmentMode="alignMargins"
+        android:columnCount="2">
+
+        <ScrollView
+            android:id="@+id/scrollSelectGridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="500dp">
+
+            <GridLayout
+                android:id="@+id/gridSelectView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alignmentMode="alignMargins"
+                android:columnCount="1"/>
+        </ScrollView>
+
+        <ScrollView
+            android:id="@+id/scrollSelectedGridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="500dp">
+
+            <GridLayout
+                android:id="@+id/gridSelectedView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alignmentMode="alignMargins"
+                android:columnCount="3"/>
+        </ScrollView>
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ScrollView
+            android:id="@+id/scrollGridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="500dp">
+
+            <GridLayout
+                android:id="@+id/gridcharacterView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alignmentMode="alignMargins"
+                android:columnCount="3"/>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/gameStatusTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/startNightButton"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"/>
+    </RelativeLayout>
+</LinearLayout>
