@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.children
-import main.werewolfkotlin.databinding.ActivityMainBinding
+import main.werewolfkotlin.databinding.ActivityGameBinding
 
 enum class EnumPhase {
     SLEEPING,
@@ -20,7 +20,7 @@ enum class EnumPhase {
 
 class GameActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityGameBinding
 
     private val characters : MutableList<Character> = mutableListOf<Character>()
 
@@ -46,7 +46,7 @@ class GameActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.gameStatusTextView.text = strIntro

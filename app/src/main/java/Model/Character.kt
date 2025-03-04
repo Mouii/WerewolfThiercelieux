@@ -13,13 +13,21 @@ open class Character(
     var isWerewolf: Boolean,
     var order: Int,
     @DrawableRes val imageResource: Int
-) {
+) : Cloneable {
 
     val className: String = this.javaClass.simpleName
 
-    
+    open val maxOccurence: Int = 0
 
     open fun action(): String {
         return "$className does nothing special."
     }
+
+    public override fun clone() = Character(this.description,
+                                    this.isNocturnal,
+                                    this.powerState,
+                                    this.isWerewolf,
+                                    this.order,
+                                    this.imageResource)
+
 }

@@ -8,6 +8,9 @@ class Witch(order: Int, imageResource: Int)
     , order
     , imageResource) {
 
+    override var maxOccurence: Int = 1
+
+
     override fun action(): String {
         return "The $className can use her potion of life to save the victim, and use her potion of death to kill someone."
     }

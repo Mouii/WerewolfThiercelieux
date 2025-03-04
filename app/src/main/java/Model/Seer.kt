@@ -8,6 +8,8 @@ class Seer(order: Int, imageResource: Int)
     , order
     , imageResource) {
 
+    override var maxOccurence: Int = 1
+
     override fun action(): String {
         return "The $className choose a card to see."
     }

@@ -8,6 +8,8 @@ class Hunter(order: Int, imageResource: Int)
     , order
     , imageResource) {
 
+    override var maxOccurence: Int = 1
+
     override fun action(): String {
         return "The $className doesn't have any action in night"
     }

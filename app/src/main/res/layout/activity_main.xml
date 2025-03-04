@@ -14,6 +14,7 @@
         <ScrollView
             android:id="@+id/scrollSelectGridLayout"
             android:layout_width="match_parent"
+            android:background="#a8c8ff"
             android:layout_height="1.6in">
 
             <GridLayout
@@ -28,6 +29,7 @@
             android:id="@+id/scrollSelectedGridLayout"
             android:layout_width="match_parent"
             android:layout_height="1.6in"
+            android:background="#fbfcb6"
             android:layout_marginTop="1.8in">
 
             <GridLayout
@@ -38,20 +40,47 @@
                 android:columnCount="4" />
         </ScrollView>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_marginTop="3.5in">
 
-            <Button
-                android:id="@+id/startButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-                android:text="Start"
-                android:layout_marginTop="10dp" />
-        </RelativeLayout>
+            android:text="Start"/>
+
+        <Button
+            android:id="@+id/leftArrowButton"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="110dp"
+            android:text="P"/>
+
+        <Button
+            android:id="@+id/rightArrowButton"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="N"/>
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="C"/>
+
+        <Button
+            android:id="@+id/removeButton"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="X" />
+        </LinearLayout>
+
     </RelativeLayout>
 
 
