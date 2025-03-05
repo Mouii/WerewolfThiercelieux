@@ -7,7 +7,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.annotation.DrawableRes
 import androidx.core.view.children
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import main.werewolfkotlin.databinding.ActivityGameBinding
 
 enum class EnumPhase {
@@ -22,9 +25,9 @@ class GameActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityGameBinding
 
-    private val characters : MutableList<Character> = mutableListOf<Character>()
+    private var characters : MutableList<Character> = mutableListOf()
 
-    private val deadCharacters : MutableList<Character> = mutableListOf<Character>()
+    private val deadCharacters : MutableList<Character> = mutableListOf()
 
     private val imageDimension : Int = 300
     private val listDimension : Int = 1400
@@ -33,13 +36,14 @@ class GameActivity : AppCompatActivity() {
     private var strIntro : String = "Démarrer la partie"
     private var strStart : String = "Commencer un nouveau tour"
     private var strNext: String = "Prochain tour"
+    private var strEnd : String = "Fin de partie"
     private var strMorning: String = "C'est le matin, procédons aux éliminations"
     private var strDay: String = "En journée, le village débat et vote pour éliminer quelqu'un."
     private var strEvening : String = "Ces villageois sont encore en vie; ainsi que leurs ennemis."
     private var strSleep: String = "C'est la nuit, le village s'endort!"
 
     private var gameInProgress : Boolean = true
-    private var currentIndex : Int = 0
+    private var currentIndex : Int = -1
     private var isNight : Boolean = false
     private var phase : EnumPhase = EnumPhase.EVENING
 
@@ -51,20 +55,38 @@ class GameActivity : AppCompatActivity() {
 
         binding.gameStatusTextView.text = strIntro
         binding.startNightButton.text = strStart
+        binding.endButton.text = strEnd
 
-        characters.add(Werewolf(4, R.drawable.werewolf))
-        characters.add(Seer(3, R.drawable.seer))
-        characters.add(Witch(5, R.drawable.witch))
-        characters.add(Hunter(98, R.drawable.hunter))
-        characters.add(Thief(1, R.drawable.thief))
-        characters.add(Cupid(2, R.drawable.cupid))
-        characters.add(LittleGirl(4, R.drawable.littlegirl))
-        characters.add(Villager(99, R.drawable.villager))
+        // Retrieve the JSON string from the Intent
+        val jsonString = intent.getStringExtra("GameList")
 
-        characters.sortedBy { x -> x.order }
+        // Convert the JSON string back to a MutableList
+        val gson = Gson()
+        val type = object : TypeToken<List<Character>>() {}.type
+        var chars : List<Character> = listOf()
 
-        //Main disable
-        binding.relativeLayout.visibility = View.INVISIBLE
+        try {
+            chars = gson.fromJson(jsonString, type)
+        } catch (ex : Exception) {
+            println(ex)
+
+        }
+
+        if(chars.isNotEmpty()) {
+            deserializeProperly(chars)
+        } else {
+            characters.add(Werewolf(4))
+            characters.add(Seer(3))
+            characters.add(Witch(5))
+            characters.add(Hunter(98))
+            characters.add(Thief(1))
+            characters.add(Cupid(2))
+            characters.add(LittleGirl(4))
+            characters.add(Villager(99))
+            gameInProgress = false
+        }
+
+        characters.sortBy { x -> x.order }
 
         binding.startNightButton.setOnClickListener {
             if (gameInProgress) {
@@ -73,14 +95,28 @@ class GameActivity : AppCompatActivity() {
                 else
                     nextPhase()
             } else {
-                binding.gameStatusTextView.text = "The game is over."
+                binding.gameStatusTextView.text = "No game."
             }
+        }
+
+        binding.endButton.setOnClickListener {
+            finish()
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        gameInProgress = false
+    private fun deserializeProperly(chars : List<Character>) {
+        chars.forEach {character ->
+            when(character.className) {
+                "Cupid" -> characters.add(Cupid(character.order))
+                "Hunter" -> characters.add(Hunter(character.order))
+                "LittleGirl" -> characters.add(LittleGirl(character.order))
+                "Seer" -> characters.add(Seer(character.order))
+                "Thief" -> characters.add(Thief(character.order))
+                "Villager" -> characters.add(Villager(character.order))
+                "Werewolf" -> characters.add(Werewolf(character.order))
+                "Witch" -> characters.add(Witch(character.order))
+            }
+        }
     }
 
     private fun showNextCharacters() {
@@ -95,7 +131,6 @@ class GameActivity : AppCompatActivity() {
         if (activeCharacters.isEmpty()) {
             nextPhase()
         } else {
-            binding.gridcharacterView.removeAllViewsInLayout()
             binding.gridcharacterView.columnCount = if(activeCharacters.size >= 3) 3 else activeCharacters.size
             setPictures(activeCharacters, false)
             setActions(activeCharacters)
@@ -110,9 +145,10 @@ class GameActivity : AppCompatActivity() {
         binding.gameStatusTextView.text = description
     }
 
-    private fun setImagePicture(index: Int, character : Character, withListener: Boolean): ImageView {
+    private fun setImagePicture(character : Character, withListener: Boolean): ImageView {
         val imageView = ImageView(this).apply {
-            setImageResource(character.imageResource)
+            @DrawableRes val img = ImageGetter.GetImage(character)
+            setImageResource(img)
             adjustViewBounds = true
         }
 
@@ -139,20 +175,14 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun setPictures(characterList: List<Character>, withListener: Boolean) {
-        var index: Int = 0
+        binding.gridcharacterView.removeAllViewsInLayout()
 
         // Ajouter dynamiquement des ImageView au LinearLayout
-        for (character in characterList) {
-            val imageView : ImageView = setImagePicture(character.order, character, withListener)
+        for ((index, character) in characterList.withIndex()) {
+            val imageView : ImageView = setImagePicture(character, withListener)
             binding.gridcharacterView.addView(imageView, index)
-            index++
         }
 
-    }
-
-    private fun redrawGridForCompleteList() {
-        binding.gridcharacterView.removeAllViewsInLayout()
-        setPictures(characters, true)
     }
 
     private fun removeDeadCharacters() {
@@ -161,7 +191,6 @@ class GameActivity : AppCompatActivity() {
                 characters.remove(characterDead)
             }
             deadCharacters.clear()
-            redrawGridForCompleteList()
         }
 
     }
@@ -186,9 +215,10 @@ class GameActivity : AppCompatActivity() {
 
     private fun sleepingPhase() {
         phase = EnumPhase.SLEEPING
-        isNight = true;
+        isNight = true
         binding.gameStatusTextView.text = strSleep
-        currentIndex = 0 // Reset index for the next night
+        currentIndex = -1 // Reset index for the next night
+        binding.gridcharacterView.removeAllViewsInLayout()
     }
 
     private fun nightPhase() {

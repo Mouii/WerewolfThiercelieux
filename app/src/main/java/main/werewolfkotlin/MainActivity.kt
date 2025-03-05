@@ -1,13 +1,15 @@
 package main.werewolfkotlin
 
 import Model.*
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.annotation.DrawableRes
 import androidx.core.view.iterator
-import androidx.room.util.copy
+import com.google.gson.Gson
 import main.werewolfkotlin.databinding.ActivityMainBinding
 
 
@@ -24,21 +26,21 @@ class MainActivity : AppCompatActivity() {
 
     private var selectedCharacterInGame: Character? = null
 
-    private val characterChart : MutableList<CharacterChart> = mutableListOf()
+    private var characterChart : MutableList<CharacterChart> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var villager = Villager(1, R.drawable.villager)
-        var werewolf = Werewolf(2, R.drawable.werewolf)
-        var seer = Seer(3, R.drawable.seer)
-        var witch = Witch(4, R.drawable.witch)
-        var hunter = Hunter(5, R.drawable.hunter)
-        var littleGirl = LittleGirl(6, R.drawable.littlegirl)
-        var thief = Thief(7, R.drawable.thief)
-        var cupid = Cupid(8, R.drawable.cupid)
+        val villager = Villager(1)
+        val werewolf = Werewolf(2)
+        val seer = Seer(3)
+        val witch = Witch(4)
+        val hunter = Hunter(5)
+        val littleGirl = LittleGirl(6)
+        val thief = Thief(7)
+        val cupid = Cupid(8)
 
         charactersMenu.add(villager)
         charactersMenu.add(werewolf)
@@ -49,14 +51,14 @@ class MainActivity : AppCompatActivity() {
         charactersMenu.add(thief)
         charactersMenu.add(cupid)
 
-        charactersMenu.sortedBy { x -> x.order }
+        charactersMenu.sortBy { x -> x.order }
 
-        charactersSelected.sortedBy { x -> x.order }
+        charactersSelected.sortBy { x -> x.order }
 
         for ((index, character) in charactersMenu.withIndex()) {
 
 
-            val imageView : ImageView = setImagePicture(character.order, character)
+            val imageView : ImageView = setImagePicture(character)
 
             characterChart.add(CharacterChart(character.className,
                 0, character.maxOccurence, imageView))
@@ -86,9 +88,15 @@ class MainActivity : AppCompatActivity() {
         setSelectionButtonEnable(false)
     }
 
-    private fun setImagePicture(index: Int, character : Character): ImageView {
+    override fun onRestart() {
+        super.onRestart()
+        recreate() // This will restart the activity
+    }
+
+    private fun setImagePicture(character : Character): ImageView {
         val imageView = ImageView(this).apply {
-            setImageResource(character.imageResource)
+            @DrawableRes val img = ImageGetter.GetImage(character)
+            setImageResource(img)
             adjustViewBounds = true
         }
 
@@ -121,10 +129,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun refreshSelectedListCharacters() {
         binding.gridSelectedView.removeAllViewsInLayout()
-        var index: Int = 0
 
-        for (character in charactersSelected.sortedBy{x -> x.order }) {
-            val imageView : ImageView = setImagePicture(character.order, character)
+        charactersSelected.sortBy{ x -> x.order }
+
+        for ((index, character) in charactersSelected.withIndex()) {
+            val imageView : ImageView = setImagePicture(character)
             binding.gridSelectedView.addView(imageView, index)
 
             imageView.setOnClickListener {
@@ -140,8 +149,13 @@ class MainActivity : AppCompatActivity() {
                 refreshArrowSelectionSelected()
             }
 
-            index++
+            if(selectedCharacterInGame == character) {
+                drawSelection(imageView)
+            }
+
         }
+
+        refreshArrowSelectionSelected()
     }
 
     private fun addCharacterToGame(character: Character) {
@@ -171,10 +185,6 @@ class MainActivity : AppCompatActivity() {
         charactersSelected[index-1].order += 1
         charactersSelected[index].order -= 1
 
-        //Remove for one action at end time
-        setSelectionButtonEnable(false)
-        removeSelectedCharacterInGame()
-
     }
 
     private fun nextOrder() {
@@ -183,15 +193,15 @@ class MainActivity : AppCompatActivity() {
         charactersSelected[index+1].order -= 1
         charactersSelected[index].order += 1
 
-        //Remove for one action at end time
-        setSelectionButtonEnable(false)
-        removeSelectedCharacterInGame()
     }
 
     private fun removeSelectedCharacterInGame() {
+
+        selectedCharacterInGame = null
+
         //We only refresh view when canceling
         refreshSelectedListCharacters()
-        selectedCharacterInGame = null
+
     }
 
     private fun refreshArrowSelectionSelected() {
@@ -203,6 +213,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setButtonListenersOfSelected() {
+        binding.startButton.setOnClickListener {
+            val intent = Intent(this, GameActivity::class.java)
+            val gson = Gson()
+
+            try {
+                val strList = gson.toJson(charactersSelected)
+
+                intent.putExtra("GameList", strList)
+
+                startActivity(intent)
+            } catch(ex : Exception) {
+                println(ex)
+            }
+
+        }
+
         binding.leftArrowButton.setOnClickListener {
             previousOrder()
             refreshSelectedListCharacters()
