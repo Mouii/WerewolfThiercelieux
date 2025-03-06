@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutImageSelected"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center">
+    android:padding="8dp">
 
+    <!-- ImageView for the picture -->
     <ImageView
-        android:id="@+id/itemImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="Character Image"
-        android:layout_gravity="center_vertical|center_horizontal"
-        />
+        android:id="@+id/imageSelected"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="image"
+        android:scaleType="centerCrop"/>
 
-</LinearLayout>
+    <!-- TextView for the count badge -->
+    <TextView
+        android:id="@+id/countImageSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="x1"
+        android:textSize="14sp"
+        android:padding="4dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="4dp"/>
+</FrameLayout>

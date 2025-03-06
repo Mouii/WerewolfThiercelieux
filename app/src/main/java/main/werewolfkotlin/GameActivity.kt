@@ -131,7 +131,6 @@ class GameActivity : AppCompatActivity() {
         if (activeCharacters.isEmpty()) {
             nextPhase()
         } else {
-            binding.gridcharacterView.columnCount = if(activeCharacters.size >= 3) 3 else activeCharacters.size
             setPictures(activeCharacters, false)
             setActions(activeCharacters)
         }
@@ -139,7 +138,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun setActions(characters : List<Character>) {
         var description = ""
-        for(character in characters) {
+        for(character in characters.distinctBy { x -> x.className }) {
             description += "${character.className}\n${character.action()}\n"
         }
         binding.gameStatusTextView.text = description

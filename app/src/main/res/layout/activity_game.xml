@@ -19,8 +19,9 @@
             <GridLayout
                 android:id="@+id/gridcharacterView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:alignmentMode="alignMargins"
+                android:layout_height="400dp"
+                android:alignmentMode="alignBounds"
+                android:useDefaultMargins="true"
                 android:columnCount="3"/>
         </ScrollView>
 
@@ -30,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center_horizontal|center_vertical"
-            android:layout_marginTop="450dp"
+            android:layout_marginTop="430dp"
             android:textSize="18sp" />
 
 
