@@ -4,15 +4,14 @@ import Model.*
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
-import androidx.core.view.children
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import main.werewolfkotlin.databinding.ActivityGameBinding
 
+//Phase of the game
 enum class EnumPhase {
     SLEEPING,
     NIGHT,
@@ -23,16 +22,20 @@ enum class EnumPhase {
 
 class GameActivity : AppCompatActivity() {
 
+    //Object from the xml view to get all the elements
     private lateinit var binding: ActivityGameBinding
 
+    //List of the characters
     private var characters : MutableList<Character> = mutableListOf()
 
+    //List of dead characters
     private val deadCharacters : MutableList<Character> = mutableListOf()
 
+    //Image dimension
     private val imageDimension : Int = 300
-    private val listDimension : Int = 1400
     private val imageMargin : Int = 10
 
+    //All text (to change to adapt language)
     private var strIntro : String = "Démarrer la partie"
     private var strStart : String = "Commencer un nouveau tour"
     private var strNext: String = "Prochain tour"
@@ -42,12 +45,21 @@ class GameActivity : AppCompatActivity() {
     private var strEvening : String = "Ces villageois sont encore en vie; ainsi que leurs ennemis."
     private var strSleep: String = "C'est la nuit, le village s'endort!"
 
+    //Game is over or not. Only used for now if activity is badly initialized
     private var gameInProgress : Boolean = true
+
+    //Index for turn order.
     private var currentIndex : Int = -1
+
+    //Night part. Will have more use for background and drawing
     private var isNight : Boolean = false
+
+    //Phase handler. Start in evening to be in sleeping phase when starting the game
     private var phase : EnumPhase = EnumPhase.EVENING
 
-
+    ///
+    /// Execution on creation of the activity
+    ///
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
@@ -66,6 +78,7 @@ class GameActivity : AppCompatActivity() {
         var chars : List<Character> = listOf()
 
         try {
+            //Get the list from the JSON
             chars = gson.fromJson(jsonString, type)
         } catch (ex : Exception) {
             println(ex)
@@ -74,7 +87,7 @@ class GameActivity : AppCompatActivity() {
 
         if(chars.isNotEmpty()) {
             deserializeProperly(chars)
-        } else {
+        } else {//Bad catch up, keep the test list by default for now
             characters.add(Werewolf(4))
             characters.add(Seer(3))
             characters.add(Witch(5))
@@ -86,24 +99,33 @@ class GameActivity : AppCompatActivity() {
             gameInProgress = false
         }
 
+        //Order the list again just in case
         characters.sortBy { x -> x.order }
 
+        //Set the listener for the only button
         binding.startNightButton.setOnClickListener {
+            //Main use, change night role or game phase
             if (gameInProgress) {
                 if(phase == EnumPhase.NIGHT)
                     showNextCharacters()
                 else
                     nextPhase()
             } else {
+                //Only on bad catch up
                 binding.gameStatusTextView.text = "No game."
             }
         }
 
+        //Special button to finish the game whenever we want
         binding.endButton.setOnClickListener {
             finish()
         }
     }
 
+    ///
+    /// Create the good list of characters
+    /// GSon doesn't handle polymorphism, so we recreate each object
+    ///
     private fun deserializeProperly(chars : List<Character>) {
         chars.forEach {character ->
             when(character.className) {
@@ -119,44 +141,69 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    ///
+    /// Show the next night characters
+    ///
     private fun showNextCharacters() {
+        //Always get max order
         val maxKey: Int = characters.maxOf { x -> x.order }
         var activeCharacters : List<Character>
         do {
+            //Upgrade index
             currentIndex++
+
+            //Set the list of active characters from the index
             activeCharacters = characters.filter{ x -> x.order == currentIndex }
+
+        //Two cases to finish the loop, reaching the end of list,
+        //Or having all characters playing at night
         } while((activeCharacters.isEmpty() && currentIndex < maxKey)
             || (activeCharacters.isNotEmpty() && activeCharacters.any{ x -> !x.isNocturnal }))
 
+        //End of list, empty active characters next phase
         if (activeCharacters.isEmpty()) {
             nextPhase()
         } else {
+            //Show the active characters with their descriptions
             setPictures(activeCharacters, false)
             setActions(activeCharacters)
         }
     }
 
+    ///
+    /// Fulfill the different actions
+    ///
     private fun setActions(characters : List<Character>) {
+        //Basic string
         var description = ""
+
+        //Append each strict with EACH class
         for(character in characters.distinctBy { x -> x.className }) {
             description += "${character.className}\n${character.action()}\n"
         }
         binding.gameStatusTextView.text = description
     }
 
+    ///
+    /// Set the imageView to show
+    ///
     private fun setImagePicture(character : Character, withListener: Boolean): ImageView {
+        //Create the imageView with some parameters
         val imageView = ImageView(this).apply {
             @DrawableRes val img = ImageGetter.GetImage(character)
             setImageResource(img)
             adjustViewBounds = true
         }
 
+        //Adding layout parameters
         val layoutParams = LinearLayout.LayoutParams(imageDimension,imageDimension)
         layoutParams.setMargins(0, 0, imageMargin, imageMargin)
         imageView.layoutParams = layoutParams
 
+        //Only with listeners configuration we add it
         if(withListener) {
             imageView.setOnClickListener {
+                //Add characters to the dead list and change the padding
                 if(deadCharacters.contains(character)) {
                     deadCharacters.remove(character)
                     imageView.setPadding(0, 0, 0, 0)
@@ -173,10 +220,14 @@ class GameActivity : AppCompatActivity() {
         return imageView
     }
 
+    ///
+    /// Set all the pictures of the gridlayout
+    ///
     private fun setPictures(characterList: List<Character>, withListener: Boolean) {
+        //Refresh the gridLayout by clearing it
         binding.gridcharacterView.removeAllViewsInLayout()
 
-        // Ajouter dynamiquement des ImageView au LinearLayout
+        // Add each imageView to the gridLayout
         for ((index, character) in characterList.withIndex()) {
             val imageView : ImageView = setImagePicture(character, withListener)
             binding.gridcharacterView.addView(imageView, index)
@@ -184,24 +235,24 @@ class GameActivity : AppCompatActivity() {
 
     }
 
+    ///
+    /// Remove the dead from the active list
+    ///
     private fun removeDeadCharacters() {
         if(deadCharacters.size > 0) {
             for (characterDead in deadCharacters) {
                 characters.remove(characterDead)
             }
+
+            //Always clear the dead list
             deadCharacters.clear()
         }
 
     }
 
-    private fun removeListener() {
-        for(image in binding.gridcharacterView.children) {
-            image.isEnabled = false
-        }
-    }
-
-    //region Game Phases
-
+    ///
+    /// Global function handling all phases
+    ///
     private fun nextPhase() {
         when(phase) {
             EnumPhase.SLEEPING -> nightPhase()
@@ -212,40 +263,54 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    ///
+    /// Actions on sleeping Phase
+    ///
     private fun sleepingPhase() {
-        phase = EnumPhase.SLEEPING
-        isNight = true
-        binding.gameStatusTextView.text = strSleep
+        phase = EnumPhase.SLEEPING //Set the phase
+        isNight = true //We are in night
+        binding.gameStatusTextView.text = strSleep // Change text
         currentIndex = -1 // Reset index for the next night
-        binding.gridcharacterView.removeAllViewsInLayout()
+        binding.gridcharacterView.removeAllViewsInLayout() //No characters showed
     }
 
+    ///
+    /// Actions on night Phase
+    ///
     private fun nightPhase() {
-        phase = EnumPhase.NIGHT
-        binding.startNightButton.text = strNext
-        showNextCharacters()
+        phase = EnumPhase.NIGHT // Night phase
+        binding.startNightButton.text = strNext // Change text
+        showNextCharacters() // Start showing night roles at the first moment
     }
 
+    ///
+    /// Actions on waking Phase
+    ///
     private fun wakingPhase() {
-        phase = EnumPhase.WAKING
-        isNight = false
-        binding.gameStatusTextView.text = strMorning
-        binding.gridcharacterView.columnCount = 3
-        setPictures(characters, true)
+        phase = EnumPhase.WAKING // Waking phase
+        isNight = false // No more in night
+        binding.gameStatusTextView.text = strMorning // Morning message
+        setPictures(characters, true) // Set the pictures WITH listeners
     }
 
+    ///
+    /// Actions on day Phase
+    ///
     private fun dayPhase() {
-        removeDeadCharacters()
-        phase = EnumPhase.DAY
-        binding.gameStatusTextView.text = strDay
+        phase = EnumPhase.DAY // Day phase
+        removeDeadCharacters() // Remove characters dead by night
+        setPictures(characters, true) // Set pictures WITH Listeners
+        binding.gameStatusTextView.text = strDay // Day message
     }
 
+    ///
+    /// Actions on evening Phase
+    ///
     private fun eveningPhase() {
-        removeDeadCharacters()
-        phase = EnumPhase.EVENING
-        binding.gameStatusTextView.text = strEvening
-        removeListener()
+        phase = EnumPhase.EVENING // Evening phase
+        removeDeadCharacters() // Remove the dead
+        setPictures(characters, false) // Set pictures WITHOUT listeners
+        binding.gameStatusTextView.text = strEvening // Evening message
     }
 
-    //endregion GamePhase
 }

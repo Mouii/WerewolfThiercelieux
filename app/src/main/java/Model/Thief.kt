@@ -6,7 +6,7 @@ class Thief(order: Int)
     , PowerState.UNIQUE
     , false
     , order
-    , 1) {
+    , 0) {
 
     override fun action(): String {
         return "The $className choose one of the cards shown."
