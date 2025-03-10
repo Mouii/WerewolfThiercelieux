@@ -4,6 +4,8 @@ import Model.*
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
+import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
@@ -106,6 +108,9 @@ class GameActivity : AppCompatActivity() {
 
         //Set the listener for the only button
         binding.startNightButton.setOnClickListener {
+
+            if(characters.size == 0) gameInProgress = false
+
             //Main use, change night role or game phase
             if (gameInProgress) {
                 if(phase == EnumPhase.NIGHT)
@@ -229,11 +234,22 @@ class GameActivity : AppCompatActivity() {
         //Refresh the gridLayout by clearing it
         binding.gridcharacterView.removeAllViewsInLayout()
 
-        // Add each imageView to the gridLayout
-        for ((index, character) in characterList.withIndex()) {
-            val imageView : ImageView = setImagePicture(character, withListener)
-            binding.gridcharacterView.addView(imageView, index)
+        if(characterList.size > 1) {
+            // Add each imageView to the gridLayout
+            for ((index, character) in characterList.withIndex()) {
+                val imageView : ImageView = setImagePicture(character, withListener)
+                binding.gridcharacterView.addView(imageView, index)
+            }
+        } else {
+            val imageView : ImageView  = setImagePicture(characterList[0], withListener)
+            imageView.layoutParams = GridLayout.LayoutParams().apply {
+                rowSpec = GridLayout.spec(0, 3) // Start at row 0, span 2 rows
+                columnSpec = GridLayout.spec(0, 3) // Start at column 0, span 2 columns
+                setGravity(Gravity.FILL)
+            }
+            binding.gridcharacterView.addView(imageView, 0)
         }
+
 
     }
 

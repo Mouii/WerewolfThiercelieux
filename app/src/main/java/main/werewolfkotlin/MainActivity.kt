@@ -307,8 +307,11 @@ class MainActivity : AppCompatActivity() {
         //Special case
         if(existingCharacter != null)
             newCharacter.order = existingCharacter.order //Same order
-        else
-            newCharacter.order = charactersSelected.size //At the end
+        else {
+            newCharacter.order = if(charactersSelected.isEmpty())  0
+                                else charactersSelected.maxOf { x -> x.order } + 1 //At the end
+        }
+
 
         //Add the character to the list correctly
         charactersSelected.add(newCharacter)
