@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     private var characterChart : MutableList<CharacterChart> = mutableListOf()
 
     //Limit of characters to start playing.(See if can be configured)
-    private val limitStartNumber : Int = 5
+    private val limitStartNumber : Int = 8
 
     ///
     /// Execution on creation of the activity
@@ -124,6 +124,10 @@ class MainActivity : AppCompatActivity() {
         binding.leftArrowButton.text = "<"
         binding.rightArrowButton.text = ">"
 
+        //Setting background image
+        binding.root.setBackgroundResource(R.drawable.werewolf_menu)
+        binding.root.background.alpha = 128
+
     }
 
     ///
@@ -170,7 +174,7 @@ class MainActivity : AppCompatActivity() {
 
         for(layout in binding.gridSelectedView) {
             if(layout.tag == character.className) {
-                layout.setPadding(10, 10, 10, 10)
+                layout.setPadding(5, 5, 0, 0)
                 layout.setBackgroundColor(Color.GREEN)
             } else {
                 layout.setPadding(0, 0, 0, 0)

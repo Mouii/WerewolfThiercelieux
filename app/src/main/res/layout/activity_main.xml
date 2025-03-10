@@ -16,7 +16,7 @@
             android:id="@+id/scrollSelectGridLayout"
             android:layout_width="match_parent"
             android:background="#a8c8ff"
-            android:layout_height="1.6in">
+            android:layout_height="270dp">
 
             <GridLayout
                 android:id="@+id/gridSelectView"
@@ -29,9 +29,9 @@
         <ScrollView
             android:id="@+id/scrollSelectedGridLayout"
             android:layout_width="match_parent"
-            android:layout_height="1.6in"
+            android:layout_height="270dp"
             android:background="#fbfcb6"
-            android:layout_marginTop="1.8in">
+            android:layout_marginTop="290dp">
 
             <GridLayout
                 android:id="@+id/gridSelectedView"
@@ -44,7 +44,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="3.5in">
+            android:layout_marginTop="570dp">
 
         <Button
             android:id="@+id/startButton"
@@ -56,28 +56,28 @@
             android:id="@+id/leftArrowButton"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="110dp"
+            android:layout_marginStart="110dp"
             android:text="P"/>
 
         <Button
             android:id="@+id/rightArrowButton"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:text="N"/>
 
         <Button
             android:id="@+id/cancelButton"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:text="C"/>
 
         <Button
             android:id="@+id/removeButton"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:text="X" />
         </LinearLayout>
 
