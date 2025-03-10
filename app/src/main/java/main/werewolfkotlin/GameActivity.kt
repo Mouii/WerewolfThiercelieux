@@ -109,8 +109,6 @@ class GameActivity : AppCompatActivity() {
         //Set the listener for the only button
         binding.startNightButton.setOnClickListener {
 
-            if(characters.size == 0) gameInProgress = false
-
             //Main use, change night role or game phase
             if (gameInProgress) {
                 if(phase == EnumPhase.NIGHT)
@@ -240,7 +238,7 @@ class GameActivity : AppCompatActivity() {
                 val imageView : ImageView = setImagePicture(character, withListener)
                 binding.gridcharacterView.addView(imageView, index)
             }
-        } else {
+        } else if (characterList.size == 1) {
             val imageView : ImageView  = setImagePicture(characterList[0], withListener)
             imageView.layoutParams = GridLayout.LayoutParams().apply {
                 rowSpec = GridLayout.spec(0, 3) // Start at row 0, span 2 rows
@@ -269,6 +267,12 @@ class GameActivity : AppCompatActivity() {
 
             //Always clear the dead list
             deadCharacters.clear()
+        }
+
+        if(characters.size == 0) {
+            gameInProgress = false
+            binding.gameStatusTextView.text = "Partie terminée."
+            binding.startNightButton.isEnabled = false
         }
 
     }
@@ -324,10 +328,10 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun dayPhase() {
         phase = EnumPhase.DAY // Day phase
+        binding.gameStatusTextView.text = strDay // Day message
         setBackground(phase)
         removeDeadCharacters() // Remove characters dead by night
         setPictures(characters, true) // Set pictures WITH Listeners
-        binding.gameStatusTextView.text = strDay // Day message
     }
 
     ///
@@ -335,10 +339,10 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun eveningPhase() {
         phase = EnumPhase.SUNSET // Evening phase
+        binding.gameStatusTextView.text = strEvening // Evening message
         setBackground(phase)
         removeDeadCharacters() // Remove the dead
         setPictures(characters, false) // Set pictures WITHOUT listeners
-        binding.gameStatusTextView.text = strEvening // Evening message
     }
 
 }
