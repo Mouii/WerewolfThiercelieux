@@ -31,6 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center_horizontal|center_vertical"
+            android:textColor="@color/white"
+            android:background="@color/black"
             android:layout_marginTop="430dp"
             android:textSize="18sp" />
 

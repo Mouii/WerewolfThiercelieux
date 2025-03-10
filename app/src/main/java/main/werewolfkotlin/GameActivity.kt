@@ -15,9 +15,9 @@ import main.werewolfkotlin.databinding.ActivityGameBinding
 enum class EnumPhase {
     SLEEPING,
     NIGHT,
-    WAKING,
+    DAWN,
     DAY,
-    EVENING
+    SUNSET
 }
 
 class GameActivity : AppCompatActivity() {
@@ -55,7 +55,7 @@ class GameActivity : AppCompatActivity() {
     private var isNight : Boolean = false
 
     //Phase handler. Start in evening to be in sleeping phase when starting the game
-    private var phase : EnumPhase = EnumPhase.EVENING
+    private var phase : EnumPhase = EnumPhase.SUNSET
 
     ///
     /// Execution on creation of the activity
@@ -68,6 +68,8 @@ class GameActivity : AppCompatActivity() {
         binding.gameStatusTextView.text = strIntro
         binding.startNightButton.text = strStart
         binding.endButton.text = strEnd
+
+        setBackground(phase)
 
         // Retrieve the JSON string from the Intent
         val jsonString = intent.getStringExtra("GameList")
@@ -190,7 +192,7 @@ class GameActivity : AppCompatActivity() {
     private fun setImagePicture(character : Character, withListener: Boolean): ImageView {
         //Create the imageView with some parameters
         val imageView = ImageView(this).apply {
-            @DrawableRes val img = ImageGetter.GetImage(character)
+            @DrawableRes val img = ImageGetter.getCharacterImage(character)
             setImageResource(img)
             adjustViewBounds = true
         }
@@ -235,6 +237,11 @@ class GameActivity : AppCompatActivity() {
 
     }
 
+    private fun setBackground(phase: EnumPhase) {
+        binding.root.setBackgroundResource(ImageGetter.getBackgroundImage(phase))
+        binding.root.background.alpha = 128
+    }
+
     ///
     /// Remove the dead from the active list
     ///
@@ -257,9 +264,9 @@ class GameActivity : AppCompatActivity() {
         when(phase) {
             EnumPhase.SLEEPING -> nightPhase()
             EnumPhase.NIGHT -> wakingPhase()
-            EnumPhase.WAKING -> dayPhase()
+            EnumPhase.DAWN -> dayPhase()
             EnumPhase.DAY -> eveningPhase()
-            EnumPhase.EVENING -> sleepingPhase()
+            EnumPhase.SUNSET -> sleepingPhase()
         }
     }
 
@@ -268,6 +275,7 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun sleepingPhase() {
         phase = EnumPhase.SLEEPING //Set the phase
+        setBackground(phase)
         isNight = true //We are in night
         binding.gameStatusTextView.text = strSleep // Change text
         currentIndex = -1 // Reset index for the next night
@@ -279,6 +287,7 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun nightPhase() {
         phase = EnumPhase.NIGHT // Night phase
+        setBackground(phase)
         binding.startNightButton.text = strNext // Change text
         showNextCharacters() // Start showing night roles at the first moment
     }
@@ -287,7 +296,8 @@ class GameActivity : AppCompatActivity() {
     /// Actions on waking Phase
     ///
     private fun wakingPhase() {
-        phase = EnumPhase.WAKING // Waking phase
+        phase = EnumPhase.DAWN // Waking phase
+        setBackground(phase)
         isNight = false // No more in night
         binding.gameStatusTextView.text = strMorning // Morning message
         setPictures(characters, true) // Set the pictures WITH listeners
@@ -298,6 +308,7 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun dayPhase() {
         phase = EnumPhase.DAY // Day phase
+        setBackground(phase)
         removeDeadCharacters() // Remove characters dead by night
         setPictures(characters, true) // Set pictures WITH Listeners
         binding.gameStatusTextView.text = strDay // Day message
@@ -307,7 +318,8 @@ class GameActivity : AppCompatActivity() {
     /// Actions on evening Phase
     ///
     private fun eveningPhase() {
-        phase = EnumPhase.EVENING // Evening phase
+        phase = EnumPhase.SUNSET // Evening phase
+        setBackground(phase)
         removeDeadCharacters() // Remove the dead
         setPictures(characters, false) // Set pictures WITHOUT listeners
         binding.gameStatusTextView.text = strEvening // Evening message

@@ -120,6 +120,10 @@ class MainActivity : AppCompatActivity() {
         //Need an amount of characters to start
         binding.startButton.isEnabled = false
 
+        //Setting button text here
+        binding.leftArrowButton.text = "<"
+        binding.rightArrowButton.text = ">"
+
     }
 
     ///
@@ -136,7 +140,7 @@ class MainActivity : AppCompatActivity() {
     private fun setImagePicture(character : Character): ImageView {
         //Set the resource and image
         val imageView = ImageView(this).apply {
-            @DrawableRes val img = ImageGetter.GetImage(character)
+            @DrawableRes val img = ImageGetter.getCharacterImage(character)
             setImageResource(img)
             adjustViewBounds = true
         }
@@ -218,7 +222,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 //Name of the text
-                text = "x${charactersSelected.count { x -> x.className == character.className}}" // Set your text
+                text = "x${charactersSelected.count { x -> x.className == character.className}}"
 
                 //Size of the text
                 textSize = 14f
