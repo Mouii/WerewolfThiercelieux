@@ -8,9 +8,5 @@ class Villager(order: Int)
     , order
     , 6) {
 
-    override fun action(): String {
-        return "The $className doesn't have any action in night"
-    }
-
     override fun clone() = Villager(this.order)
 }

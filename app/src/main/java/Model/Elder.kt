@@ -8,10 +8,5 @@ class Elder(order: Int)
     , order
     , 1) {
 
-    override fun action(): String {
-        isNocturnal = false
-        return "The $className can survive another attack of the werewolves. If he/she's killed by the village, all special villagers lose their powers. This doesn't apply if killed from love. Can't be infected."
-    }
-
     override fun clone() = Elder(this.order)
 }
