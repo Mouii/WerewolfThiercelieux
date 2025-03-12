@@ -59,6 +59,8 @@ class GameActivity : AppCompatActivity() {
     //Phase handler. Start in evening to be in sleeping phase when starting the game
     private var phase : EnumPhase = EnumPhase.SUNSET
 
+    private var werewolfTurn : Int = 0
+
     ///
     /// Execution on creation of the activity
     ///
@@ -103,9 +105,6 @@ class GameActivity : AppCompatActivity() {
             gameInProgress = false
         }
 
-        //Order the list again just in case
-        characters.sortBy { x -> x.order }
-
         //Set the listener for the only button
         binding.startNightButton.setOnClickListener {
 
@@ -134,16 +133,54 @@ class GameActivity : AppCompatActivity() {
     private fun deserializeProperly(chars : List<Character>) {
         chars.forEach {character ->
             when(character.className) {
+                "Actor" -> characters.add(Actor(character.order))
+                "Angel" -> characters.add(Angel(character.order))
+                "BearTamer" -> characters.add(BearTamer(character.order))
+                "BigBadWolf" -> characters.add(BigBadWolf(character.order))
+                "Brother" -> characters.add(Brother(character.order))
                 "Cupid" -> characters.add(Cupid(character.order))
+                "Defender" -> characters.add(Defender(character.order))
+                "Elder" -> characters.add(Elder(character.order))
+                "Fox" -> characters.add(Fox(character.order))
+                "Gypsy" -> characters.add(Gypsy(character.order))
                 "Hunter" -> characters.add(Hunter(character.order))
+                "Idiot" -> characters.add(Idiot(character.order))
                 "LittleGirl" -> characters.add(LittleGirl(character.order))
+                "Manipulator" -> characters.add(Manipulator(character.order))
+                "Piper" -> characters.add(Piper(character.order))
+                "RustyKnight" -> characters.add(RustyKnight(character.order))
+                "Scapegoat" -> characters.add(Scapegoat(character.order))
                 "Seer" -> characters.add(Seer(character.order))
+                "Servant" -> characters.add(Servant(character.order))
+                "Sister" -> characters.add(Sister(character.order))
+                "StutteringJudge" -> characters.add(StutteringJudge(character.order))
                 "Thief" -> characters.add(Thief(character.order))
                 "Villager" -> characters.add(Villager(character.order))
+                "VillagerVillager" -> characters.add(VillagerVillager(character.order))
                 "Werewolf" -> characters.add(Werewolf(character.order))
+                "WhiteWerewolf" -> characters.add(WhiteWerewolf(character.order))
+                "WildChild" -> characters.add(WildChild(character.order))
                 "Witch" -> characters.add(Witch(character.order))
+                "WolfFather" -> characters.add(WolfFather(character.order))
+                "WolfHound" -> characters.add(WolfHound(character.order))
             }
         }
+
+        //Order the list again just in case
+        characters.sortBy { x -> x.order }
+
+        val characterReference : Character? = characters.firstOrNull{ x ->
+                    x is Werewolf
+                    || x is WolfFather
+                    || x is BigBadWolf
+                            || x.isWerewolf
+                            }
+
+        if(characterReference != null) {
+            werewolfTurn = characterReference.order
+        }
+
+
     }
 
     ///
