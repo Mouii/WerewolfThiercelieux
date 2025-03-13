@@ -6,38 +6,58 @@
     android:clipChildren="false"
     android:padding="16dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ScrollView
-            android:id="@+id/scrollGridLayout"
-            android:layout_width="match_parent"
-            android:layout_height="400dp">
-
-            <GridLayout
-                android:id="@+id/gridcharacterView"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:alignmentMode="alignBounds"
-                android:useDefaultMargins="true"
-                android:columnCount="3"/>
-        </ScrollView>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/gameStatusTextView"
+            android:id="@+id/turnPhase"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center_horizontal|center_vertical"
             android:textColor="@color/white"
-            android:background="@color/black"
-            android:layout_marginTop="430dp"
-            android:textSize="18sp" />
+            android:background="@color/black">
+        </TextView>
 
 
-    </RelativeLayout>
+        <ScrollView
+            android:id="@+id/scrollGridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginTop="10dp">
+
+            <GridLayout
+                android:id="@+id/gridcharacterView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alignmentMode="alignBounds"
+                android:useDefaultMargins="true"
+                android:columnCount="3"/>
+        </ScrollView>
+
+        <ScrollView
+            android:id="@+id/scrollTextView"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/gameStatusTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:background="@color/black"
+
+                android:textSize="18sp" />
+
+        </ScrollView>
+
+    </LinearLayout>
     <Button
         android:id="@+id/startNightButton"
         android:layout_marginTop="50dp"

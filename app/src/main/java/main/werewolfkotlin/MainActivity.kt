@@ -339,10 +339,15 @@ class MainActivity : AppCompatActivity() {
 
         //Check if there is a special case of existing characters
         val existingCharacter : Character?
-            = if(character is LittleGirl || character is Werewolf) {
+            = if(character is LittleGirl
+            || character is Werewolf
+            || character is WolfFather
+            || character is WolfHound) {
                 //Case of werewolf and little girl, they must play at the same time
-                charactersSelected.firstOrNull{ x -> x.className == "LittleGirl"
-                                                    || x.className == "Werewolf" }
+                charactersSelected.firstOrNull{ x -> x is LittleGirl
+                        || x is Werewolf
+                        || x is WolfFather
+                        || x is WolfHound}
         } else {
             //Case same kind of character exist
             charactersSelected.firstOrNull{ x -> x.className == character.className }
@@ -445,6 +450,7 @@ class MainActivity : AppCompatActivity() {
         //We only refresh view when canceling
         refreshSelectedListCharacters()
 
+        setSelectionButtonEnable(false)
     }
 
     ///

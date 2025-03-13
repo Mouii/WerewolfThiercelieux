@@ -4,7 +4,7 @@ class LittleGirl(order: Int)
     : Character("The Little Girl can try to spy the werewolves; but if she's detected, she's dead."
     , true
     , PowerState.PERMANENT
-    , false
+    , true //In order to be called during their turn
     , order
     , 1) {
 

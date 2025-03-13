@@ -9,7 +9,6 @@ class WildChild(order: Int)
     , 1) {
 
     override fun action(): String {
-        isNocturnal = false
         return "The $className choose a player to be his/her master. If the master dies, he/she become a werewolf."
     }
 
