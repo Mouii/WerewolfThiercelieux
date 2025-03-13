@@ -38,14 +38,14 @@ class GameActivity : AppCompatActivity() {
     private val imageMargin : Int = 10
 
     //All text (to change to adapt language)
-    private var strIntro : String = "Démarrer la partie"
-    private var strStart : String = "Commencer un nouveau tour"
-    private var strNext: String = "Prochain tour"
-    private var strEnd : String = "Fin de partie"
-    private var strMorning: String = "C'est le matin, procédons aux éliminations"
-    private var strDay: String = "En journée, le village débat et vote pour éliminer quelqu'un."
-    private var strEvening : String = "Ces villageois sont encore en vie; ainsi que leurs ennemis."
-    private var strSleep: String = "C'est la nuit, le village s'endort!"
+    private var strIntro : String = "Start a game"
+    private var strStart : String = "Begin the game"
+    private var strNext: String = "Next turn"
+    private var strEnd : String = "End the game"
+    private var strMorning: String = "Morning! Let's proceed to the eliminations"
+    private var strDay: String = "Day time! Chat and speak about what to do!"
+    private var strEvening : String = "Dinner is served! But watch out, these villagers are alive... so are their enemies..."
+    private var strSleep: String = "This is the night! The village goes to sleep!"
 
     //Game is over or not. Only used for now if activity is badly initialized
     private var gameInProgress : Boolean = true
@@ -53,11 +53,18 @@ class GameActivity : AppCompatActivity() {
     //Index for turn order.
     private var currentIndex : Int = -1
 
-    //Night part. Will have more use for background and drawing
-    private var isNight : Boolean = false
-
     //Phase handler. Start in evening to be in sleeping phase when starting the game
     private var phase : EnumPhase = EnumPhase.SUNSET
+
+    //Turn order reference of werewolf
+    private var werewolfTurn : Int = 0
+
+    //Special map for special characters like bigBadWolf, whiteWerewolf
+    //that have special conditions on some parts
+    private val chartCharacters : MutableMap<String, Int> = mutableMapOf()
+
+    //Game turn tracing
+    private var gameTurn : Int = 0
 
     ///
     /// Execution on creation of the activity
@@ -103,9 +110,6 @@ class GameActivity : AppCompatActivity() {
             gameInProgress = false
         }
 
-        //Order the list again just in case
-        characters.sortBy { x -> x.order }
-
         //Set the listener for the only button
         binding.startNightButton.setOnClickListener {
 
@@ -121,6 +125,8 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
+        updateHeader()
+
         //Special button to finish the game whenever we want
         binding.endButton.setOnClickListener {
             finish()
@@ -134,16 +140,66 @@ class GameActivity : AppCompatActivity() {
     private fun deserializeProperly(chars : List<Character>) {
         chars.forEach {character ->
             when(character.className) {
+                "Actor" -> characters.add(Actor(character.order))
+                "Angel" -> characters.add(Angel(character.order))
+                "BearTamer" -> characters.add(BearTamer(character.order))
+                "BigBadWolf" ->  {
+                    characters.add(BigBadWolf(character.order))
+                    chartCharacters[character.className] = character.order
+                }
+                "Brother" -> characters.add(Brother(character.order))
                 "Cupid" -> characters.add(Cupid(character.order))
+                "Defender" -> characters.add(Defender(character.order))
+                "Elder" -> characters.add(Elder(character.order))
+                "Fox" -> characters.add(Fox(character.order))
+                "Gypsy" -> characters.add(Gypsy(character.order))
                 "Hunter" -> characters.add(Hunter(character.order))
+                "Idiot" -> characters.add(Idiot(character.order))
                 "LittleGirl" -> characters.add(LittleGirl(character.order))
+                "Manipulator" -> characters.add(Manipulator(character.order))
+                "Piper" -> characters.add(Piper(character.order))
+                "RustyKnight" -> characters.add(RustyKnight(character.order))
+                "Scapegoat" -> characters.add(Scapegoat(character.order))
                 "Seer" -> characters.add(Seer(character.order))
+                "Servant" -> characters.add(Servant(character.order))
+                "Sister" -> characters.add(Sister(character.order))
+                "StutteringJudge" -> characters.add(StutteringJudge(character.order))
                 "Thief" -> characters.add(Thief(character.order))
                 "Villager" -> characters.add(Villager(character.order))
+                "VillagerVillager" -> characters.add(VillagerVillager(character.order))
                 "Werewolf" -> characters.add(Werewolf(character.order))
+                "WhiteWerewolf" -> {
+                    characters.add(WhiteWerewolf(character.order))
+                    chartCharacters[character.className] = character.order
+                }
+                "WildChild" -> {
+                    characters.add(WildChild(character.order))
+                    chartCharacters[character.className] = character.order
+                }
                 "Witch" -> characters.add(Witch(character.order))
+                "WolfFather" -> characters.add(WolfFather(character.order))
+                "WolfHound" -> characters.add(WolfHound(character.order))
             }
         }
+
+        //Order the list again just in case
+        characters.sortBy { x -> x.order }
+
+        //Order reference : werewolf > wolfFather > bigBadWolf > wolfHound > others
+        val characterReference : Character? = characters.firstOrNull{ x ->
+                    x is Werewolf
+                    || x is WolfFather
+                    || x is BigBadWolf
+                    || x is WolfHound
+                    || x.isWerewolf
+        }
+
+        //Set special pack wolf turn
+        if(characterReference != null) {
+            werewolfTurn = characterReference.order
+        }
+
+
     }
 
     ///
@@ -158,8 +214,11 @@ class GameActivity : AppCompatActivity() {
             currentIndex++
 
             //Set the list of active characters from the index
-            activeCharacters = characters.filter{ x -> x.order == currentIndex }
-
+            activeCharacters = if(currentIndex == werewolfTurn) {
+                characters.filter { x -> x.isWerewolf }
+            } else {
+                characters.filter { x -> x.order == currentIndex }
+            }
         //Two cases to finish the loop, reaching the end of list,
         //Or having all characters playing at night
         } while((activeCharacters.isEmpty() && currentIndex < maxKey)
@@ -184,7 +243,7 @@ class GameActivity : AppCompatActivity() {
 
         //Append each strict with EACH class
         for(character in characters.distinctBy { x -> x.className }) {
-            description += "${character.className}\n${character.action()}\n"
+            description += "${character.className}\n${character.action()}\n\n"
         }
         binding.gameStatusTextView.text = description
     }
@@ -251,9 +310,19 @@ class GameActivity : AppCompatActivity() {
 
     }
 
+    ///
+    /// Set the background image
+    ///
     private fun setBackground(phase: EnumPhase) {
         binding.root.setBackgroundResource(ImageGetter.getBackgroundImage(phase))
         binding.root.background.alpha = 128
+    }
+
+    ///
+    /// Update the header with turn and phase
+    ///
+    private fun updateHeader() {
+        binding.turnPhase.text = "Phase $phase Turn ${gameTurn}"
     }
 
     ///
@@ -265,16 +334,87 @@ class GameActivity : AppCompatActivity() {
                 characters.remove(characterDead)
             }
 
+            //Special updates
+            specialUpdatesAfterDeath();
+
             //Always clear the dead list
             deadCharacters.clear()
         }
 
+        //If the user empty the list, game over
         if(characters.size == 0) {
             gameInProgress = false
             binding.gameStatusTextView.text = "Partie terminée."
             binding.startNightButton.isEnabled = false
         }
 
+    }
+
+    ///
+    /// Delete the second turn of special werewolves
+    ///
+    private fun checkAndResetOrderOfSpecialWerewolf(className: String) {
+        if(chartCharacters.containsKey(className)
+            && chartCharacters[className] != werewolfTurn) {
+            val characterWolf = characters.firstOrNull { x -> x.className == className }
+
+            if (characterWolf != null && characterWolf.order != werewolfTurn) {
+                characterWolf.order = werewolfTurn
+                chartCharacters[characterWolf.className] = werewolfTurn
+            }
+        }
+    }
+
+    ///
+    /// Cut the call of brothers or sisters if they are alone
+    ///
+    private fun stopBrotherSister(className: String) {
+        val listCoop = characters.filter { x -> x.className == className }
+
+        if(listCoop.isNotEmpty() && listCoop.size == 1)
+            listCoop[0].isNocturnal = false
+    }
+
+    ///
+    /// Activate the special conditions
+    ///
+    private fun specialUpdatesAfterDeath() {
+
+        deadCharacters.forEach { x ->
+            if(chartCharacters.containsKey(x.className)) {
+                chartCharacters.remove(x.className)
+            }
+        }
+
+        if(deadCharacters.any { x -> x.isWerewolf }) {
+            checkAndResetOrderOfSpecialWerewolf("BigBadWolf")
+        }
+
+        if(!characters.any { x -> x !is WhiteWerewolf && x.isWerewolf}) {
+            checkAndResetOrderOfSpecialWerewolf("WhiteWerewolf")
+        }
+
+        if(deadCharacters.any { x -> x is Brother }) {
+            stopBrotherSister("Brother")
+        }
+
+        if(deadCharacters.any { x -> x is Sister }) {
+            stopBrotherSister("Sister")
+        }
+
+    }
+
+    ///
+    /// Exclusive function, might disappear later => setup the wild child as a werewolf
+    /// even if he's not one
+    ///
+    private fun setupWildChild() {
+        if(chartCharacters.containsKey("WildChild") && gameTurn == 1) {
+            val child = characters.first { x -> x is WildChild }
+            child.order = werewolfTurn
+            child.isWerewolf = true
+            chartCharacters["WildChild"] = werewolfTurn
+        }
     }
 
     ///
@@ -296,9 +436,11 @@ class GameActivity : AppCompatActivity() {
     private fun sleepingPhase() {
         phase = EnumPhase.SLEEPING //Set the phase
         setBackground(phase)
-        isNight = true //We are in night
         binding.gameStatusTextView.text = strSleep // Change text
+        binding.startNightButton.text = strNext // Change text
         currentIndex = -1 // Reset index for the next night
+        gameTurn++ //Starting new turn
+        updateHeader()
         binding.gridcharacterView.removeAllViewsInLayout() //No characters showed
     }
 
@@ -308,7 +450,7 @@ class GameActivity : AppCompatActivity() {
     private fun nightPhase() {
         phase = EnumPhase.NIGHT // Night phase
         setBackground(phase)
-        binding.startNightButton.text = strNext // Change text
+        updateHeader()
         showNextCharacters() // Start showing night roles at the first moment
     }
 
@@ -317,9 +459,10 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun wakingPhase() {
         phase = EnumPhase.DAWN // Waking phase
+        setupWildChild() //Only for first turn
         setBackground(phase)
-        isNight = false // No more in night
         binding.gameStatusTextView.text = strMorning // Morning message
+        updateHeader()
         setPictures(characters, true) // Set the pictures WITH listeners
     }
 
@@ -331,6 +474,7 @@ class GameActivity : AppCompatActivity() {
         binding.gameStatusTextView.text = strDay // Day message
         setBackground(phase)
         removeDeadCharacters() // Remove characters dead by night
+        updateHeader()
         setPictures(characters, true) // Set pictures WITH Listeners
     }
 
@@ -342,6 +486,7 @@ class GameActivity : AppCompatActivity() {
         binding.gameStatusTextView.text = strEvening // Evening message
         setBackground(phase)
         removeDeadCharacters() // Remove the dead
+        updateHeader()
         setPictures(characters, false) // Set pictures WITHOUT listeners
     }
 
