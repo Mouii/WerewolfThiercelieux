@@ -188,10 +188,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    ///
+    /// Show a small dialog where user can select type of character
+    ///
     private fun showListDialog(character: Character) {
         // List of items
         val items = CharacterMode.entries.toTypedArray().map { x -> x.name}.toMutableList()
 
+        //Unique version => direct add
         if(!authorList.contains(character.className)) {
             //Add character to selection
             addCharacterToGame(character)
@@ -219,6 +223,7 @@ class MainActivity : AppCompatActivity() {
 
                     val modeSelected : CharacterMode = CharacterMode.valueOf(selectedItem)
 
+                    //If selected Author mode, change the properties
                     if(modeSelected == CharacterMode.AUTHOR)
                         addingCharacterFromAuthorGameMode(character)
 
@@ -229,9 +234,10 @@ class MainActivity : AppCompatActivity() {
                     refreshSelectedListCharacters()
 
                 }
-                .setNegativeButton("Cancel") { _, _ -> cancelClicking(character) }
+                .setNegativeButton("Cancel") { _, _ -> cancelClicking(character) } //Some users prefer a cancel button
                 .show()
 
+            //Listener on cancel by taping outside of the dialog
             dialog.setOnCancelListener {
                 cancelClicking(character)
             }
@@ -239,6 +245,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    ///
+    /// Action on canceling the dialog. Refresh the occurrence of the character in the Chart
+    ///
     private fun cancelClicking(character : Character) {
         //Update the chart to select again
         val charChart = characterChart.first{ x -> x.name == character.className}
@@ -407,6 +416,9 @@ class MainActivity : AppCompatActivity() {
         binding.startButton.isEnabled = charactersSelected.size >= limitStartNumber
     }
 
+    ///
+    /// Hard coded definition of some characters created by the author
+    ///
     private fun addingCharacterFromAuthorGameMode(character: Character) {
         when(character) {
             is LittleGirl -> {
