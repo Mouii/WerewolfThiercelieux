@@ -1,5 +1,6 @@
 package main.werewolfkotlin
 
+import android.content.pm.ActivityInfo
 import model.*
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -131,6 +132,7 @@ class GameActivity : AppCompatActivity() {
         binding.endButton.setOnClickListener {
             finish()
         }
+
     }
 
     ///

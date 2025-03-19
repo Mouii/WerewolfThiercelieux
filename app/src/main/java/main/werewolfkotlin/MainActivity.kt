@@ -3,6 +3,7 @@ package main.werewolfkotlin
 import model.*
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -44,7 +45,10 @@ class MainActivity : AppCompatActivity() {
     //Limit of characters to start playing.(See if can be configured)
     private val limitStartNumber : Int = 8
 
+    //List of custom characters created by the author
     private val authorList: MutableList<String> = mutableListOf()
+
+    private var strSelection : String = "Number of characters selected : "
 
     ///
     /// Execution on creation of the activity
@@ -174,6 +178,9 @@ class MainActivity : AppCompatActivity() {
 
         //Disable by default buttons for list selection
         setSelectionButtonEnable(false)
+
+        //Set message
+        binding.textMenu.text = strSelection + charactersSelected.size
 
         //Need an amount of characters to start
         binding.startButton.isEnabled = false
@@ -414,6 +421,9 @@ class MainActivity : AppCompatActivity() {
 
         //Each drawing can update the start. A game start with at least five characters
         binding.startButton.isEnabled = charactersSelected.size >= limitStartNumber
+
+        //Set message
+        binding.textMenu.text = strSelection + charactersSelected.size
     }
 
     ///
