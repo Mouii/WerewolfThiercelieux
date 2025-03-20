@@ -11,6 +11,7 @@
         android:roundIcon="@drawable/loup_garou_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.WerewolfKotlin"
+        android:screenOrientation="portrait"
         tools:targetApi="34">
         <activity
             android:name=".MainActivity"

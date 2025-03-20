@@ -1,6 +1,7 @@
 package main.werewolfkotlin
 
-import Model.*
+import android.content.pm.ActivityInfo
+import model.*
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -131,6 +132,7 @@ class GameActivity : AppCompatActivity() {
         binding.endButton.setOnClickListener {
             finish()
         }
+
     }
 
     ///
@@ -140,45 +142,272 @@ class GameActivity : AppCompatActivity() {
     private fun deserializeProperly(chars : List<Character>) {
         chars.forEach {character ->
             when(character.className) {
-                "Actor" -> characters.add(Actor(character.order))
-                "Angel" -> characters.add(Angel(character.order))
-                "BearTamer" -> characters.add(BearTamer(character.order))
+                "Actor" -> characters.add(Actor(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode
+                ))
+                "Angel" -> characters.add(Angel(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "BearTamer" -> characters.add(BearTamer(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
                 "BigBadWolf" ->  {
-                    characters.add(BigBadWolf(character.order))
+                    characters.add(BigBadWolf(character.description
+                        , character.action
+                        , character.isNocturnal
+                        , character.powerState
+                        , character.isWerewolf
+                        , character.order
+                        , character.maxOccurrence
+                        , character.mode))
                     chartCharacters[character.className] = character.order
                 }
-                "Brother" -> characters.add(Brother(character.order))
-                "Cupid" -> characters.add(Cupid(character.order))
-                "Defender" -> characters.add(Defender(character.order))
-                "Elder" -> characters.add(Elder(character.order))
-                "Fox" -> characters.add(Fox(character.order))
-                "Gypsy" -> characters.add(Gypsy(character.order))
-                "Hunter" -> characters.add(Hunter(character.order))
-                "Idiot" -> characters.add(Idiot(character.order))
-                "LittleGirl" -> characters.add(LittleGirl(character.order))
-                "Manipulator" -> characters.add(Manipulator(character.order))
-                "Piper" -> characters.add(Piper(character.order))
-                "RustyKnight" -> characters.add(RustyKnight(character.order))
-                "Scapegoat" -> characters.add(Scapegoat(character.order))
-                "Seer" -> characters.add(Seer(character.order))
-                "Servant" -> characters.add(Servant(character.order))
-                "Sister" -> characters.add(Sister(character.order))
-                "StutteringJudge" -> characters.add(StutteringJudge(character.order))
-                "Thief" -> characters.add(Thief(character.order))
-                "Villager" -> characters.add(Villager(character.order))
-                "VillagerVillager" -> characters.add(VillagerVillager(character.order))
-                "Werewolf" -> characters.add(Werewolf(character.order))
+                "Brother" -> characters.add(Brother(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Crow" -> characters.add(Crow(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Cupid" -> characters.add(Cupid(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Defender" -> characters.add(Defender(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Elder" -> characters.add(Elder(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Fireman" -> characters.add(Fireman(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Fox" -> characters.add(Fox(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Gypsy" -> characters.add(Gypsy(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Hunter" -> characters.add(Hunter(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Idiot" -> characters.add(Idiot(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "LittleGirl" -> characters.add(LittleGirl(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Manipulator" -> characters.add(Manipulator(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Piper" -> characters.add(Piper(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "RustyKnight" -> characters.add(RustyKnight(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Scapegoat" -> characters.add(Scapegoat(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Seer" -> characters.add(Seer(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Servant" -> characters.add(Servant(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Sister" -> characters.add(Sister(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "StutteringJudge" -> characters.add(StutteringJudge(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Thief" -> characters.add(Thief(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Villager" -> characters.add(Villager(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "VillagerVillager" -> characters.add(VillagerVillager(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "Werewolf" -> characters.add(Werewolf(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
                 "WhiteWerewolf" -> {
-                    characters.add(WhiteWerewolf(character.order))
+                    characters.add(WhiteWerewolf(character.description
+                        , character.action
+                        , character.isNocturnal
+                        , character.powerState
+                        , character.isWerewolf
+                        , character.order
+                        , character.maxOccurrence
+                        , character.mode))
                     chartCharacters[character.className] = character.order
                 }
                 "WildChild" -> {
-                    characters.add(WildChild(character.order))
+                    characters.add(WildChild(character.description
+                        , character.action
+                        , character.isNocturnal
+                        , character.powerState
+                        , character.isWerewolf
+                        , character.order
+                        , character.maxOccurrence
+                        , character.mode))
                     chartCharacters[character.className] = character.order
                 }
-                "Witch" -> characters.add(Witch(character.order))
-                "WolfFather" -> characters.add(WolfFather(character.order))
-                "WolfHound" -> characters.add(WolfHound(character.order))
+                "Witch" -> characters.add(Witch(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "WolfFather" -> characters.add(WolfFather(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
+                "WolfHound" -> characters.add(WolfHound(character.description
+                    , character.action
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.isWerewolf
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode))
             }
         }
 
@@ -191,6 +420,7 @@ class GameActivity : AppCompatActivity() {
                     || x is WolfFather
                     || x is BigBadWolf
                     || x is WolfHound
+                    || x is WhiteWerewolf
                     || x.isWerewolf
         }
 
@@ -386,7 +616,8 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
-        if(deadCharacters.any { x -> x.isWerewolf }) {
+        if(characters.any { x -> x is BigBadWolf && x.mode == CharacterMode.NORMAL}
+            && deadCharacters.any { x -> x.isWerewolf }) {
             checkAndResetOrderOfSpecialWerewolf("BigBadWolf")
         }
 
