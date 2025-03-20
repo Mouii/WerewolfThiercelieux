@@ -167,6 +167,17 @@ class MainActivity : AppCompatActivity() {
 
             }
 
+            imageView.setOnLongClickListener {
+
+                // Create the dialog
+                AlertDialog.Builder(this)
+                    .setTitle("Description")
+                    .setMessage(character.description)
+                    .setNegativeButton("Okay", null)
+                    .show()
+                true // Return true to indicate the long-click event is consumed
+            }
+
 
             //Adding to the menu list
             binding.gridSelectView.addView(imageView, index)
@@ -405,6 +416,17 @@ class MainActivity : AppCompatActivity() {
 
                 //Always refresh arrow selection (to see if misplaced)
                 refreshArrowSelectionSelected()
+            }
+
+            imageView.setOnLongClickListener {
+
+                // Create the dialog
+                AlertDialog.Builder(this)
+                    .setTitle("Description")
+                    .setMessage(character.description)
+                    .setNegativeButton("Okay", null)
+                    .show()
+                true // Return true to indicate the long-click event is consumed
             }
 
             //Adding layout to the gridlayout

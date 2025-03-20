@@ -4,48 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:clipChildren="false"
     android:padding="15dp">
-
 
         <ScrollView
             android:id="@+id/scrollSelectGridLayout"
             android:layout_width="match_parent"
             android:background="#a8c8ff"
-            android:layout_height="250dp">
+            android:layout_height="260dp">
 
-            <LinearLayout
+            <GridLayout
+                android:id="@+id/gridSelectView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <GridLayout
-                    android:id="@+id/gridSelectView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:alignmentMode="alignMargins"
-                    android:columnCount="4"/>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:alignmentMode="alignMargins"
+                android:columnCount="4"/>
 
         </ScrollView>
 
         <ScrollView
             android:id="@+id/scrollSelectedGridLayout"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+
             android:background="#fbfcb6"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:layout_height="260dp">
 
-            <LinearLayout
+            <GridLayout
+                android:id="@+id/gridSelectedView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <GridLayout
-                    android:id="@+id/gridSelectedView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:alignmentMode="alignMargins"
-                    android:columnCount="4" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:alignmentMode="alignMargins"
+                android:columnCount="4" />
 
         </ScrollView>
 
@@ -58,7 +47,9 @@
             <TextView
                 android:id="@+id/textMenu"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:background="@color/black">
             </TextView>
 
         </LinearLayout>
@@ -66,7 +57,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="10dp">
 
         <Button
             android:id="@+id/startButton"
