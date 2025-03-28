@@ -3,7 +3,6 @@ package main.werewolfkotlin
 import model.*
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,7 +18,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.iterator
 import com.google.gson.Gson
 import main.werewolfkotlin.databinding.ActivityMainBinding
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -689,4 +687,5 @@ class MainActivity : AppCompatActivity() {
             refreshSelectedListCharacters()
         }
     }
+
 }

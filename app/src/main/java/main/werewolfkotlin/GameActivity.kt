@@ -1,8 +1,9 @@
 package main.werewolfkotlin
 
-import android.content.pm.ActivityInfo
+import android.content.Intent
 import model.*
 import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
@@ -10,6 +11,7 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
+import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import main.werewolfkotlin.databinding.ActivityGameBinding
@@ -133,6 +135,27 @@ class GameActivity : AppCompatActivity() {
             finish()
         }
 
+
+        binding.mainLayout.setOnTouchListener(object : OnSwipeTouchListener(this@GameActivity) {
+            @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+            override fun onSwipeLeft() {
+                sweepLeft()
+            }
+        })
+
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+    private fun sweepLeft() {
+        //In order to transfer the list to the other activity, we create an intent
+        //in direction of the game activity
+        val intent = Intent(this, InformationActivity::class.java)
+
+        //Start the other activity
+        startActivity(intent)
+        overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, R.anim.slide_in_from_right,
+            R.anim.slide_out_to_left)
     }
 
     ///
