@@ -25,6 +25,8 @@ enum class EnumPhase {
     SUNSET
 }
 
+val infoMap: MutableMap<Int, String> = mutableMapOf ()
+
 class GameActivity : AppCompatActivity() {
 
     //Object from the xml view to get all the elements
@@ -136,13 +138,21 @@ class GameActivity : AppCompatActivity() {
         }
 
 
-        binding.mainLayout.setOnTouchListener(object : OnSwipeTouchListener(this@GameActivity) {
+        /*binding.root.setOnTouchListener(object : OnSwipeTouchListener(this@GameActivity) {
             @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
             override fun onSwipeLeft() {
                 sweepLeft()
             }
-        })
+        })*/
 
+        binding.InformationButton.setOnClickListener {
+            //In order to transfer the list to the other activity, we create an intent
+            //in direction of the game activity
+            val intent = Intent(this, InformationActivity::class.java)
+
+            //Start the other activity
+            startActivity(intent)
+        }
 
     }
 
@@ -154,8 +164,6 @@ class GameActivity : AppCompatActivity() {
 
         //Start the other activity
         startActivity(intent)
-        overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, R.anim.slide_in_from_right,
-            R.anim.slide_out_to_left)
     }
 
     ///

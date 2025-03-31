@@ -5,35 +5,403 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#343434">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:padding="10dp"
-        android:orientation="vertical">
+        android:textStyle="bold"
+        android:textSize="40dp"
+        android:text="Description"/>
 
-        <TextView
-            android:id="@+id/DeadText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:background="@color/black"
-            android:textColor="@color/white"
-            android:text="Deaths"
-            />
-
-        <EditText
-            android:id="@+id/DeadEditText"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <GridLayout
+            android:id="@+id/gridLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:hint="Enter the deaths here"/>
+            android:alignmentMode="alignBounds"
+            android:useDefaultMargins="true"
+            android:columnCount="2">
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Deaths"
+                    />
+
+                <EditText
+                    android:id="@+id/deathEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the deaths"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Lovers"
+                    />
+
+                <EditText
+                    android:id="@+id/loverEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the lovers"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Defender"
+                    />
+
+                <EditText
+                    android:id="@+id/defenderEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the protected"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Wild Child"
+                    />
+
+                <EditText
+                    android:id="@+id/wildEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the mentor"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Bear"
+                    />
+
+                <EditText
+                    android:id="@+id/bearEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the tamer"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Ancient"
+                    />
+
+                <EditText
+                    android:id="@+id/ancientEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the ancient"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Infected"
+                    />
+
+                <EditText
+                    android:id="@+id/infectedEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the infected"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Sectarian"
+                    />
+
+                <EditText
+                    android:id="@+id/sectarianEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the selected"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Comedian"
+                    />
+
+                <EditText
+                    android:id="@+id/comedianEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the his role"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Thief"
+                    />
+
+                <EditText
+                    android:id="@+id/thiefEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the trapped"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Piper"
+                    />
+
+                <EditText
+                    android:id="@+id/piperEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the bewitched"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Scapegoat"
+                    />
+
+                <EditText
+                    android:id="@+id/scapegoatEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the allowed voter"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Switched"
+                    />
+
+                <EditText
+                    android:id="@+id/switchEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the switched"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="start"
+                    android:textColor="@color/white"
+                    android:text="Punished"
+                    />
+
+                <EditText
+                    android:id="@+id/punishedEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:maxLines="1"
+                    android:hint="Enter the punished"/>
+            </LinearLayout>
+
+        </GridLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/returnButton"
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:text="Back"/>
 
 
 </LinearLayout>
