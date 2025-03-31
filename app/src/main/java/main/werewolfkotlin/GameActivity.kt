@@ -25,7 +25,9 @@ enum class EnumPhase {
     SUNSET
 }
 
-val infoMap: MutableMap<Int, String> = mutableMapOf ()
+val infoMap: MutableMap<Int, String> = mutableMapOf()
+
+var roleListConsumable : MutableMap<Character, Boolean>  = mutableMapOf()
 
 class GameActivity : AppCompatActivity() {
 
@@ -149,6 +151,15 @@ class GameActivity : AppCompatActivity() {
             //In order to transfer the list to the other activity, we create an intent
             //in direction of the game activity
             val intent = Intent(this, InformationActivity::class.java)
+
+            //Start the other activity
+            startActivity(intent)
+        }
+
+        binding.RoleButton.setOnClickListener {
+            //In order to transfer the list to the other activity, we create an intent
+            //in direction of the game activity
+            val intent = Intent(this, RoleActivity::class.java)
 
             //Start the other activity
             startActivity(intent)
@@ -445,6 +456,10 @@ class GameActivity : AppCompatActivity() {
         //Order the list again just in case
         characters.sortBy { x -> x.order }
 
+        characters.filter { x -> x.powerState == PowerState.CONSUMABLE }.forEach { character ->
+            roleListConsumable[character] = false
+        }
+
         //Order reference : werewolf > wolfFather > bigBadWolf > wolfHound > others
         val characterReference : Character? = characters.firstOrNull{ x ->
                     x is Werewolf
@@ -476,7 +491,7 @@ class GameActivity : AppCompatActivity() {
 
             //Set the list of active characters from the index
             activeCharacters = if(currentIndex == werewolfTurn) {
-                characters.filter { x -> x.isWerewolf }
+                characters.filter { x -> x.isWerewolf && x.isNocturnal }
             } else {
                 characters.filter { x -> x.order == currentIndex }
             }
@@ -489,6 +504,11 @@ class GameActivity : AppCompatActivity() {
         if (activeCharacters.isEmpty()) {
             nextPhase()
         } else {
+
+            if(activeCharacters.size == 1 && activeCharacters[0].className == "WildChild") {
+                setupWildChild(activeCharacters[0])
+            }
+
             //Show the active characters with their descriptions
             setPictures(activeCharacters, false)
             setActions(activeCharacters)
@@ -593,6 +613,10 @@ class GameActivity : AppCompatActivity() {
         if(deadCharacters.size > 0) {
             for (characterDead in deadCharacters) {
                 characters.remove(characterDead)
+
+                //Update specific consumable list
+                if(roleListConsumable.contains(characterDead))
+                    roleListConsumable.remove(characterDead)
             }
 
             //Special updates
@@ -667,16 +691,13 @@ class GameActivity : AppCompatActivity() {
     }
 
     ///
-    /// Exclusive function, might disappear later => setup the wild child as a werewolf
-    /// even if he's not one
+    /// Setup the wild child for the turn of werewolf but not awaken
     ///
-    private fun setupWildChild() {
-        if(chartCharacters.containsKey("WildChild") && gameTurn == 1) {
-            val child = characters.first { x -> x is WildChild }
-            child.order = werewolfTurn
-            child.isWerewolf = true
-            chartCharacters["WildChild"] = werewolfTurn
-        }
+    private fun setupWildChild(child: Character) {
+        child.order = werewolfTurn
+        child.isWerewolf = true
+        child.isNocturnal = false
+        chartCharacters["WildChild"] = werewolfTurn
     }
 
     ///
@@ -721,7 +742,6 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun wakingPhase() {
         phase = EnumPhase.DAWN // Waking phase
-        setupWildChild() //Only for first turn
         setBackground(phase)
         binding.gameStatusTextView.text = strMorning // Morning message
         updateHeader()

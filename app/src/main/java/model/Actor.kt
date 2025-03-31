@@ -6,7 +6,7 @@ class Actor : Character {
     super("The actor can play three different roles during the game at night. These roles must be choose outside of the game and are visible to everybody. Once the three have been played, the Actor become a simple villager"
         ,"The Actor might choose one of the roles visible to play for a complete turn. Once the role has been played, it is discarded."
         , true
-        , PowerState.VARIABLE
+        , PowerState.CONSUMABLE
         , false
         , order
         , 1

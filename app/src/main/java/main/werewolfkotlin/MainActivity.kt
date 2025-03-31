@@ -459,7 +459,7 @@ class MainActivity : AppCompatActivity() {
             is Thief -> {
                 character.description = "The Thief is a master trap. He/she can put traps on other characters and have more information. There is three traps available that can be put each one one time per game : silent one (Thief knows if the selected has done something during the night at the morning), noisy one (everybody knows when the role is called), injure one (everybody knows who did something during the night at the morning). If a trap isn't activated, it is available again. Activation is done when a character do an action, meaning the trapped can wakes up but do nothing and so not activate the trap."
                 character.action = "The Thief choose a trap to put between the three ones : silent one, noisy one, injure one. If the trapped doesn't do anything during the night or don't wake up, the trap is available again"
-                character.powerState = PowerState.VARIABLE
+                character.powerState = PowerState.CONSUMABLE
             }
             is Cupid -> {
                 character.description = "The Cupid has been touched too much by love. He/She select two people to fall in love together. Then, he/she choose a cheater and a lover. If the lover dies, the three dies. If the cheater dies, the three dies. If the cheated dies, he's the only one. Lover and cheater can't go against each others. Cheated can't only go against the cheater."
@@ -477,6 +477,7 @@ class MainActivity : AppCompatActivity() {
                 character.description = "The Angel is a divinator. One time per game, he/she can choose to reveal a role to everybody. The character revealed stay alive."
                 character.action = "The Angel can choose to reveal the role of a character."
                 character.isNocturnal = true
+                character.powerState = PowerState.CONSUMABLE
             }
             is RustyKnight -> {
                 character.description = "The RustyKnight, if killed during the night, can kill a werewolf from tetanus. The next morning, the alive werewolf the most at the left of the knight will die. This action helps a lot to see innocents between the knight and the killed werewolf. If he/she dies from the village, the closest villager to the right of the knight dies."
@@ -484,6 +485,7 @@ class MainActivity : AppCompatActivity() {
             is Servant -> {
                 character.description = "The Servant is a promoter. Once a special innocent villager has been killed, she can wakes up during the night and select a character. If it isn't a simple villager, nothing happens. The Servant doesn't see the role. If it is a simple Villager, she can promote the founded to a dead special role. This means a special role can come back in the game. A role like a Witch for example get a refresh of all the actions already done."
                 character.action = "The Servant try to find simple villager to promote them of innocent villagers role."
+                character.powerState = PowerState.CONSUMABLE
                 character.isNocturnal = true
             }
             is StutteringJudge -> {
@@ -492,14 +494,15 @@ class MainActivity : AppCompatActivity() {
             is Manipulator -> {
                 character.description = "The Manipulator is a kind of racist. He/She select a number of players equal to the number of werewolves (information from the game master). If the selected dies, he/she wins. If there is no more werewolves in the game and the Manipulator is alive, he/she wakes up to kill."
                 character.action = "The Manipulator choose a number of players equal to the number of werewolves (GM gives the information) that must die in order for him/her to win. If the werewolves are dead, he/she can select a victim to kill."
+                character.powerState = PowerState.CONSUMABLE
             }
             is BigBadWolf -> {
                 character.description = "The big bad wolf can eat a second victim during the night. He/she eats with the others on the common turn then has a unique turn for him/her."
-                character.powerState = PowerState.PERMANENT
             }
             is WolfHound -> {
                 character.description = "The WolfHound is a cub Wolf. If he/she dies, the werewolves are angry and eat an additional victim the next night."
                 character.action = "The WolfHound anger the pack of werewolves if he/she dies and add an additional victim the next night."
+                character.powerState = PowerState.PERMANENT
             }
         }
         character.mode = CharacterMode.AUTHOR

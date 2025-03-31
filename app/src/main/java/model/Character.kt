@@ -1,7 +1,7 @@
 package model
 
 enum class PowerState {
-    PERMANENT, VARIABLE, UNIQUE
+    PERMANENT, CONSUMABLE, UNIQUE
 }
 
 enum class CharacterMode {

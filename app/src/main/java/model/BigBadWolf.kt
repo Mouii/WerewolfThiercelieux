@@ -5,7 +5,7 @@ class BigBadWolf : Character {
         : super("The big bad wolf can eat a second victim during the night. He/she eats with the others on the common turn then has a unique turn for him/her. This power is lost when a werewolf, wild child, or wolfhound is dead."
     , "The BigBadWolf choose a victim to eat. On its only turn, he can eat another victim"
     , true
-    , PowerState.VARIABLE
+    , PowerState.PERMANENT
     , true
     , order
     , 1

@@ -6,7 +6,7 @@ class WildChild: Character {
     : super("The Wild Child choose a player that he/she consider as his/her model. If the model dies, the Wild Child become a werewolf. Otherwise, he's a simple villager."
     , "The WildChild choose a player to be his/her master. If the master dies, he/she become a werewolf."
         , true
-    , PowerState.PERMANENT
+    , PowerState.CONSUMABLE
     , false
     , order
     , 1
