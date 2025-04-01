@@ -5,8 +5,8 @@ class WolfHound: Character {
     constructor(order: Int)
     : super("The WolfHound is a role that can choose who he/she wants to be between a werewolf and a simple villager."
     , "The WolfHound choose to wake up and be a werewolf for the game or stay asleep and be a simple villager."
-        , true
-    , PowerState.PERMANENT
+        , false
+    , PowerState.CONSUMABLE
     , true
     , order
     , 1

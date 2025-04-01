@@ -1,8 +1,9 @@
 package main.werewolfkotlin
 
-import android.content.pm.ActivityInfo
+import android.content.Intent
 import model.*
 import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
@@ -10,6 +11,7 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
+import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import main.werewolfkotlin.databinding.ActivityGameBinding
@@ -22,6 +24,10 @@ enum class EnumPhase {
     DAY,
     SUNSET
 }
+
+val infoMap: MutableMap<Int, String> = mutableMapOf()
+
+var roleListConsumable : MutableMap<Character, Boolean>  = mutableMapOf()
 
 class GameActivity : AppCompatActivity() {
 
@@ -133,6 +139,42 @@ class GameActivity : AppCompatActivity() {
             finish()
         }
 
+
+        /*binding.root.setOnTouchListener(object : OnSwipeTouchListener(this@GameActivity) {
+            @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+            override fun onSwipeLeft() {
+                sweepLeft()
+            }
+        })*/
+
+        binding.InformationButton.setOnClickListener {
+            //In order to transfer the list to the other activity, we create an intent
+            //in direction of the game activity
+            val intent = Intent(this, InformationActivity::class.java)
+
+            //Start the other activity
+            startActivity(intent)
+        }
+
+        binding.RoleButton.setOnClickListener {
+            //In order to transfer the list to the other activity, we create an intent
+            //in direction of the game activity
+            val intent = Intent(this, RoleActivity::class.java)
+
+            //Start the other activity
+            startActivity(intent)
+        }
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+    private fun sweepLeft() {
+        //In order to transfer the list to the other activity, we create an intent
+        //in direction of the game activity
+        val intent = Intent(this, InformationActivity::class.java)
+
+        //Start the other activity
+        startActivity(intent)
     }
 
     ///
@@ -414,6 +456,13 @@ class GameActivity : AppCompatActivity() {
         //Order the list again just in case
         characters.sortBy { x -> x.order }
 
+        characters.filter { x -> x.powerState == PowerState.CONSUMABLE }.forEach { character ->
+            roleListConsumable[character] = false
+        }
+
+        if(roleListConsumable.isEmpty())
+            binding.RoleButton.isEnabled = false
+
         //Order reference : werewolf > wolfFather > bigBadWolf > wolfHound > others
         val characterReference : Character? = characters.firstOrNull{ x ->
                     x is Werewolf
@@ -445,7 +494,7 @@ class GameActivity : AppCompatActivity() {
 
             //Set the list of active characters from the index
             activeCharacters = if(currentIndex == werewolfTurn) {
-                characters.filter { x -> x.isWerewolf }
+                characters.filter { x -> x.isWerewolf && x.isNocturnal }
             } else {
                 characters.filter { x -> x.order == currentIndex }
             }
@@ -458,6 +507,11 @@ class GameActivity : AppCompatActivity() {
         if (activeCharacters.isEmpty()) {
             nextPhase()
         } else {
+
+            if(activeCharacters.size == 1 && activeCharacters[0].className == "WildChild") {
+                setupWildChild(activeCharacters[0])
+            }
+
             //Show the active characters with their descriptions
             setPictures(activeCharacters, false)
             setActions(activeCharacters)
@@ -545,7 +599,6 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun setBackground(phase: EnumPhase) {
         binding.root.setBackgroundResource(ImageGetter.getBackgroundImage(phase))
-        binding.root.background.alpha = 128
     }
 
     ///
@@ -562,6 +615,10 @@ class GameActivity : AppCompatActivity() {
         if(deadCharacters.size > 0) {
             for (characterDead in deadCharacters) {
                 characters.remove(characterDead)
+
+                //Update specific consumable list
+                if(roleListConsumable.contains(characterDead))
+                    roleListConsumable.remove(characterDead)
             }
 
             //Special updates
@@ -636,16 +693,13 @@ class GameActivity : AppCompatActivity() {
     }
 
     ///
-    /// Exclusive function, might disappear later => setup the wild child as a werewolf
-    /// even if he's not one
+    /// Setup the wild child for the turn of werewolf but not awaken
     ///
-    private fun setupWildChild() {
-        if(chartCharacters.containsKey("WildChild") && gameTurn == 1) {
-            val child = characters.first { x -> x is WildChild }
-            child.order = werewolfTurn
-            child.isWerewolf = true
-            chartCharacters["WildChild"] = werewolfTurn
-        }
+    private fun setupWildChild(child: Character) {
+        child.order = werewolfTurn
+        child.isWerewolf = true
+        child.isNocturnal = false
+        chartCharacters["WildChild"] = werewolfTurn
     }
 
     ///
@@ -690,7 +744,6 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun wakingPhase() {
         phase = EnumPhase.DAWN // Waking phase
-        setupWildChild() //Only for first turn
         setBackground(phase)
         binding.gameStatusTextView.text = strMorning // Morning message
         updateHeader()

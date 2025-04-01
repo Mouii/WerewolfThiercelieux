@@ -6,7 +6,7 @@ class Cupid: Character {
     : super("Cupid is called only on the first night to unite a couple."
     , "The Cupid choose two people to put in love together. If one dies, so die the other."
     , true
-    , PowerState.VARIABLE
+    , PowerState.PERMANENT
     , false
     , order
     , 1
