@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/main_activity_alpha"
+    android:padding="15dp">
+
+        <ScrollView
+            android:id="@+id/scrollSelectGridLayout"
+            android:layout_width="match_parent"
+            android:background="#a8c8ff"
+            android:layout_height="260dp">
+
+            <GridLayout
+                android:id="@+id/gridSelectView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alignmentMode="alignMargins"
+                android:columnCount="4"/>
+
+        </ScrollView>
+
+        <ScrollView
+            android:id="@+id/scrollSelectedGridLayout"
+            android:layout_width="match_parent"
+
+            android:background="#fbfcb6"
+            android:layout_marginTop="20dp"
+            android:layout_height="260dp">
+
+            <GridLayout
+                android:id="@+id/gridSelectedView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alignmentMode="alignMargins"
+                android:columnCount="4" />
+
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/textMenuLayout"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/textMenu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white">
+            </TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_marginEnd="1dp">
+
+                <Button
+                    android:id="@+id/leftArrowButton"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:text="P"/>
+
+                <Button
+                    android:id="@+id/rightArrowButton"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="N"/>
+
+                <Button
+                    android:id="@+id/cancelButton"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="C"/>
+
+                <Button
+                    android:id="@+id/removeButton"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="X" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/closeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Close"/>
+        </LinearLayout>
+
+</LinearLayout>

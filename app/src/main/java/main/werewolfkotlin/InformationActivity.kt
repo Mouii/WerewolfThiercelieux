@@ -54,14 +54,7 @@ class InformationActivity : AppCompatActivity() {
 
         //Listener on button
         binding.returnButton.setOnClickListener {
-            //In order to transfer the list to the other activity, we create an intent
-            //in direction of the game activity
-            val intent = Intent(this, GameActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-            }
-
-            //Start the other activity
-            startActivity(intent)
+            finish()
         }
 
         //Object watcher

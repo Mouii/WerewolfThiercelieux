@@ -460,6 +460,9 @@ class GameActivity : AppCompatActivity() {
             roleListConsumable[character] = false
         }
 
+        if(roleListConsumable.isEmpty())
+            binding.RoleButton.isEnabled = false
+
         //Order reference : werewolf > wolfFather > bigBadWolf > wolfHound > others
         val characterReference : Character? = characters.firstOrNull{ x ->
                     x is Werewolf
@@ -596,7 +599,6 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun setBackground(phase: EnumPhase) {
         binding.root.setBackgroundResource(ImageGetter.getBackgroundImage(phase))
-        binding.root.background.alpha = 128
     }
 
     ///

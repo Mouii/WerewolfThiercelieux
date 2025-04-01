@@ -111,11 +111,11 @@ class ImageGetter {
 
         fun getBackgroundImage(phase: EnumPhase) : Int {
             return when(phase) {
-                EnumPhase.SLEEPING -> R.drawable.village_night
-                EnumPhase.NIGHT -> R.drawable.village_night
-                EnumPhase.DAWN -> R.drawable.village_dawn
-                EnumPhase.DAY -> R.drawable.village_day
-                EnumPhase.SUNSET -> R.drawable.village_sunset
+                EnumPhase.SLEEPING -> R.drawable.game_activity_night
+                EnumPhase.NIGHT -> R.drawable.game_activity_night
+                EnumPhase.DAWN -> R.drawable.game_activity_dawn
+                EnumPhase.DAY -> R.drawable.game_activity_day
+                EnumPhase.SUNSET -> R.drawable.game_activity_evening
             }
 
         }
