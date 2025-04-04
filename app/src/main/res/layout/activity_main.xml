@@ -9,12 +9,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#fcec03"
-        android:background="@color/black"
-        android:alpha="0.5"
+        android:background="#80000000"
         android:padding="10dp"
-        android:textSize="50dp"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:text="Werewolf of millers hollow"/>
+        android:textSize="50sp"
+        android:gravity="center_horizontal"
+        android:text="@string/title_menu"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -27,26 +26,25 @@
             android:id="@+id/selectButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start"/>
+            android:text="@string/MenuButton_StartGame"/>
 
         <Button
             android:id="@+id/roleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:text="Roles"/>
+            android:text="@string/MenuButton_Role"/>
         <Button
             android:id="@+id/faqButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="F.A.Q"/>
+            android:text="@string/MenuButton_FAQ"/>
 
         <Button
             android:id="@+id/exitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Exit"/>
+            android:text="@string/MenuButton_Exit"/>
 
     </LinearLayout>
 

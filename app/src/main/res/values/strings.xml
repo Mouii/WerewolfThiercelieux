@@ -1,3 +1,107 @@
 <resources>
-    <string name="app_name">WerewolfKotlin</string>
+    <!-- Title -->
+    <string name="app_name">Werewolf</string>
+    <string name="title_menu">Werewolves of Miller\'s Hollow</string>
+
+    <!-- Generic -->
+    <string name="GenericButton_Return">Back</string>
+
+    <!-- Menu buttons -->
+    <string name="MenuButton_StartGame">Start</string>
+    <string name="MenuButton_Role">Roles</string>
+    <string name="MenuButton_FAQ">F.A.Q</string>
+    <string name="MenuButton_Exit">Exit</string>
+
+    <!-- Select buttons -->
+    <string name="SelectButton_StartGame">Begin</string>
+    <string name="SelectButton_Previous">&lt;</string>
+    <string name="SelectButton_Next">&gt;</string>
+    <string name="SelectButton_Cancel">C</string>
+    <string name="SelectButton_Delete">X</string>
+
+    <!-- Game buttons -->
+    <string name="GameButton_Roles">Roles</string>
+    <string name="GameButton_NextTurn">Next turn</string>
+    <string name="GameButton_Information">Info</string>
+    <string name="GameButton_EndGame">End the game</string>
+
+    <!-- Description View -->
+    <string name="DescriptionView_title">Description</string>
+    <string name="DescriptionView_death">Deaths</string>
+    <string name="DescriptionView_deathEdit">Enter the deaths</string>
+    <string name="DescriptionView_lover">Lovers</string>
+    <string name="DescriptionView_loverEdit">Enter the lovers</string>
+    <string name="DescriptionView_defender">Defender</string>
+    <string name="DescriptionView_defenderEdit">Enter the protected</string>
+    <string name="DescriptionView_wildChild">Wild Child</string>
+    <string name="DescriptionView_wildChildEdit">Enter the mentor</string>
+    <string name="DescriptionView_bearTamer">Bear</string>
+    <string name="DescriptionView_bearTamerEdit">Enter the tamer</string>
+    <string name="DescriptionView_ancient">Ancient</string>
+    <string name="DescriptionView_ancientEdit">Enter the ancient</string>
+    <string name="DescriptionView_infected">Infected</string>
+    <string name="DescriptionView_infectedEdit">Enter the infected</string>
+    <string name="DescriptionView_sectarian">Sectarian</string>
+    <string name="DescriptionView_sectarianEdit">Enter the selected</string>
+    <string name="DescriptionView_comedian">Comedian</string>
+    <string name="DescriptionView_comedianEdit">Enter his role</string>
+    <string name="DescriptionView_thief">Thief</string>
+    <string name="DescriptionView_thiefEdit">Enter the trapped</string>
+    <string name="DescriptionView_piper">Piper</string>
+    <string name="DescriptionView_piperEdit">Enter the bewitched</string>
+    <string name="DescriptionView_scapegoat">Scapegoat</string>
+    <string name="DescriptionView_scapegoatEdit">Enter the allowed voter</string>
+    <string name="DescriptionView_switched">Switched</string>
+    <string name="DescriptionView_switchedEdit">Enter the switched</string>
+    <string name="DescriptionView_punished">Punished</string>
+    <string name="DescriptionView_punishedEdit">Enter the punished</string>
+
+    <!-- Select View -->
+    <string name="SelectView_NumberOfCharacters">Number of character selected : %1$d</string>
+
+    <!-- Game View -->
+    <string name="GameView_StartGame">Start a game</string>
+    <string name="GameView_BadInit">No game</string>
+    <string name="GameView_GameOver">Game Over</string>
+    <string name="GameView_Header">Phase %1$s Turn %2$d</string>
+    <string name="GameView_phaseSleeping">This is the night! The village goes to sleep!</string>
+    <string name="GameView_phaseDawn">Morning! Let\'s proceed to the eliminations</string>
+    <string name="GameView_phaseDay">Day time! Chat and speak about what to do!</string>
+    <string name="GameView_phaseEvening">Dinner is served! But watch out, these villagers are alive… so are their enemies…</string>
+
+    <!-- FAQ View -->
+    <string name="FaqView_title">F.A.Q</string>
+    <string name="FaqView_null">Nothing to show</string>
+    <string name="FaqView_question1">What is in one sentence this application?</string>
+    <string name="FaqView_answer1">This application is a mobile software helper to animate your games of werewolves.</string>
+    <string name="FaqView_question2">How does it works?</string>
+    <string name="FaqView_answer2">Start a game, select the characters you want to put in the game and let\'s go!</string>
+    <string name="FaqView_question3">I can start a game without werewolves, why?</string>
+    <string name="FaqView_answer3">This allows you to play the "black death" variant where there is no werewolves. Be sure to read the manual about it.</string>
+    <string name="FaqView_question4">What the hell? Why the calls aren\'t in the order of the manual ?</string>
+    <string name="FaqView_answer4">The application allows you to custom your call order. If you want to start with the werewolves, you can! If you are disturbed, be sure to use the buttons on the select screen to re-order your characters.</string>
+    <string name="FaqView_question5">Special note for the order :</string>
+    <string name="FaqView_answer5">Simple roles linked to the werewolves will follow on the order change (like the Wolf Father). This can also concern the little girl in normal mode.</string>
+    <string name="FaqView_question6">Why the white werewolf and the big bad wolf don\'t follow ?</string>
+    <string name="FaqView_answer6">They don\'t follow so that they can play their special turn. Pay attention that the application always call the white wolf on every turn instead of 1 turn on 2.</string>
+    <string name="FaqView_question7">What\'s this about the version of a character?</string>
+    <string name="FaqView_answer7">Werewolves of miller\'s hollow isn\'t a fair and balanced game; but it also has some roles that aren\'t fun at all. In order to have every role funny, lot of them have a special version I (the author) created and tested in game with good returns!</string>
+    <string name="FaqView_question8">The Thief is strange… what is this version with traps? Where is the normal thief?</string>
+    <string name="FaqView_answer8">The normal Thief doesn\'t have any value in the app since the player who has this character choose a character not yet in the game. Specially for this, make the call of the thief without the app so that you put the right role in the chain. My thief with traps is inspired from fantasy worlds where thief are master in this domain. Try it, you can be surprise how it\'s fun for the players!</string>
+    <string name="FaqView_question9">What about the normal Actor ?</string>
+    <string name="FaqView_answer9">The normal Actor is call every night in order to play for 1 turn to play 1 of the 3 roles you prepared separately. Once he has used all of them, you can go to the role window and deactivate him there.</string>
+    <string name="FaqView_question10">I can do everything I want about the characters in this app!</string>
+    <string name="FaqView_answer10">Yes, you\'re the master after all! You can animate your game as you wish and this app helps you to do it! The game isn\'t handle by it, this is just a helper ;). The app only stops you when you don\'t have any characters in the game.</string>
+    <string name="FaqView_question11">How can I play your special Servant through your app?</string>
+    <string name="FaqView_answer11">This role is one of my favorite and complex one. To play it, you need simple villagers. At this moment of life, I didn\'t developed the part where the servant can handle the return of special roles, but it will come soon. I suggest you just don\'t remove the special villagers in the app until the servant is dead or there is no more simple villagers.</string>
+    <string name="FaqView_question12">Special notes for some role :</string>
+    <string name="FaqView_answer12">The normal Big Bad Wolf doesn\'t have its special turn when a werewolf die. The white wolf doesn\'t have its special turn when he\'s the last werewolf in the game. If your normal wolf hound wakes up, activate his awakening in the role window. The same apply for the Wild Child when his mentor dies. Brothers and sisters aren\'t called anymore when they are the last one.</string>
+    <string name="FaqView_question13">What is the information window?!</string>
+    <string name="FaqView_answer13">It\'s a special place where you can put all important information to remember like the lovers, who is protected blablabla… There are also some information to store about some new actions we gave to the deaths like switching places two players (not their roles!), punish one or multiple players (make them turn their back during the day only). It\'s considered as a curse of the dead werewolves. </string>
+    <string name="FaqView_question14">What is the role window you spoke about ?</string>
+    <string name="FaqView_answer14">It\'s a special place where you can control the call of some characters depending the evolution of the game. If everybody for example knows the witch has used its two potions, it\'s useless to call her again. You can stop her call of the night there. Every role that can have an evolution is listed there. Watch out on some roles that have the reverse evolution; meaning they don\'t wake up at the beginning but might later like the wild child.</string>
+    <string name="FaqView_question15">How is handle the infected by the wolf father? What happened if it is the last werewolf ?</string>
+    <string name="FaqView_answer15">The application doesn\'t handle yet the infected. I suggest you don\'t forget for now the werewolves\'turn if it is the last one. How it was conceive is in order so the infected continue to play normally but wakes up at the werewolves\'s turn </string>
+    <string name="FaqView_question16">Where can I contact you for any questions?</string>
+    <string name="FaqView_answer16">You can send me an e-mail on my address : kevin.prudhomme555@gmail.com. Please use a tag like [Werewolf] at the subject so that it catch my attention ;)</string>
 </resources>

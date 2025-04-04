@@ -31,7 +31,7 @@
             android:layout_marginTop="10dp">
 
             <GridLayout
-                android:id="@+id/gridcharacterView"
+                android:id="@+id/gridCharacterView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:alignmentMode="alignBounds"
@@ -77,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
-                android:text="Roles"/>
+                android:text="@string/GameButton_Roles"/>
         </LinearLayout>
 
         <LinearLayout
@@ -89,14 +89,16 @@
                 android:layout_marginTop="50dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"/>
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:text="@string/GameButton_NextTurn"/>
 
             <Button
                 android:id="@+id/endButton"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"/>
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:text="@string/GameButton_EndGame"/>
         </LinearLayout>
 
         <LinearLayout
@@ -109,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
-                android:text="Infos"/>
+                android:text="@string/GameButton_Information"/>
         </LinearLayout>
 
     </GridLayout>

@@ -1,6 +1,6 @@
 package model
 
-class Cupid: Character {
+class Cupid: CharacterGame {
 
     constructor (order: Int)
     : super("Cupid is called only on the first night to unite a couple."
@@ -10,10 +10,10 @@ class Cupid: Character {
     , false
     , order
     , 1
-    , CharacterMode.NORMAL)
+    , "NORMAL")
 
     constructor(description: String, action: String, isNocturnal: Boolean, powerState: PowerState
-                , isWerewolf: Boolean, order : Int, maxOccurrence : Int, characterMode: CharacterMode) :
+                , isWerewolf: Boolean, order : Int, maxOccurrence : Int, characterMode: String) :
             super(description, action, isNocturnal, powerState, isWerewolf, order, maxOccurrence, characterMode)
 
     override fun action(): String {
