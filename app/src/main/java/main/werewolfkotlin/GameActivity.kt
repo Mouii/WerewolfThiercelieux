@@ -161,6 +161,36 @@ class GameActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    override fun onRestart() {
+        super.onRestart()
+
+        var activeCharacterGames : List<CharacterGame>
+
+        if(phase == EnumPhase.NIGHT) {
+            //Set the list of active characters from the index
+            if(currentIndex == werewolfTurn) {
+                activeCharacterGames =  characterGames.filter { x -> x.isWerewolf && x.isNocturnal }
+
+                //If there is only one werewolf at this turn, better skip it
+                if(activeCharacterGames.size == 1 && (activeCharacterGames[0] is BigBadWolf || activeCharacterGames[0] is WhiteWerewolf))
+                    activeCharacterGames = emptyList()
+
+            } else {
+                activeCharacterGames =  characterGames.filter { x -> x.order == currentIndex && x.isNocturnal }
+            }
+
+            //End of list, empty active characters next phase
+            if (activeCharacterGames.isEmpty()) {
+                showNextCharacters()
+            } else {
+
+                //Show the active characters with their descriptions
+                setPictures(activeCharacterGames, false)
+                setActions(activeCharacterGames)
+            }
+        }
+    }
+
     ///
     /// Create the good list of characters
     /// GSon doesn't handle polymorphism, so we recreate each object
@@ -172,8 +202,6 @@ class GameActivity : AppCompatActivity() {
                 WorkerEasier.getGoodCharacterCast(character, character.className)
 
             characterGames.add(characterRedefined)
-
-            val listSpecial = mutableListOf("BigBadWolf", "WhiteWerewolf", "WildChild")
 
         }
         //Order the list again just in case
@@ -219,7 +247,7 @@ class GameActivity : AppCompatActivity() {
                 activeCharacterGames =  characterGames.filter { x -> x.isWerewolf && x.isNocturnal }
 
                 //If there is only one werewolf at this turn, better skip it
-                if(activeCharacterGames.size == 1)
+                if(activeCharacterGames.size == 1 && (activeCharacterGames[0] is BigBadWolf || activeCharacterGames[0] is WhiteWerewolf))
                     activeCharacterGames = emptyList()
 
             } else {
