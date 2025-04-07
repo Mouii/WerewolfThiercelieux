@@ -19,7 +19,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="500dp">
         <GridLayout
             android:id="@+id/gridLayout"
             android:layout_width="match_parent"
@@ -49,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_deathEdit"/>
@@ -75,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_loverEdit"/>
@@ -101,6 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_defenderEdit"/>
@@ -127,6 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_wildChildEdit"/>
@@ -153,6 +157,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_bearTamerEdit"/>
@@ -179,6 +184,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_ancientEdit"/>
@@ -205,6 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_infectedEdit"/>
@@ -231,6 +238,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_sectarianEdit"/>
@@ -257,6 +265,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_comedianEdit"/>
@@ -283,6 +292,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_thiefEdit"/>
@@ -309,6 +319,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_piperEdit"/>
@@ -335,6 +346,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_scapegoatEdit"/>
@@ -361,6 +373,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_switchedEdit"/>
@@ -387,6 +400,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
                     android:hint="@string/DescriptionView_punishedEdit"/>

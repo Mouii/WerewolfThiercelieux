@@ -60,22 +60,22 @@
 
     </LinearLayout>
 
-    <GridLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alignmentMode="alignBounds"
-        android:useDefaultMargins="true"
-        android:columnCount="3">
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_columnWeight="1">
+            android:background="#f44336"
+            android:layout_width="wrap_content">
             <Button
                 android:id="@+id/RoleButton"
-                android:layout_marginTop="50dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#f1c232"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:text="@string/GameButton_Roles"/>
         </LinearLayout>
@@ -83,10 +83,10 @@
         <LinearLayout
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_width="wrap_content"
             android:layout_columnWeight="1">
             <Button
                 android:id="@+id/startNightButton"
-                android:layout_marginTop="50dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -99,22 +99,27 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:text="@string/GameButton_EndGame"/>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:orientation="vertical"
             android:layout_columnWeight="1">
+
             <Button
                 android:id="@+id/InformationButton"
-                android:layout_marginTop="50dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#f1c232"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:text="@string/GameButton_Information"/>
+
         </LinearLayout>
 
-    </GridLayout>
+
+    </LinearLayout>
 
 
 

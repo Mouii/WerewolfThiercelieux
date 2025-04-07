@@ -191,6 +191,12 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        infoMap.clear()
+        roleListConsumable.clear()
+    }
+
     ///
     /// Create the good list of characters
     /// GSon doesn't handle polymorphism, so we recreate each object
