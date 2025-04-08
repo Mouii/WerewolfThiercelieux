@@ -1,14 +1,16 @@
 package model
 
 enum class PowerState {
-    PERMANENT, CONSUMABLE, UNIQUE
+    PERMANENT,
+    CONSUMABLE,
+    CONDITIONAL
 }
 
 enum class CharacterMode {
     NORMAL, AUTHOR
 }
 
-open class Character(
+open class CharacterGame(
     var description: String,
     var action: String,
     var isNocturnal: Boolean,
@@ -16,7 +18,7 @@ open class Character(
     var isWerewolf: Boolean,
     var order: Int,
     var maxOccurrence: Int,
-    var mode: CharacterMode
+    var mode: String
 ) : Cloneable {
 
     val className: String = this.javaClass.simpleName
@@ -25,7 +27,7 @@ open class Character(
         return action
     }
 
-    public override fun clone() = Character(this.description
+    public override fun clone() = CharacterGame(this.description
         , this.action
         , this.isNocturnal
         , this.powerState

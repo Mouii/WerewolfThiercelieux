@@ -25,28 +25,23 @@ class SelectActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySelectBinding
 
     //List of Characters from the selection
-    private val charactersMenu : MutableList<Character> = mutableListOf()
+    private val charactersMenus : MutableList<CharacterGame> = mutableListOf()
 
     //List of selected characters for the game
-    private val charactersSelected : MutableList<Character> = mutableListOf()
+    private val charactersSelected : MutableList<CharacterGame> = mutableListOf()
 
     //Dimensions for image
     private val imageDimension : Int = 240
     private val imageMargin : Int = 10
 
     //Selection for actions in list
-    private var selectedCharacterInGame: Character? = null
+    private var selectedCharacterGameInGame: CharacterGame? = null
 
     //Chart used to enable/disable addition of some characters
     private var characterChart : MutableList<CharacterChart> = mutableListOf()
 
     //Limit of characters to start playing.(See if can be configured)
     private val limitStartNumber : Int = 8
-
-    //List of custom characters created by the author
-    private val authorList: MutableList<String> = mutableListOf()
-
-    private var strSelection : String = "Number of characters selected : "
 
     ///
     /// Execution on creation of the activity
@@ -56,90 +51,18 @@ class SelectActivity : AppCompatActivity() {
         binding = ActivitySelectBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //All roles will be hard coded for the chart
-        val villager = Villager(1)
-        val werewolf = Werewolf(2)
-        val seer = Seer(3)
-        val witch = Witch(4)
-        val hunter = Hunter(5)
-        val littleGirl = LittleGirl(6)
-        val thief = Thief(7)
-        val cupid = Cupid(8)
-        val elder = Elder(9)
-        val defender = Defender(10)
-        val scapegoat = Scapegoat(11)
-        val idiot = Idiot(12)
-        val piper = Piper(13)
-        val actor = Actor(14)
-        val angel = Angel(15)
-        val bearTamer = BearTamer(16)
-        val brother = Brother(17)
-        val sister = Sister(18)
-        val fox = Fox(19)
-        val gypsy = Gypsy(20)
-        val rustyKnight = RustyKnight(21)
-        val servant = Servant(22)
-        val judge = StutteringJudge(23)
-        val villagerVillager = VillagerVillager(24)
-        val manipulator = Manipulator(25)
-        val bigBadWolf = BigBadWolf(26)
-        val whiteWerewolf = WhiteWerewolf(27)
-        val wildChild = WildChild(28)
-        val wolfFather = WolfFather(29)
-        val wolfHound = WolfHound(30)
-        val crow = Crow(31)
-        val fireman = Fireman(32)
+        //Getting the list from the json
+        WorkerEasier.characterListType.forEach { pair ->
 
-        //Adding to the list hard coded
-        charactersMenu.add(villager)
-        charactersMenu.add(werewolf)
-        charactersMenu.add(seer)
-        charactersMenu.add(witch)
-        charactersMenu.add(hunter)
-        charactersMenu.add(littleGirl)
-        charactersMenu.add(thief)
-        charactersMenu.add(cupid)
-        charactersMenu.add(elder)
-        charactersMenu.add(defender)
-        charactersMenu.add(scapegoat)
-        charactersMenu.add(idiot)
-        charactersMenu.add(piper)
-        charactersMenu.add(actor)
-        charactersMenu.add(angel)
-        charactersMenu.add(bearTamer)
-        charactersMenu.add(brother)
-        charactersMenu.add(sister)
-        charactersMenu.add(fox)
-        charactersMenu.add(gypsy)
-        charactersMenu.add(rustyKnight)
-        charactersMenu.add(servant)
-        charactersMenu.add(judge)
-        charactersMenu.add(villagerVillager)
-        charactersMenu.add(manipulator)
-        charactersMenu.add(bigBadWolf)
-        charactersMenu.add(whiteWerewolf)
-        charactersMenu.add(wildChild)
-        charactersMenu.add(wolfFather)
-        charactersMenu.add(wolfHound)
-        charactersMenu.add(crow)
-        charactersMenu.add(fireman)
+            //Getting the first character as a base, we don't care
+            val characterBase = pair.second.values.first()
+            characterBase.order = charactersMenus.size + 1
 
-        //Adding special class of the author
-        authorList.add(littleGirl.className)
-        authorList.add(thief.className)
-        authorList.add(cupid.className)
-        authorList.add(scapegoat.className)
-        authorList.add(actor.className)
-        authorList.add(angel.className)
-        authorList.add(rustyKnight.className)
-        authorList.add(servant.className)
-        authorList.add(judge.className)
-        authorList.add(manipulator.className)
-        authorList.add(bigBadWolf.className)
-        authorList.add(wolfHound.className)
+            charactersMenus.add(characterBase)
+        }
 
         //Set a picture with an action listener on it
-        for ((index, character) in charactersMenu.withIndex()) {
+        for ((index, character) in charactersMenus.withIndex()) {
 
             //Set the imageView
             val imageView : ImageView = setImagePicture(character)
@@ -188,15 +111,11 @@ class SelectActivity : AppCompatActivity() {
         //Disable by default buttons for list selection
         setSelectionButtonEnable(false)
 
-        //Set message
-        binding.textMenu.text = strSelection + charactersSelected.size
+        //Update string
+        updateSelectedCharacterString()
 
         //Need an amount of characters to start
         binding.startButton.isEnabled = false
-
-        //Setting button text here
-        binding.leftArrowButton.text = "<"
-        binding.rightArrowButton.text = ">"
 
         binding.closeButton.setOnClickListener {
             finish()
@@ -206,26 +125,29 @@ class SelectActivity : AppCompatActivity() {
     ///
     /// Show a small dialog where user can select type of character
     ///
-    private fun showListDialog(character: Character) {
+    private fun showListDialog(characterGame: CharacterGame) {
+
+        //This can't be null and fail
+        val characterMap = WorkerEasier.characterListType
+            .firstOrNull { x -> x.first == characterGame.className }!!.second
+
         // List of items
-        val items = CharacterMode.entries.toTypedArray().map { x -> x.name}.toMutableList()
+        val items = characterMap.keys.toMutableList()
 
         //Unique version => direct add
-        if(!authorList.contains(character.className)) {
+        if(items.size == 1) {
+
+            //Getting the character at its unique version
+            val characterSelected = WorkerEasier.characterListType
+                .firstOrNull { x -> x.first == characterGame.className }!!
+                .second[items[0]]!!
+
             //Add character to selection
-            addCharacterToGame(character)
+            addCharacterToGame(characterSelected)
 
             //Always refresh the game list
             refreshSelectedListCharacters()
 
-        } else if (character is Thief) {//Thief is special case for now
-            addingCharacterFromAuthorGameMode(character)
-
-            //Add character to selection
-            addCharacterToGame(character)
-
-            //Always refresh the game list
-            refreshSelectedListCharacters()
         } else {
 
             // Create the dialog
@@ -234,27 +156,26 @@ class SelectActivity : AppCompatActivity() {
                 .setItems(items.toTypedArray()) { _, which ->
                     // Handle item selection
                     val selectedItem = items[which]
-                    Toast.makeText(this, "Selected Version of ${character.className} : $selectedItem", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Selected Version of ${characterGame.className} : $selectedItem", Toast.LENGTH_SHORT).show()
 
-                    val modeSelected : CharacterMode = CharacterMode.valueOf(selectedItem)
-
-                    //If selected Author mode, change the properties
-                    if(modeSelected == CharacterMode.AUTHOR)
-                        addingCharacterFromAuthorGameMode(character)
+                    //Get the character at the selected version
+                    val characterSelected = WorkerEasier.characterListType
+                        .firstOrNull { x -> x.first == characterGame.className }!!
+                        .second[selectedItem]!!
 
                     //Add character to selection
-                    addCharacterToGame(character)
+                    addCharacterToGame(characterSelected)
 
                     //Always refresh the game list
                     refreshSelectedListCharacters()
 
                 }
-                .setNegativeButton("Cancel") { _, _ -> cancelClicking(character) } //Some users prefer a cancel button
+                .setNegativeButton("Cancel") { _, _ -> cancelClicking(characterGame) } //Some users prefer a cancel button
                 .show()
 
             //Listener on cancel by taping outside of the dialog
             dialog.setOnCancelListener {
-                cancelClicking(character)
+                cancelClicking(characterGame)
             }
         }
 
@@ -263,9 +184,9 @@ class SelectActivity : AppCompatActivity() {
     ///
     /// Action on canceling the dialog. Refresh the occurrence of the character in the Chart
     ///
-    private fun cancelClicking(character : Character) {
+    private fun cancelClicking(characterGame : CharacterGame) {
         //Update the chart to select again
-        val charChart = characterChart.first{ x -> x.name == character.className}
+        val charChart = characterChart.first{ x -> x.name == characterGame.className}
         charChart.occurrence -= 1
 
         //enable the chart and so the listener
@@ -283,13 +204,21 @@ class SelectActivity : AppCompatActivity() {
         recreate() // This will restart the activity
     }
 
+    /// Dynamic update of the string info on number of characters
+    private fun updateSelectedCharacterString() {
+        val stringResource = getString(R.string.SelectView_NumberOfCharacters)
+
+        //Set message
+        binding.textMenu.text = String.format(stringResource, charactersSelected.size)
+    }
+
     ///
     /// This function apply a picture with an image view
     ///
-    private fun setImagePicture(character : Character): ImageView {
+    private fun setImagePicture(characterGame : CharacterGame): ImageView {
         //Set the resource and image
         val imageView = ImageView(this).apply {
-            @DrawableRes val img = ImageGetter.getCharacterImage(character)
+            @DrawableRes val img = WorkerEasier.getCharacterImage(characterGame)
             setImageResource(img)
             adjustViewBounds = true
         }
@@ -315,10 +244,10 @@ class SelectActivity : AppCompatActivity() {
     ///
     /// Drawing function. Apply some scare selection
     ///
-    private fun drawSelection(character : Character) {
+    private fun drawSelection(characterGame : CharacterGame) {
 
         for(layout in binding.gridSelectedView) {
-            if(layout.tag == character.className) {
+            if(layout.tag == characterGame.className) {
                 layout.setPadding(5, 5, 0, 0)
                 layout.setBackgroundColor(Color.GREEN)
             } else {
@@ -392,10 +321,10 @@ class SelectActivity : AppCompatActivity() {
             //Listener of the picture
             imageView.setOnClickListener {
                 //Instead of playing on the object itself, we use the name
-                if(selectedCharacterInGame?.className != character.className) {
+                if(selectedCharacterGameInGame?.className != character.className) {
 
                     //Active character in selection
-                    selectedCharacterInGame = character
+                    selectedCharacterGameInGame = character
 
                     //Activate all the button to handle the in game list
                     setSelectionButtonEnable(true)
@@ -430,7 +359,7 @@ class SelectActivity : AppCompatActivity() {
             binding.gridSelectedView.addView(frameLayout, index)
 
             //Keep selection on draw
-            if(selectedCharacterInGame?.className == character.className) {
+            if(selectedCharacterGameInGame?.className == character.className) {
                 drawSelection(character)
             }
         }
@@ -441,107 +370,44 @@ class SelectActivity : AppCompatActivity() {
         //Each drawing can update the start. A game start with at least five characters
         binding.startButton.isEnabled = charactersSelected.size >= limitStartNumber
 
-        //Set message
-        binding.textMenu.text = strSelection + charactersSelected.size
-    }
-
-    ///
-    /// Hard coded definition of some characters created by the author
-    ///
-    private fun addingCharacterFromAuthorGameMode(character: Character) {
-        when(character) {
-            is LittleGirl -> {
-                character.description = "The LittleGirl is a frail child. He/she can't sleep alone and so he/she wakes up to sleep with someone else. He/she choose a character to sleep with. The player wakes up and see the little girl and show his/her role. If it is a werewolf, the little girl is dead. This count as an additional victim."
-                character.action = "The LittleGirl choose another character to sleep with. The character wakes up, show his/her role and see the little girl. If it is a werewolf, the LittleGirl die."
-                character.isWerewolf = false //not forget, don't spy
-            }
-            is Thief -> {
-                character.description = "The Thief is a master trap. He/she can put traps on other characters and have more information. There is three traps available that can be put each one one time per game : silent one (Thief knows if the selected has done something during the night at the morning), noisy one (everybody knows when the role is called), injure one (everybody knows who did something during the night at the morning). If a trap isn't activated, it is available again. Activation is done when a character do an action, meaning the trapped can wakes up but do nothing and so not activate the trap."
-                character.action = "The Thief choose a trap to put between the three ones : silent one, noisy one, injure one. If the trapped doesn't do anything during the night or don't wake up, the trap is available again"
-                character.powerState = PowerState.CONSUMABLE
-            }
-            is Cupid -> {
-                character.description = "The Cupid has been touched too much by love. He/She select two people to fall in love together. Then, he/she choose a cheater and a lover. If the lover dies, the three dies. If the cheater dies, the three dies. If the cheated dies, he's the only one. Lover and cheater can't go against each others. Cheated can't only go against the cheater."
-                character.action = "The Cupid choose three people to put in a triangle of love. Select two people to make in love, then a cheater and a lover. If the lover dies, the three dies. If the cheater dies, the three dies. If the cheated dies, he's the only one. Lover and cheater can't go against each others. Cheated can't only go against the cheater."
-            }
-            is Scapegoat -> {
-                character.description = "The Scapegoat is a victim of life and death. When there is a tie during the vote of the day from the village, he/she dies instead and choose who doesn't vote the next day. If he/she's eaten by the werewolves during the night, they got an indigestion and don't eat the next night."
-            }
-            is Actor -> {
-                character.description = "The Actor is a doppleganger. He/she choose another character to copy the role and become this one. That can means there can be two seers, two witches, etc... If the Actor copy a solo role, they become a Duo role and must still fulfill the condition but together."
-                character.action = "The Actor choose a character to copy. He/she become this role too and follow the rules associate to it. If it is a solo role, they must win together now."
-                character.powerState = PowerState.PERMANENT
-            }
-            is Angel -> {
-                character.description = "The Angel is a divinator. One time per game, he/she can choose to reveal a role to everybody. The character revealed stay alive."
-                character.action = "The Angel can choose to reveal the role of a character."
-                character.isNocturnal = true
-                character.powerState = PowerState.CONSUMABLE
-            }
-            is RustyKnight -> {
-                character.description = "The RustyKnight, if killed during the night, can kill a werewolf from tetanus. The next morning, the alive werewolf the most at the left of the knight will die. This action helps a lot to see innocents between the knight and the killed werewolf. If he/she dies from the village, the closest villager to the right of the knight dies."
-            }
-            is Servant -> {
-                character.description = "The Servant is a promoter. Once a special innocent villager has been killed, she can wakes up during the night and select a character. If it isn't a simple villager, nothing happens. The Servant doesn't see the role. If it is a simple Villager, she can promote the founded to a dead special role. This means a special role can come back in the game. A role like a Witch for example get a refresh of all the actions already done."
-                character.action = "The Servant try to find simple villager to promote them of innocent villagers role."
-                character.powerState = PowerState.CONSUMABLE
-                character.isNocturnal = true
-            }
-            is StutteringJudge -> {
-                character.description = "The StutteringJudge is a dictator. He/She can during the day, one time per game, reveal himself/herself and kill someone. If the victim is a werewolf, he/she become the captain/mayor. Otherwise, he/she dies."
-            }
-            is Manipulator -> {
-                character.description = "The Manipulator is a kind of racist. He/She select a number of players equal to the number of werewolves (information from the game master). If the selected dies, he/she wins. If there is no more werewolves in the game and the Manipulator is alive, he/she wakes up to kill."
-                character.action = "The Manipulator choose a number of players equal to the number of werewolves (GM gives the information) that must die in order for him/her to win. If the werewolves are dead, he/she can select a victim to kill."
-                character.powerState = PowerState.CONSUMABLE
-            }
-            is BigBadWolf -> {
-                character.description = "The big bad wolf can eat a second victim during the night. He/she eats with the others on the common turn then has a unique turn for him/her."
-            }
-            is WolfHound -> {
-                character.description = "The WolfHound is a cub Wolf. If he/she dies, the werewolves are angry and eat an additional victim the next night."
-                character.action = "The WolfHound anger the pack of werewolves if he/she dies and add an additional victim the next night."
-                character.powerState = PowerState.PERMANENT
-            }
-        }
-        character.mode = CharacterMode.AUTHOR
-
+        //Update string
+        updateSelectedCharacterString()
     }
 
     ///
     /// Add a character to the game
     ///
-    private fun addCharacterToGame(character: Character) {
+    private fun addCharacterToGame(characterGame: CharacterGame) {
         //Copy the object
-        val newCharacter : Character = character.clone()
+        val newCharacterGame : CharacterGame = characterGame.clone()
 
         //Check if there is a special case of existing characters
-        val existingCharacter : Character?
-            = if((character is LittleGirl && character.mode == CharacterMode.NORMAL)
-            || character is Werewolf
-            || character is WolfFather
-            || character is WolfHound) {
+        val existingCharacterGame : CharacterGame?
+            = if((characterGame is LittleGirl && characterGame.mode == "NORMAL")
+            || characterGame is Werewolf
+            || characterGame is WolfFather
+            || characterGame is WolfHound) {
                 //Case of werewolf and little girl, they must play at the same time
-                charactersSelected.firstOrNull{ x -> (x is LittleGirl && x.mode == CharacterMode.NORMAL)
+                charactersSelected.firstOrNull{ x -> (x is LittleGirl && x.mode == "NORMAL")
                         || x is Werewolf
                         || x is WolfFather
                         || x is WolfHound}
         } else {
             //Case same kind of character exist
-            charactersSelected.firstOrNull{ x -> x.className == character.className }
+            charactersSelected.firstOrNull{ x -> x.className == characterGame.className }
         }
 
         //Special case
-        if(existingCharacter != null)
-            newCharacter.order = existingCharacter.order //Same order
+        if(existingCharacterGame != null)
+            newCharacterGame.order = existingCharacterGame.order //Same order
         else {
-            newCharacter.order = if(charactersSelected.isEmpty())  0
+            newCharacterGame.order = if(charactersSelected.isEmpty())  0
                                 else charactersSelected.maxOf { x -> x.order } + 1 //At the end
         }
 
 
         //Add the character to the list correctly
-        charactersSelected.add(newCharacter)
+        charactersSelected.add(newCharacterGame)
     }
 
     ///
@@ -551,17 +417,17 @@ class SelectActivity : AppCompatActivity() {
     private fun removeCharacterToSelection() {
 
         //Protection checking selected character is null
-        if(selectedCharacterInGame != null) {
+        if(selectedCharacterGameInGame != null) {
 
             //Character removed
-            charactersSelected.remove(selectedCharacterInGame)
+            charactersSelected.remove(selectedCharacterGameInGame)
 
             //Update the chart to select again
-            cancelClicking(selectedCharacterInGame!!)
+            cancelClicking(selectedCharacterGameInGame!!)
         }
 
         //No selected characters
-        selectedCharacterInGame = null
+        selectedCharacterGameInGame = null
 
         //Disable list
         setSelectionButtonEnable(false)
@@ -573,7 +439,7 @@ class SelectActivity : AppCompatActivity() {
     ///
     private fun previousOrder() {
         //Getting the order of the actual character
-        val index : Int = selectedCharacterInGame!!.order
+        val index : Int = selectedCharacterGameInGame!!.order
 
         //Getting all previous characters (case some are in the same moment)
         val previousCharacters = charactersSelected.filter{ x -> x.order == index - 1 }
@@ -595,7 +461,7 @@ class SelectActivity : AppCompatActivity() {
     ///
     private fun nextOrder() {
         //Getting the order of the actual character
-        val index : Int = selectedCharacterInGame!!.order
+        val index : Int = selectedCharacterGameInGame!!.order
 
         //Getting all previous characters (case some are in the same moment)
         val nextCharacters = charactersSelected.filter{ x -> x.order == index + 1 }
@@ -616,7 +482,7 @@ class SelectActivity : AppCompatActivity() {
     ///
     private fun removeSelectedCharacterInGame() {
 
-        selectedCharacterInGame = null
+        selectedCharacterGameInGame = null
 
         //We only refresh view when canceling
         refreshSelectedListCharacters()
@@ -628,9 +494,9 @@ class SelectActivity : AppCompatActivity() {
     /// Refresh the availability of the arrows handling the position of in game characters
     ///
     private fun refreshArrowSelectionSelected() {
-        if(selectedCharacterInGame != null) {
-            binding.leftArrowButton.isEnabled = selectedCharacterInGame!!.order != 0
-            binding.rightArrowButton.isEnabled = selectedCharacterInGame!!.order != charactersSelected.maxOf { x -> x.order }
+        if(selectedCharacterGameInGame != null) {
+            binding.leftArrowButton.isEnabled = selectedCharacterGameInGame!!.order != 0
+            binding.rightArrowButton.isEnabled = selectedCharacterGameInGame!!.order != charactersSelected.maxOf { x -> x.order }
         }
 
     }

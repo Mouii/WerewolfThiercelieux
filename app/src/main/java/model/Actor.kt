@@ -1,6 +1,6 @@
 package model
 
-class Actor : Character {
+class Actor : CharacterGame {
 
     constructor(order: Int):
     super("The actor can play three different roles during the game at night. These roles must be choose outside of the game and are visible to everybody. Once the three have been played, the Actor become a simple villager"
@@ -10,16 +10,16 @@ class Actor : Character {
         , false
         , order
         , 1
-        , CharacterMode.NORMAL)
+        , "NORMAL")
 
     constructor(description: String, action: String, isNocturnal: Boolean, powerState: PowerState,
-                isWerewolf: Boolean, order : Int, maxOccurrence : Int, characterMode: CharacterMode) :
+                isWerewolf: Boolean, order : Int, maxOccurrence : Int, characterMode: String) :
             super(description, action, isNocturnal, powerState, isWerewolf, order, maxOccurrence, characterMode)
 
     override fun action(): String {
 
         //To better handle after. For now, in author version, not called anymore
-        if(mode == CharacterMode.AUTHOR)
+        if(mode == "AUTHOR")
             isNocturnal = false
 
         return action

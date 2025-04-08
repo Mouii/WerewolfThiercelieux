@@ -1,6 +1,6 @@
 package model
 
-class Defender:Character {
+class Defender:CharacterGame {
 
     constructor(order: Int)
     : super("The defender can protect from the werewolves attack at night only. He/she must choose a different player each night and can select himself/herself. Doesn't protect from infection, killing potion."
@@ -10,10 +10,10 @@ class Defender:Character {
     , false
     , order
     , 1
-    , CharacterMode.NORMAL)
+    , "NORMAL")
 
     constructor(description: String, action: String, isNocturnal: Boolean, powerState: PowerState
-                , isWerewolf: Boolean, order : Int, maxOccurrence : Int, characterMode: CharacterMode) :
+                , isWerewolf: Boolean, order : Int, maxOccurrence : Int, characterMode: String) :
             super(description, action, isNocturnal, powerState, isWerewolf, order, maxOccurrence, characterMode)
 
 

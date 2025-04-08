@@ -27,7 +27,7 @@ enum class EnumPhase {
 
 val infoMap: MutableMap<Int, String> = mutableMapOf()
 
-var roleListConsumable : MutableMap<Character, Boolean>  = mutableMapOf()
+var roleListConsumable : MutableMap<CharacterGame, Boolean>  = mutableMapOf()
 
 class GameActivity : AppCompatActivity() {
 
@@ -35,24 +35,14 @@ class GameActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGameBinding
 
     //List of the characters
-    private var characters : MutableList<Character> = mutableListOf()
+    private var characterGames : MutableList<CharacterGame> = mutableListOf()
 
     //List of dead characters
-    private val deadCharacters : MutableList<Character> = mutableListOf()
+    private val deadCharacterGames : MutableList<CharacterGame> = mutableListOf()
 
     //Image dimension
     private val imageDimension : Int = 300
     private val imageMargin : Int = 10
-
-    //All text (to change to adapt language)
-    private var strIntro : String = "Start a game"
-    private var strStart : String = "Begin the game"
-    private var strNext: String = "Next turn"
-    private var strEnd : String = "End the game"
-    private var strMorning: String = "Morning! Let's proceed to the eliminations"
-    private var strDay: String = "Day time! Chat and speak about what to do!"
-    private var strEvening : String = "Dinner is served! But watch out, these villagers are alive... so are their enemies..."
-    private var strSleep: String = "This is the night! The village goes to sleep!"
 
     //Game is over or not. Only used for now if activity is badly initialized
     private var gameInProgress : Boolean = true
@@ -66,10 +56,6 @@ class GameActivity : AppCompatActivity() {
     //Turn order reference of werewolf
     private var werewolfTurn : Int = 0
 
-    //Special map for special characters like bigBadWolf, whiteWerewolf
-    //that have special conditions on some parts
-    private val chartCharacters : MutableMap<String, Int> = mutableMapOf()
-
     //Game turn tracing
     private var gameTurn : Int = 0
 
@@ -81,9 +67,7 @@ class GameActivity : AppCompatActivity() {
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.gameStatusTextView.text = strIntro
-        binding.startNightButton.text = strStart
-        binding.endButton.text = strEnd
+        binding.gameStatusTextView.text = getString(R.string.GameView_StartGame)
 
         setBackground(phase)
 
@@ -92,8 +76,8 @@ class GameActivity : AppCompatActivity() {
 
         // Convert the JSON string back to a MutableList
         val gson = Gson()
-        val type = object : TypeToken<List<Character>>() {}.type
-        var chars : List<Character> = listOf()
+        val type = object : TypeToken<List<CharacterGame>>() {}.type
+        var chars : List<CharacterGame> = listOf()
 
         try {
             //Get the list from the JSON
@@ -106,14 +90,14 @@ class GameActivity : AppCompatActivity() {
         if(chars.isNotEmpty()) {
             deserializeProperly(chars)
         } else {//Bad catch up, keep the test list by default for now
-            characters.add(Werewolf(4))
-            characters.add(Seer(3))
-            characters.add(Witch(5))
-            characters.add(Hunter(98))
-            characters.add(Thief(1))
-            characters.add(Cupid(2))
-            characters.add(LittleGirl(4))
-            characters.add(Villager(99))
+            characterGames.add(Werewolf(4))
+            characterGames.add(Seer(3))
+            characterGames.add(Witch(5))
+            characterGames.add(Hunter(98))
+            characterGames.add(Thief(1))
+            characterGames.add(Cupid(2))
+            characterGames.add(LittleGirl(4))
+            characterGames.add(Villager(99))
             gameInProgress = false
         }
 
@@ -128,7 +112,7 @@ class GameActivity : AppCompatActivity() {
                     nextPhase()
             } else {
                 //Only on bad catch up
-                binding.gameStatusTextView.text = "No game."
+                binding.gameStatusTextView.text = getString(R.string.GameView_BadInit)
             }
         }
 
@@ -177,286 +161,59 @@ class GameActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    override fun onRestart() {
+        super.onRestart()
+
+        var activeCharacterGames : List<CharacterGame>
+
+        if(phase == EnumPhase.NIGHT) {
+            //Set the list of active characters from the index
+            if(currentIndex == werewolfTurn) {
+                activeCharacterGames =  characterGames.filter { x -> x.isWerewolf && x.isNocturnal }
+
+                //If there is only one werewolf at this turn, better skip it
+                if(activeCharacterGames.size == 1 && (activeCharacterGames[0] is BigBadWolf || activeCharacterGames[0] is WhiteWerewolf))
+                    activeCharacterGames = emptyList()
+
+            } else {
+                activeCharacterGames =  characterGames.filter { x -> x.order == currentIndex && x.isNocturnal }
+            }
+
+            //End of list, empty active characters next phase
+            if (activeCharacterGames.isEmpty()) {
+                showNextCharacters()
+            } else {
+
+                //Show the active characters with their descriptions
+                setPictures(activeCharacterGames, false)
+                setActions(activeCharacterGames)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        infoMap.clear()
+        roleListConsumable.clear()
+    }
+
     ///
     /// Create the good list of characters
     /// GSon doesn't handle polymorphism, so we recreate each object
     ///
-    private fun deserializeProperly(chars : List<Character>) {
-        chars.forEach {character ->
-            when(character.className) {
-                "Actor" -> characters.add(Actor(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode
-                ))
-                "Angel" -> characters.add(Angel(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "BearTamer" -> characters.add(BearTamer(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "BigBadWolf" ->  {
-                    characters.add(BigBadWolf(character.description
-                        , character.action
-                        , character.isNocturnal
-                        , character.powerState
-                        , character.isWerewolf
-                        , character.order
-                        , character.maxOccurrence
-                        , character.mode))
-                    chartCharacters[character.className] = character.order
-                }
-                "Brother" -> characters.add(Brother(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Crow" -> characters.add(Crow(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Cupid" -> characters.add(Cupid(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Defender" -> characters.add(Defender(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Elder" -> characters.add(Elder(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Fireman" -> characters.add(Fireman(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Fox" -> characters.add(Fox(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Gypsy" -> characters.add(Gypsy(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Hunter" -> characters.add(Hunter(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Idiot" -> characters.add(Idiot(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "LittleGirl" -> characters.add(LittleGirl(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Manipulator" -> characters.add(Manipulator(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Piper" -> characters.add(Piper(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "RustyKnight" -> characters.add(RustyKnight(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Scapegoat" -> characters.add(Scapegoat(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Seer" -> characters.add(Seer(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Servant" -> characters.add(Servant(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Sister" -> characters.add(Sister(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "StutteringJudge" -> characters.add(StutteringJudge(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Thief" -> characters.add(Thief(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Villager" -> characters.add(Villager(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "VillagerVillager" -> characters.add(VillagerVillager(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "Werewolf" -> characters.add(Werewolf(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "WhiteWerewolf" -> {
-                    characters.add(WhiteWerewolf(character.description
-                        , character.action
-                        , character.isNocturnal
-                        , character.powerState
-                        , character.isWerewolf
-                        , character.order
-                        , character.maxOccurrence
-                        , character.mode))
-                    chartCharacters[character.className] = character.order
-                }
-                "WildChild" -> {
-                    characters.add(WildChild(character.description
-                        , character.action
-                        , character.isNocturnal
-                        , character.powerState
-                        , character.isWerewolf
-                        , character.order
-                        , character.maxOccurrence
-                        , character.mode))
-                    chartCharacters[character.className] = character.order
-                }
-                "Witch" -> characters.add(Witch(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "WolfFather" -> characters.add(WolfFather(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-                "WolfHound" -> characters.add(WolfHound(character.description
-                    , character.action
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.isWerewolf
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode))
-            }
+    private fun deserializeProperly(chars : List<CharacterGame>) {
+        chars.forEach { character ->
+
+            val characterRedefined =
+                WorkerEasier.getGoodCharacterCast(character, character.className)
+
+            characterGames.add(characterRedefined)
+
         }
-
         //Order the list again just in case
-        characters.sortBy { x -> x.order }
+        characterGames.sortBy { x -> x.order }
 
-        characters.filter { x -> x.powerState == PowerState.CONSUMABLE }.forEach { character ->
+        characterGames.filter { x -> x.powerState == PowerState.CONSUMABLE }.forEach { character ->
             roleListConsumable[character] = false
         }
 
@@ -464,7 +221,7 @@ class GameActivity : AppCompatActivity() {
             binding.RoleButton.isEnabled = false
 
         //Order reference : werewolf > wolfFather > bigBadWolf > wolfHound > others
-        val characterReference : Character? = characters.firstOrNull{ x ->
+        val characterGameReference : CharacterGame? = characterGames.firstOrNull{ x ->
                     x is Werewolf
                     || x is WolfFather
                     || x is BigBadWolf
@@ -474,10 +231,9 @@ class GameActivity : AppCompatActivity() {
         }
 
         //Set special pack wolf turn
-        if(characterReference != null) {
-            werewolfTurn = characterReference.order
+        if(characterGameReference != null) {
+            werewolfTurn = characterGameReference.order
         }
-
 
     }
 
@@ -486,47 +242,53 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun showNextCharacters() {
         //Always get max order
-        val maxKey: Int = characters.maxOf { x -> x.order }
-        var activeCharacters : List<Character>
+        val maxKey: Int = characterGames.maxOf { x -> x.order }
+        var activeCharacterGames : List<CharacterGame>
         do {
             //Upgrade index
             currentIndex++
 
             //Set the list of active characters from the index
-            activeCharacters = if(currentIndex == werewolfTurn) {
-                characters.filter { x -> x.isWerewolf && x.isNocturnal }
+            if(currentIndex == werewolfTurn) {
+                activeCharacterGames =  characterGames.filter { x -> x.isWerewolf && x.isNocturnal }
+
+                //If there is only one werewolf at this turn, better skip it
+                if(activeCharacterGames.size == 1 && (activeCharacterGames[0] is BigBadWolf || activeCharacterGames[0] is WhiteWerewolf))
+                    activeCharacterGames = emptyList()
+
             } else {
-                characters.filter { x -> x.order == currentIndex }
+                activeCharacterGames =  characterGames.filter { x -> x.order == currentIndex }
             }
+
         //Two cases to finish the loop, reaching the end of list,
         //Or having all characters playing at night
-        } while((activeCharacters.isEmpty() && currentIndex < maxKey)
-            || (activeCharacters.isNotEmpty() && activeCharacters.any{ x -> !x.isNocturnal }))
+        } while((activeCharacterGames.isEmpty() && currentIndex < maxKey)
+            || (activeCharacterGames.isNotEmpty() && activeCharacterGames.any{ x -> !x.isNocturnal }))
 
         //End of list, empty active characters next phase
-        if (activeCharacters.isEmpty()) {
+        if (activeCharacterGames.isEmpty()) {
             nextPhase()
         } else {
 
-            if(activeCharacters.size == 1 && activeCharacters[0].className == "WildChild") {
-                setupWildChild(activeCharacters[0])
+            if(activeCharacterGames.size == 1 && activeCharacterGames[0].className == "WildChild") {
+                setupWildChild(activeCharacterGames[0])
             }
 
             //Show the active characters with their descriptions
-            setPictures(activeCharacters, false)
-            setActions(activeCharacters)
+            setPictures(activeCharacterGames, false)
+            setActions(activeCharacterGames)
         }
     }
 
     ///
     /// Fulfill the different actions
     ///
-    private fun setActions(characters : List<Character>) {
+    private fun setActions(characterGames : List<CharacterGame>) {
         //Basic string
         var description = ""
 
         //Append each strict with EACH class
-        for(character in characters.distinctBy { x -> x.className }) {
+        for(character in characterGames.distinctBy { x -> x.className }) {
             description += "${character.className}\n${character.action()}\n\n"
         }
         binding.gameStatusTextView.text = description
@@ -535,10 +297,10 @@ class GameActivity : AppCompatActivity() {
     ///
     /// Set the imageView to show
     ///
-    private fun setImagePicture(character : Character, withListener: Boolean): ImageView {
+    private fun setImagePicture(characterGame : CharacterGame, withListener: Boolean): ImageView {
         //Create the imageView with some parameters
         val imageView = ImageView(this).apply {
-            @DrawableRes val img = ImageGetter.getCharacterImage(character)
+            @DrawableRes val img = WorkerEasier.getCharacterImage(characterGame)
             setImageResource(img)
             adjustViewBounds = true
         }
@@ -552,12 +314,12 @@ class GameActivity : AppCompatActivity() {
         if(withListener) {
             imageView.setOnClickListener {
                 //Add characters to the dead list and change the padding
-                if(deadCharacters.contains(character)) {
-                    deadCharacters.remove(character)
+                if(deadCharacterGames.contains(characterGame)) {
+                    deadCharacterGames.remove(characterGame)
                     imageView.setPadding(0, 0, 0, 0)
                     imageView.setBackgroundColor(Color.TRANSPARENT)
                 } else {
-                    deadCharacters.add(character)
+                    deadCharacterGames.add(characterGame)
                     imageView.setPadding(10, 10, 10, 10)
                     imageView.setBackgroundColor(Color.GREEN)
                 }
@@ -571,24 +333,24 @@ class GameActivity : AppCompatActivity() {
     ///
     /// Set all the pictures of the gridlayout
     ///
-    private fun setPictures(characterList: List<Character>, withListener: Boolean) {
+    private fun setPictures(characterGameList: List<CharacterGame>, withListener: Boolean) {
         //Refresh the gridLayout by clearing it
-        binding.gridcharacterView.removeAllViewsInLayout()
+        binding.gridCharacterView.removeAllViewsInLayout()
 
-        if(characterList.size > 1) {
+        if(characterGameList.size > 1) {
             // Add each imageView to the gridLayout
-            for ((index, character) in characterList.withIndex()) {
+            for ((index, character) in characterGameList.withIndex()) {
                 val imageView : ImageView = setImagePicture(character, withListener)
-                binding.gridcharacterView.addView(imageView, index)
+                binding.gridCharacterView.addView(imageView, index)
             }
-        } else if (characterList.size == 1) {
-            val imageView : ImageView  = setImagePicture(characterList[0], withListener)
+        } else if (characterGameList.size == 1) {
+            val imageView : ImageView  = setImagePicture(characterGameList[0], withListener)
             imageView.layoutParams = GridLayout.LayoutParams().apply {
                 rowSpec = GridLayout.spec(0, 3) // Start at row 0, span 2 rows
                 columnSpec = GridLayout.spec(0, 3) // Start at column 0, span 2 columns
                 setGravity(Gravity.FILL)
             }
-            binding.gridcharacterView.addView(imageView, 0)
+            binding.gridCharacterView.addView(imageView, 0)
         }
 
 
@@ -598,23 +360,23 @@ class GameActivity : AppCompatActivity() {
     /// Set the background image
     ///
     private fun setBackground(phase: EnumPhase) {
-        binding.root.setBackgroundResource(ImageGetter.getBackgroundImage(phase))
+        binding.root.setBackgroundResource(WorkerEasier.getBackgroundImage(phase))
     }
 
     ///
     /// Update the header with turn and phase
     ///
     private fun updateHeader() {
-        binding.turnPhase.text = "Phase $phase Turn ${gameTurn}"
+        binding.turnPhase.text = String.format(getString(R.string.GameView_Header), phase, gameTurn)
     }
 
     ///
     /// Remove the dead from the active list
     ///
     private fun removeDeadCharacters() {
-        if(deadCharacters.size > 0) {
-            for (characterDead in deadCharacters) {
-                characters.remove(characterDead)
+        if(deadCharacterGames.size > 0) {
+            for (characterDead in deadCharacterGames) {
+                characterGames.remove(characterDead)
 
                 //Update specific consumable list
                 if(roleListConsumable.contains(characterDead))
@@ -625,38 +387,23 @@ class GameActivity : AppCompatActivity() {
             specialUpdatesAfterDeath();
 
             //Always clear the dead list
-            deadCharacters.clear()
+            deadCharacterGames.clear()
         }
 
         //If the user empty the list, game over
-        if(characters.size == 0) {
+        if(characterGames.size == 0) {
             gameInProgress = false
-            binding.gameStatusTextView.text = "Partie terminée."
+            binding.gameStatusTextView.text = getString(R.string.GameView_GameOver)
             binding.startNightButton.isEnabled = false
         }
 
     }
 
     ///
-    /// Delete the second turn of special werewolves
-    ///
-    private fun checkAndResetOrderOfSpecialWerewolf(className: String) {
-        if(chartCharacters.containsKey(className)
-            && chartCharacters[className] != werewolfTurn) {
-            val characterWolf = characters.firstOrNull { x -> x.className == className }
-
-            if (characterWolf != null && characterWolf.order != werewolfTurn) {
-                characterWolf.order = werewolfTurn
-                chartCharacters[characterWolf.className] = werewolfTurn
-            }
-        }
-    }
-
-    ///
     /// Cut the call of brothers or sisters if they are alone
     ///
     private fun stopBrotherSister(className: String) {
-        val listCoop = characters.filter { x -> x.className == className }
+        val listCoop = characterGames.filter { x -> x.className == className }
 
         if(listCoop.isNotEmpty() && listCoop.size == 1)
             listCoop[0].isNocturnal = false
@@ -667,26 +414,21 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun specialUpdatesAfterDeath() {
 
-        deadCharacters.forEach { x ->
-            if(chartCharacters.containsKey(x.className)) {
-                chartCharacters.remove(x.className)
+        if(characterGames.any { x -> x is BigBadWolf && x.mode == "NORMAL"}
+            && deadCharacterGames.any { x -> x.isWerewolf }) {
+
+            val characterWolf = characterGames.firstOrNull { x -> x is BigBadWolf }
+
+            if (characterWolf != null && characterWolf.order != werewolfTurn) {
+                characterWolf.order = werewolfTurn
             }
         }
 
-        if(characters.any { x -> x is BigBadWolf && x.mode == CharacterMode.NORMAL}
-            && deadCharacters.any { x -> x.isWerewolf }) {
-            checkAndResetOrderOfSpecialWerewolf("BigBadWolf")
-        }
-
-        if(!characters.any { x -> x !is WhiteWerewolf && x.isWerewolf}) {
-            checkAndResetOrderOfSpecialWerewolf("WhiteWerewolf")
-        }
-
-        if(deadCharacters.any { x -> x is Brother }) {
+        if(deadCharacterGames.any { x -> x is Brother }) {
             stopBrotherSister("Brother")
         }
 
-        if(deadCharacters.any { x -> x is Sister }) {
+        if(deadCharacterGames.any { x -> x is Sister }) {
             stopBrotherSister("Sister")
         }
 
@@ -695,11 +437,10 @@ class GameActivity : AppCompatActivity() {
     ///
     /// Setup the wild child for the turn of werewolf but not awaken
     ///
-    private fun setupWildChild(child: Character) {
+    private fun setupWildChild(child: CharacterGame) {
         child.order = werewolfTurn
         child.isWerewolf = true
         child.isNocturnal = false
-        chartCharacters["WildChild"] = werewolfTurn
     }
 
     ///
@@ -721,12 +462,11 @@ class GameActivity : AppCompatActivity() {
     private fun sleepingPhase() {
         phase = EnumPhase.SLEEPING //Set the phase
         setBackground(phase)
-        binding.gameStatusTextView.text = strSleep // Change text
-        binding.startNightButton.text = strNext // Change text
+        binding.gameStatusTextView.text = getString(R.string.GameView_phaseSleeping) // Change text
         currentIndex = -1 // Reset index for the next night
         gameTurn++ //Starting new turn
         updateHeader()
-        binding.gridcharacterView.removeAllViewsInLayout() //No characters showed
+        binding.gridCharacterView.removeAllViewsInLayout() //No characters showed
     }
 
     ///
@@ -745,9 +485,9 @@ class GameActivity : AppCompatActivity() {
     private fun wakingPhase() {
         phase = EnumPhase.DAWN // Waking phase
         setBackground(phase)
-        binding.gameStatusTextView.text = strMorning // Morning message
+        binding.gameStatusTextView.text = getString(R.string.GameView_phaseDawn) // Morning message
         updateHeader()
-        setPictures(characters, true) // Set the pictures WITH listeners
+        setPictures(characterGames, true) // Set the pictures WITH listeners
     }
 
     ///
@@ -755,11 +495,11 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun dayPhase() {
         phase = EnumPhase.DAY // Day phase
-        binding.gameStatusTextView.text = strDay // Day message
+        binding.gameStatusTextView.text = getString(R.string.GameView_phaseDay)// Day message
         setBackground(phase)
         removeDeadCharacters() // Remove characters dead by night
         updateHeader()
-        setPictures(characters, true) // Set pictures WITH Listeners
+        setPictures(characterGames, true) // Set pictures WITH Listeners
     }
 
     ///
@@ -767,11 +507,11 @@ class GameActivity : AppCompatActivity() {
     ///
     private fun eveningPhase() {
         phase = EnumPhase.SUNSET // Evening phase
-        binding.gameStatusTextView.text = strEvening // Evening message
+        binding.gameStatusTextView.text = getString(R.string.GameView_phaseEvening) // Evening message
         setBackground(phase)
         removeDeadCharacters() // Remove the dead
         updateHeader()
-        setPictures(characters, false) // Set pictures WITHOUT listeners
+        setPictures(characterGames, false) // Set pictures WITHOUT listeners
     }
 
 }

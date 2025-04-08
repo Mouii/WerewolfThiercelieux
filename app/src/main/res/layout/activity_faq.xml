@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
-    android:background="#343434">
+    android:background="@drawable/main_activity_alpha">
 
     <TextView
         android:layout_width="wrap_content"
@@ -15,12 +15,14 @@
         android:padding="10dp"
         android:textStyle="bold"
         android:textSize="40sp"
-        android:text="@string/GameButton_Roles"/>
+        android:layout_gravity="center_horizontal"
+        android:text="@string/FaqView_title"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="530dp"
         android:layout_gravity="center_vertical|center_horizontal"
+        android:background="#80000000"
         android:padding="5dp">
         <GridLayout
             android:id="@+id/gridLayout"
@@ -29,7 +31,7 @@
             android:alignmentMode="alignBounds"
             android:useDefaultMargins="true"
             android:padding="5dp"
-            android:columnCount="3">
+            android:columnCount="1">
         </GridLayout>
     </ScrollView>
     <Button

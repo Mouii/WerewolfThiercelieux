@@ -63,9 +63,10 @@
             android:id="@+id/startButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start"/>
+            android:text="@string/SelectButton_StartGame"/>
 
             <LinearLayout
+                style="?android:attr/buttonBarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -76,28 +77,28 @@
                     android:id="@+id/leftArrowButton"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
-                    android:text="P"/>
+                    android:text="@string/SelectButton_Previous" />
 
                 <Button
                     android:id="@+id/rightArrowButton"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="N"/>
+                    android:text="@string/SelectButton_Next" />
 
                 <Button
                     android:id="@+id/cancelButton"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="C"/>
+                    android:text="@string/SelectButton_Cancel" />
 
                 <Button
                     android:id="@+id/removeButton"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="X" />
+                    android:text="@string/SelectButton_Delete" />
             </LinearLayout>
 
         </LinearLayout>
@@ -112,7 +113,7 @@
                 android:id="@+id/closeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Close"/>
+                android:text="@string/GenericButton_Return"/>
         </LinearLayout>
 
 </LinearLayout>

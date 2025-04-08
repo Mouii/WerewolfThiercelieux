@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#343434">
 
     <TextView
@@ -15,12 +14,12 @@
         android:textColor="@color/white"
         android:padding="10dp"
         android:textStyle="bold"
-        android:textSize="40dp"
-        android:text="Description"/>
+        android:textSize="40sp"
+        android:text="@string/DescriptionView_title"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="500dp">
         <GridLayout
             android:id="@+id/gridLayout"
             android:layout_width="match_parent"
@@ -38,10 +37,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Deaths"
+                    android:text="@string/DescriptionView_death"
                     />
 
                 <EditText
@@ -50,9 +49,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the deaths"/>
+                    android:hint="@string/DescriptionView_deathEdit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -64,10 +64,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Lovers"
+                    android:text="@string/DescriptionView_lover"
                     />
 
                 <EditText
@@ -76,9 +76,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the lovers"/>
+                    android:hint="@string/DescriptionView_loverEdit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -90,10 +91,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Defender"
+                    android:text="@string/DescriptionView_defender"
                     />
 
                 <EditText
@@ -102,9 +103,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the protected"/>
+                    android:hint="@string/DescriptionView_defenderEdit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -116,10 +118,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Wild Child"
+                    android:text="@string/DescriptionView_wildChild"
                     />
 
                 <EditText
@@ -128,9 +130,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the mentor"/>
+                    android:hint="@string/DescriptionView_wildChildEdit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -142,10 +145,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Bear"
+                    android:text="@string/DescriptionView_bearTamer"
                     />
 
                 <EditText
@@ -154,9 +157,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the tamer"/>
+                    android:hint="@string/DescriptionView_bearTamerEdit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -168,10 +172,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Ancient"
+                    android:text="@string/DescriptionView_ancient"
                     />
 
                 <EditText
@@ -180,9 +184,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the ancient"/>
+                    android:hint="@string/DescriptionView_ancientEdit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -194,10 +199,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Infected"
+                    android:text="@string/DescriptionView_infected"
                     />
 
                 <EditText
@@ -206,9 +211,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the infected"/>
+                    android:hint="@string/DescriptionView_infectedEdit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -220,10 +226,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Sectarian"
+                    android:text="@string/DescriptionView_sectarian"
                     />
 
                 <EditText
@@ -232,9 +238,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the selected"/>
+                    android:hint="@string/DescriptionView_sectarianEdit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -246,10 +253,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Comedian"
+                    android:text="@string/DescriptionView_comedian"
                     />
 
                 <EditText
@@ -258,9 +265,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the his role"/>
+                    android:hint="@string/DescriptionView_comedianEdit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -272,10 +280,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Thief"
+                    android:text="@string/DescriptionView_thief"
                     />
 
                 <EditText
@@ -284,9 +292,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the trapped"/>
+                    android:hint="@string/DescriptionView_thiefEdit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -298,10 +307,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Piper"
+                    android:text="@string/DescriptionView_piper"
                     />
 
                 <EditText
@@ -310,9 +319,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the bewitched"/>
+                    android:hint="@string/DescriptionView_piperEdit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -324,10 +334,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Scapegoat"
+                    android:text="@string/DescriptionView_scapegoat"
                     />
 
                 <EditText
@@ -336,9 +346,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the allowed voter"/>
+                    android:hint="@string/DescriptionView_scapegoatEdit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -350,10 +361,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Switched"
+                    android:text="@string/DescriptionView_switched"
                     />
 
                 <EditText
@@ -362,9 +373,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the switched"/>
+                    android:hint="@string/DescriptionView_switchedEdit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -376,10 +388,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_gravity="start"
                     android:textColor="@color/white"
-                    android:text="Punished"
+                    android:text="@string/DescriptionView_punished"
                     />
 
                 <EditText
@@ -388,20 +400,22 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@color/white"
                     android:maxLines="1"
-                    android:hint="Enter the punished"/>
+                    android:hint="@string/DescriptionView_punishedEdit"/>
             </LinearLayout>
 
         </GridLayout>
+
     </ScrollView>
+
     <Button
         android:id="@+id/returnButton"
         android:layout_marginTop="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:text="Back"/>
-
+        android:text="@string/GenericButton_Return"/>
 
 </LinearLayout>

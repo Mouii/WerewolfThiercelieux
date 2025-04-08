@@ -1,14 +1,17 @@
 package main.werewolfkotlin
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
 import main.werewolfkotlin.databinding.ActivityInformationBinding
 
 class InformationActivity : AppCompatActivity() {
@@ -19,11 +22,9 @@ class InformationActivity : AppCompatActivity() {
     private fun createSharedTextWatcher(): TextWatcher {
         return object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Optional
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Optional
             }
 
             override fun afterTextChanged(editable: Editable?) {
@@ -87,6 +88,15 @@ class InformationActivity : AppCompatActivity() {
             }
 
             editText.addTextChangedListener(sharedTextWatcher)
+            editText.setOnKeyListener { _, keyCode, event ->
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(editText.windowToken, 0)
+                    true
+                } else false
+            }
+
+            editText.imeOptions = EditorInfo.IME_ACTION_NONE
         }
 
     }
