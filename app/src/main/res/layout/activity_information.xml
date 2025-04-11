@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
+    android:focusableInTouchMode="true"
+    android:fitsSystemWindows="true"
     android:background="#343434">
 
     <TextView

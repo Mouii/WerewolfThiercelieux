@@ -1,12 +1,9 @@
 package main.werewolfkotlin
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import main.werewolfkotlin.databinding.ActivityInformationBinding
 import main.werewolfkotlin.databinding.ActivityRoleBinding
 
 class RoleActivity : AppCompatActivity() {

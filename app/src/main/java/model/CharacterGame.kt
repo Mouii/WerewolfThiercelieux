@@ -3,7 +3,8 @@ package model
 enum class PowerState {
     PERMANENT,
     CONSUMABLE,
-    CONDITIONAL
+    CONDITIONAL,
+    UNIQUE
 }
 
 enum class CharacterMode {
@@ -24,6 +25,9 @@ open class CharacterGame(
     val className: String = this.javaClass.simpleName
 
     open fun action(): String {
+        if(powerState == PowerState.UNIQUE)
+            isNocturnal = false
+
         return action
     }
 

@@ -89,15 +89,7 @@ class GameActivity : AppCompatActivity() {
 
         if(chars.isNotEmpty()) {
             deserializeProperly(chars)
-        } else {//Bad catch up, keep the test list by default for now
-            characterGames.add(Werewolf(4))
-            characterGames.add(Seer(3))
-            characterGames.add(Witch(5))
-            characterGames.add(Hunter(98))
-            characterGames.add(Thief(1))
-            characterGames.add(Cupid(2))
-            characterGames.add(LittleGirl(4))
-            characterGames.add(Villager(99))
+        } else {//Bad catch up
             gameInProgress = false
         }
 

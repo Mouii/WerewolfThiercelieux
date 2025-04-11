@@ -1,78 +1,95 @@
-package model
+package main.werewolfkotlin
 
-import main.werewolfkotlin.EnumPhase
-import main.werewolfkotlin.R
-import org.json.JSONObject
+import android.app.Activity
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import model.*
+import java.io.File
+import java.io.FileOutputStream
 
 class WorkerEasier {
 
     companion object {
 
-        var creationTypeList : MutableList<String> = mutableListOf()
+        private var destFilename : String = "/json/Roles.json"
+
+        private var sourceFilename : String = "Roles-default.json"
+
+        @Serializable
+        data class CharacterJSON (
+            val description : String,
+            val action : String,
+            val isNocturnal : Boolean,
+            val powerState: String,
+            val isWerewolf: Boolean,
+            val maxOccurrence: Int
+        )
+
+        @Serializable
+        data class RoleJSON (
+            val nameRole: String,
+            val roleValues: Map<String, CharacterJSON>
+        )
+
         var characterListType : MutableList<Pair<String, Map<String, CharacterGame>>> = mutableListOf()
 
+        fun resetCharacters(context: Activity): Boolean {
+            return try {
+                context.assets.open(sourceFilename).use { inputStream ->
+
+                    val file = File(context.filesDir.toString().plus(destFilename))
+
+                    if(!file.exists()) {
+                        file.parentFile?.mkdirs()
+                        file.createNewFile()
+                    }
+
+
+                    FileOutputStream(file.path).use { outputStream ->
+                        inputStream.copyTo(outputStream)
+                    }
+                }
+                true // Successful copy
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false // Failed copy
+            }
+        }
 
         fun setCharactersFromJson(jsonString : String) {
 
             //Getting the complete json
-            val json = JSONObject(jsonString)
+            val json = Json.decodeFromString<List<RoleJSON>>(jsonString)
 
             //For each role
-            json.keys().forEach { roleName ->
+            json.forEach { roleObject ->
 
-                //Getting the array. Each role is an array even of one
-                val roleArray = json.getJSONArray(roleName)
+                val mappedCharacter: MutableMap<String, CharacterGame> = mutableMapOf()
 
-                val mappedCharacter : MutableMap<String, CharacterGame> = mutableMapOf()
+                roleObject.roleValues.forEach { (key, value) ->
 
-                //For each part of the array
-                for (i in 0 until roleArray.length()) {
+                    val characterGame = CharacterGame(
+                        value.description,
+                        value.action,
+                        value.isNocturnal,
+                        PowerState.valueOf(value.powerState),
+                        value.isWerewolf,
+                        0,
+                        value.maxOccurrence,
+                        key
+                    )
 
-                    //Getting the object array
-                    val data = roleArray.getJSONObject(i)
+                    mappedCharacter[key] = getGoodCharacterCast(characterGame, roleObject.nameRole)
 
-
-
-                    //Inside the index to get the REAL object
-                    data.keys().forEach { keyArray ->
-
-                        //Adding kind of in the list
-                        if(!creationTypeList.contains(keyArray))
-                            creationTypeList.add(keyArray)
-
-                        //Having all the attributes, the correct object from its key
-                        val objectInside = data.getJSONObject(keyArray)
-
-                        val description = objectInside.getString("description")
-                        val action = objectInside.getString("action")
-                        val isNocturnal = objectInside.getBoolean("isNocturnal")
-                        val enumPower = objectInside.getString("powerState")
-                        val power = PowerState.valueOf(enumPower)
-                        val isWerewolf = objectInside.getBoolean("isWerewolf")
-                        val maxOccurrence = objectInside.getInt("maxOccurrence")
-
-
-                        val characterGame = CharacterGame(
-                            description,
-                            action,
-                            isNocturnal,
-                            power,
-                            isWerewolf,
-                            0,
-                            maxOccurrence,
-                            keyArray
-                        )
-
-                        mappedCharacter[keyArray] = getGoodCharacterCast(characterGame, roleName)
-
-                    }
                 }
 
-                val pair : Pair<String, Map<String, CharacterGame>> = Pair(roleName, mappedCharacter)
+                val pair : Pair<String, Map<String, CharacterGame>> = Pair(roleObject.nameRole, mappedCharacter)
 
                 //Adding the pair to the list
                 characterListType.add(pair)
+
             }
+
         }
 
         fun getGoodCharacterCast(character : CharacterGame, role: String) : CharacterGame {

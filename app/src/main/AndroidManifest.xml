@@ -46,8 +46,8 @@
         </activity>
         <activity
             android:name=".InformationActivity"
-            android:launchMode="singleTop"
-            android:exported="false">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
 
             <meta-data
                 android:name="android.app.lib_name"
@@ -55,7 +55,6 @@
         </activity>
         <activity
             android:name=".RoleActivity"
-            android:launchMode="singleTop"
             android:exported="false">
 
             <meta-data
@@ -73,6 +72,16 @@
         <activity
             android:name=".DescriptionActivity"
             android:exported="true">
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <activity
+            android:name=".CreationActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
 
             <meta-data
                 android:name="android.app.lib_name"

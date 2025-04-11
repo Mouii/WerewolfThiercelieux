@@ -104,4 +104,7 @@
     <string name="FaqView_answer15">The application doesn\'t handle yet the infected. I suggest you don\'t forget for now the werewolves\'turn if it is the last one. How it was conceive is in order so the infected continue to play normally but wakes up at the werewolves\'s turn </string>
     <string name="FaqView_question16">Where can I contact you for any questions?</string>
     <string name="FaqView_answer16">You can send me an e-mail on my address : kevin.prudhomme555@gmail.com. Please use a tag like [Werewolf] at the subject so that it catch my attention ;)</string>
+
+    <string name="CreationView_Title">Role Creation</string>
+
 </resources>

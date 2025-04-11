@@ -113,10 +113,8 @@ class InformationActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
     private fun addToText(key: Int, value: String){
         infoMap[key] = value
     }
-
 
 }

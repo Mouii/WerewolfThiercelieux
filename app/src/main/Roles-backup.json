@@ -15,7 +15,7 @@
 				"description" : "The Actor is a doppelganger. He/she choose another character to copy the role and become this one. That can means there can be two seers, two witches, etc... If the Actor copy a solo role, they become a Duo role and must still fulfill the condition but together.",
 				"action" : "The Actor choose a character to copy. He/she become this role too and follow the rules associate to it. If it is a solo role, they must win together now.",
 				"isNocturnal" : true,
-				"powerState": "PERMANENT",
+				"powerState": "UNIQUE",
 				"isWerewolf": false,
 				"maxOccurrence": 1
 			}
@@ -106,7 +106,7 @@
 				"description" : "The Cupid choose two players during the night to put together into a unite couple. They must win together. If one of them dies, so die the other.",
 				"action" : "The Cupid choose two people to put in love together. If one dies, so die the other.",
 				"isNocturnal" : true,
-				"powerState": "PERMANENT",
+				"powerState": "UNIQUE",
 				"isWerewolf": false,
 				"maxOccurrence": 1
 			}
@@ -152,7 +152,7 @@
 				"description" : "The Fireman, when he/she dies, kills the two closed alive neighbours.",
 				"action" : "No action during the night.",
 				"isNocturnal" : false,
-				"powerState": "CONDITIONAL",
+				"powerState": "PERMANENT",
 				"isWerewolf": false,
 				"maxOccurrence": 1
 			}
@@ -188,7 +188,7 @@
 				"description" : "The Hunter can, when he dies, kill someone else alive.",
 				"action" : "No action during the night.",
 				"isNocturnal" : false,
-				"powerState": "CONDITIONAL",
+				"powerState": "PERMANENT",
 				"isWerewolf": false,
 				"maxOccurrence": 1
 			}
@@ -234,7 +234,7 @@
 				"description" : "The Manipulator is a solo role where he has to win with only a part of the village. Once the other part is eliminated, he wins.",
 				"action" : "The Manipulator wakes up and see with who is part of his group. He must eliminate all the others. Once they are dead, he wins.",
 				"isNocturnal" : true,
-				"powerState": "PERMANENT",
+				"powerState": "UNIQUE",
 				"isWerewolf": false,
 				"maxOccurrence": 1
 			}

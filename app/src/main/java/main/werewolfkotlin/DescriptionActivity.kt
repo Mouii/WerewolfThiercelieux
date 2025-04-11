@@ -1,5 +1,6 @@
 package main.werewolfkotlin
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -9,12 +10,12 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import main.werewolfkotlin.databinding.ActivityDescriptionBinding
 import model.CharacterGame
-import model.WorkerEasier
 
 class DescriptionActivity: AppCompatActivity() {
 
     //Object from the xml view to get all the elements
     private lateinit var binding: ActivityDescriptionBinding
+
 
     ///
     /// Execution on creation of the activity
@@ -23,22 +24,6 @@ class DescriptionActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDescriptionBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Data for the dropdown list
-        val options = WorkerEasier.characterListType.map { it.first }.toList()
-
-        // Create an ArrayAdapter
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item, // Layout for each item
-            options
-        )
-
-        // Set dropdown style for the spinner items
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        // Bind the adapter to the Spinner
-        binding.roleSpinner.adapter = adapter
 
         //Update content on select item
         binding.roleSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -61,9 +46,45 @@ class DescriptionActivity: AppCompatActivity() {
             }
         }
 
-        binding.imageRole.setImageDrawable(setImagePicture(WorkerEasier.characterListType.first().second.values.first()).drawable)
+        // Data for the dropdown list
+        val options = WorkerEasier.characterListType.map { it.first }.toList()
 
-        setSpinnerType(WorkerEasier.characterListType.first().second)
+        // Create an ArrayAdapter
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item, // Layout for each item
+            options
+        )
+
+        // Set dropdown style for the spinner items
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        // Bind the adapter to the Spinner
+        binding.roleSpinner.adapter = adapter
+
+        binding.creationButton.setOnClickListener {
+            //In order to transfer the list to the other activity, we create an intent
+            //in direction of the game activity
+            val intent = Intent(this, CreationActivity::class.java)
+
+            //Start the other activity
+            startActivity(intent)
+        }
+
+
+        binding.resetButton.setOnClickListener {
+
+            // Create the dialog
+            android.app.AlertDialog.Builder(this)
+                .setTitle("Description")
+                .setMessage("Do you wish to reset all the roles and delete the ones you created?")
+                .setPositiveButton("Yes") { _, _->
+                    WorkerEasier.resetCharacters(this)
+                    recreate()
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
 
         binding.returnButton.setOnClickListener {
             finish()
@@ -126,4 +147,5 @@ class DescriptionActivity: AppCompatActivity() {
         }
 
     }
+
 }
