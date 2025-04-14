@@ -67,8 +67,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadCharacterFromJson() : Boolean {
         try {
-            val jsonString = File(this.filesDir.toString().plus("/json"), "Roles.json").bufferedReader().use { it.readText() }
-            WorkerEasier.setCharactersFromJson(jsonString)
+            WorkerEasier.setCharactersFromJson(this.filesDir.toString().plus("/json/Roles.json"))
             return true
         } catch (ex : Exception) {
             println(ex)

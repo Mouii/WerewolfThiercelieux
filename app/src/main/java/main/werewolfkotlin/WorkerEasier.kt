@@ -2,6 +2,7 @@ package main.werewolfkotlin
 
 import android.app.Activity
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import model.*
 import java.io.File
@@ -11,9 +12,9 @@ class WorkerEasier {
 
     companion object {
 
-        private var destFilename : String = "/json/Roles.json"
-
         private var sourceFilename : String = "Roles-default.json"
+
+        private lateinit var completeJSONPath : String
 
         @Serializable
         data class CharacterJSON (
@@ -28,26 +29,32 @@ class WorkerEasier {
         @Serializable
         data class RoleJSON (
             val nameRole: String,
-            val roleValues: Map<String, CharacterJSON>
+            val roleValues: MutableMap<String, CharacterJSON>
         )
 
-        var characterListType : MutableList<Pair<String, Map<String, CharacterGame>>> = mutableListOf()
+        var characterListType : MutableList<Pair<String, MutableMap<String, CharacterGame>>> = mutableListOf()
 
         fun resetCharacters(context: Activity): Boolean {
             return try {
                 context.assets.open(sourceFilename).use { inputStream ->
 
-                    val file = File(context.filesDir.toString().plus(destFilename))
+                    val file = File(completeJSONPath)
 
-                    if(!file.exists()) {
-                        file.parentFile?.mkdirs()
-                        file.createNewFile()
+                    if(file.exists()) {
+                        file.delete()
                     }
 
+                    file.parentFile?.mkdirs()
+                    file.createNewFile()
+
+                    characterListType.clear()
 
                     FileOutputStream(file.path).use { outputStream ->
                         inputStream.copyTo(outputStream)
                     }
+
+                    setCharactersFromJson(completeJSONPath)
+
                 }
                 true // Successful copy
             } catch (e: Exception) {
@@ -56,10 +63,14 @@ class WorkerEasier {
             }
         }
 
-        fun setCharactersFromJson(jsonString : String) {
+        fun setCharactersFromJson(filename : String) {
+
+            val jsonString = File(filename).bufferedReader().use { it.readText() }
 
             //Getting the complete json
             val json = Json.decodeFromString<List<RoleJSON>>(jsonString)
+
+            completeJSONPath = filename
 
             //For each role
             json.forEach { roleObject ->
@@ -83,13 +94,39 @@ class WorkerEasier {
 
                 }
 
-                val pair : Pair<String, Map<String, CharacterGame>> = Pair(roleObject.nameRole, mappedCharacter)
+                val pair : Pair<String, MutableMap<String, CharacterGame>> = Pair(roleObject.nameRole, mappedCharacter)
 
                 //Adding the pair to the list
                 characterListType.add(pair)
 
             }
 
+        }
+
+        fun addNewCharacter(character: CharacterGame, role: String, type: String) {
+            val mapValue = characterListType.first { it.first == role }.second
+            mapValue[type] = character
+
+            val jsonString = File(completeJSONPath).bufferedReader().use { it.readText() }
+
+            //Getting the complete json
+            val json = Json.decodeFromString<List<RoleJSON>>(jsonString)
+
+            val jsonRoleMap = json.first { it.nameRole == role }.roleValues
+
+            jsonRoleMap[type] = CharacterJSON(
+                character.description,
+                character.action,
+                character.isNocturnal,
+                character.powerState.toString(),
+                character.isWerewolf,
+                character.maxOccurrence
+            )
+
+            val updateJSON = File(completeJSONPath)
+
+            //Encode back
+            updateJSON.writeText(Json.encodeToString(json))
         }
 
         fun getGoodCharacterCast(character : CharacterGame, role: String) : CharacterGame {

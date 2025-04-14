@@ -91,6 +91,11 @@ class DescriptionActivity: AppCompatActivity() {
         }
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        recreate()
+    }
+
     ///
     /// This function apply a picture with an image view
     ///

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import main.werewolfkotlin.databinding.ActivityCreationBinding
 import model.CharacterGame
 import model.PowerState
+import java.util.Locale
 
 class CreationActivity : AppCompatActivity() {
 
@@ -150,7 +151,7 @@ class CreationActivity : AppCompatActivity() {
             spinner.onItemSelectedListener = createSharedItemSelectedListener()
         }
 
-        val listYN = listOf("Yes", "No")
+        val listYN = listOf("", "YES", "NO")
 
         binding.werewolfSpinner.adapter = ArrayAdapter(
             this,
@@ -195,10 +196,30 @@ class CreationActivity : AppCompatActivity() {
 
     private fun createNewRole() {
 
-        val descriptionRole = binding.descriptionEdit.text
-        val actionRole = binding.actionEdit.text
-        val nocturneRole = binding.nocturneSpinner.e
+        val descriptionRole = binding.descriptionEdit.text.toString()
+        val actionRole = binding.actionEdit.text.toString()
+        val nocturneRole = binding.nocturneSpinner.selectedItem.toString() == "YES"
+        val isWerewolfRole = binding.werewolfSpinner.selectedItem.toString() == "YES"
+        val powerRole = PowerState.valueOf(binding.powerSpinner.selectedItem.toString())
+        val baseRole = binding.roleSpinner.selectedItem.toString()
+        val keyTypeRole = binding.categoryEdit.text.toString().uppercase(Locale.getDefault())
 
+        val newCharacterGame = CharacterGame(
+            descriptionRole,
+            actionRole,
+            nocturneRole,
+            powerRole,
+            isWerewolfRole,
+            0,
+            1,
+            keyTypeRole
+        )
+
+        val newCharacter = WorkerEasier.getGoodCharacterCast(newCharacterGame, baseRole)
+
+        if(!WorkerEasier.characterListType.any { it.first == baseRole && it.second.containsKey(keyTypeRole) }) {
+            WorkerEasier.addNewCharacter(newCharacter, baseRole, keyTypeRole)
+        }
 
         finish()
     }
