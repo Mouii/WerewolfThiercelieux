@@ -1,20 +1,31 @@
 package model
 
-class Servant: CharacterGame {
-    constructor(order: Int)
-            : super("The Servant can stop the execution of the selected victim during the day and take his/her place. To do it, the Servant has to reveal himself/herself and take the role of the selected player. The eliminated player stay eliminated however."
-        , "No action during the night"
-        , false
-        , PowerState.PERMANENT
-        , false
-        , order
-        , 1
-        , "NORMAL")
+class Servant(
+    description: String,
+    action: String,
+    isSolo: Boolean,
+    isNocturnal: Boolean,
+    powerState: PowerState,
+    condition: ConditionalActivation,
+    isWerewolf: Boolean,
+    rolesToStick: Array<String>,
+    order: Int,
+    maxOccurrence: Int,
+    characterMode: String
+) : CharacterGame(
+    description,
+    action,
+    isSolo,
+    isNocturnal,
+    powerState,
+    condition,
+    isWerewolf,
+    rolesToStick,
+    order,
+    maxOccurrence,
+    characterMode
+) {
 
-    constructor(description: String, action: String, isNocturnal: Boolean, powerState: PowerState
-                , isWerewolf: Boolean, order : Int, maxOccurrence : Int, characterMode: String) :
-            super(description, action, isNocturnal, powerState, isWerewolf, order, maxOccurrence, characterMode)
-
-    override fun clone() = Servant(this.description, this.action, this.isNocturnal, this.powerState, this.isWerewolf, this.order, this.maxOccurrence, this.mode)
+    override fun clone() = Servant(this.description, this.action, this.isSolo, this.isNocturnal, this.powerState, this.condition, this.isWerewolf, this.rolesToStick, this.order, this.maxOccurrence, this.mode)
 
 }

@@ -3,9 +3,8 @@ package main.werewolfkotlin
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.serialization.json.Json
 import main.werewolfkotlin.databinding.ActivityMainBinding
-import model.WorkerEasier
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,12 +18,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        try {
-            val jsonString = assets.open("Roles.json").bufferedReader().use { it.readText() }
-            WorkerEasier.setCharactersFromJson(jsonString)
-
-        } catch (ex : Exception) {
-            println(ex)
+        //If fail first time => not created
+        if(!loadCharacterFromJson()) {
+            WorkerEasier.resetCharacters(this)
         }
 
         binding.selectButton.setOnClickListener {
@@ -67,4 +63,15 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+
+    private fun loadCharacterFromJson() : Boolean {
+        try {
+            WorkerEasier.setCharactersFromJson(this.filesDir.toString().plus("/json/Roles.json"), this)
+            return true
+        } catch (ex : Exception) {
+            println(ex)
+            return false
+        }
+    }
+
 }

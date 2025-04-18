@@ -89,15 +89,7 @@ class GameActivity : AppCompatActivity() {
 
         if(chars.isNotEmpty()) {
             deserializeProperly(chars)
-        } else {//Bad catch up, keep the test list by default for now
-            characterGames.add(Werewolf(4))
-            characterGames.add(Seer(3))
-            characterGames.add(Witch(5))
-            characterGames.add(Hunter(98))
-            characterGames.add(Thief(1))
-            characterGames.add(Cupid(2))
-            characterGames.add(LittleGirl(4))
-            characterGames.add(Villager(99))
+        } else {//Bad catch up
             gameInProgress = false
         }
 
@@ -288,8 +280,8 @@ class GameActivity : AppCompatActivity() {
         var description = ""
 
         //Append each strict with EACH class
-        for(character in characterGames.distinctBy { x -> x.className }) {
-            description += "${character.className}\n${character.action()}\n\n"
+        for(character in characterGames.distinctBy { x -> x.name }) {
+            description += "${character.name}\n${character.action()}\n\n"
         }
         binding.gameStatusTextView.text = description
     }
@@ -400,36 +392,50 @@ class GameActivity : AppCompatActivity() {
     }
 
     ///
-    /// Cut the call of brothers or sisters if they are alone
-    ///
-    private fun stopBrotherSister(className: String) {
-        val listCoop = characterGames.filter { x -> x.className == className }
-
-        if(listCoop.isNotEmpty() && listCoop.size == 1)
-            listCoop[0].isNocturnal = false
-    }
-
-    ///
     /// Activate the special conditions
     ///
     private fun specialUpdatesAfterDeath() {
+        characterGames.filter { it.powerState == PowerState.CONDITIONAL }.forEach { x ->
+            when(x.condition) {
+                ConditionalActivation.LINKEDROLES -> {
+                    if(deadCharacterGames.map{ it.className}.toSet().intersect(x.rolesToStick.toSet()).isNotEmpty()) {
+                        x.isNocturnal = !x.originalNightState!! //Always the reverse
+                        x.powerState = PowerState.PERMANENT//Become permanent
+                    }
+                }
 
-        if(characterGames.any { x -> x is BigBadWolf && x.mode == "NORMAL"}
-            && deadCharacterGames.any { x -> x.isWerewolf }) {
-
-            val characterWolf = characterGames.firstOrNull { x -> x is BigBadWolf }
-
-            if (characterWolf != null && characterWolf.order != werewolfTurn) {
-                characterWolf.order = werewolfTurn
+                ConditionalActivation.ONEWEREWOLF -> {
+                    if(deadCharacterGames.any { it.isWerewolf }) {
+                        x.isNocturnal = !x.originalNightState!! //Always the reverse
+                        x.powerState = PowerState.PERMANENT//Become permanent
+                    }
+                }
+                ConditionalActivation.ONEVILLAGER -> {
+                    if(deadCharacterGames.any { !it.isWerewolf }) {
+                        x.isNocturnal = !x.originalNightState!! //Always the reverse
+                        x.powerState = PowerState.PERMANENT//Become permanent
+                    }
+                }
+                ConditionalActivation.ALLWEREWOLVES -> {
+                    if(!characterGames.any { it.isWerewolf }) {
+                        x.isNocturnal = !x.originalNightState!! //Always the reverse
+                        x.powerState = PowerState.PERMANENT//Become permanent
+                    }
+                }
+                ConditionalActivation.ALLVILLAGERS -> {
+                    if(characterGames.filter { it != x }.all { it.isWerewolf }) {
+                        x.isNocturnal = !x.originalNightState!! //Always the reverse
+                        x.powerState = PowerState.PERMANENT//Become permanent
+                    }
+                }
+                ConditionalActivation.ISALONE -> {
+                    if(characterGames.filter { it.className == x.className }.size == 1) {
+                        x.isNocturnal = !x.originalNightState!! //Always the reverse
+                        x.powerState = PowerState.PERMANENT//Become permanent
+                    }
+                }
+                ConditionalActivation.NOCONDITION -> {}
             }
-        }
-
-        if(deadCharacterGames.any { x -> x is Brother }) {
-            stopBrotherSister("Brother")
-        }
-
-        if(deadCharacterGames.any { x -> x is Sister }) {
-            stopBrotherSister("Sister")
         }
 
     }

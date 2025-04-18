@@ -96,6 +96,8 @@ class InformationActivity : AppCompatActivity() {
                 } else false
             }
 
+            editText.isFocusable = true
+            editText.isFocusableInTouchMode = true
             editText.imeOptions = EditorInfo.IME_ACTION_NONE
         }
 
@@ -113,10 +115,8 @@ class InformationActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
     private fun addToText(key: Int, value: String){
         infoMap[key] = value
     }
-
 
 }

@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:background="@drawable/main_activity_alpha">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:textSize="40sp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/CreationView_Title"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        android:gravity="center"
+        android:background="#80000000">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageRole"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@android:color/transparent"
+                    android:contentDescription="@string/CreationView_Picture"/>
+
+                <Spinner
+                    android:id="@+id/roleSpinner"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:padding="10dp"
+                    android:background="@drawable/description_border"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+
+
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:useDefaultMargins="true"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:columnCount="1">
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="@string/CreationView_SoloSpinner"
+                        />
+
+                    <Spinner
+                        android:id="@+id/soloSpinner"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="10dp"
+                        android:padding="10dp"
+                        android:background="@drawable/description_border"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="@string/CreationView_NocturneSpinner"
+                        />
+
+                    <Spinner
+                        android:id="@+id/nocturneSpinner"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="10dp"
+                        android:padding="10dp"
+                        android:background="@drawable/description_border"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="@string/CreationView_WerewolfSpinner"
+                        />
+
+                    <Spinner
+                        android:id="@+id/werewolfSpinner"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="10dp"
+                        android:padding="10dp"
+                        android:background="@drawable/description_border"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="@string/CreationView_Mode"
+                        />
+
+                    <EditText
+                        android:id="@+id/categoryEdit"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="10dp"
+                        android:inputType="text"
+                        android:background="@color/white"
+                        android:maxLines="1"
+                        android:hint="@string/CreationView_HintMode"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="@string/CreationView_PowerSpinner"
+                        />
+
+                    <Spinner
+                        android:id="@+id/powerSpinner"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="10dp"
+                        android:padding="10dp"
+                        android:background="@drawable/description_border"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="@string/CreationView_ConditionSpinner"
+                        />
+
+                    <Spinner
+                        android:id="@+id/conditionalSpinner"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="10dp"
+                        android:padding="10dp"
+                        android:background="@drawable/description_border"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="@string/CreationView_Linked"
+                        />
+
+                    <Button
+                        android:id="@+id/linkButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/CreationView_LinkedButton"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="@string/CreationView_Action"
+                        />
+
+                    <EditText
+                        android:id="@+id/actionEdit"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="10dp"
+                        android:inputType="text"
+                        android:background="@color/white"
+                        android:singleLine="false"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:scrollHorizontally="true"
+                        android:hint="@string/CreationView_ActionHint"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="@string/CreationView_Description"
+                        />
+
+                    <EditText
+                        android:id="@+id/descriptionEdit"
+                        android:layout_width="500dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="10dp"
+                        android:inputType="text"
+                        android:background="@color/white"
+                        android:singleLine="false"
+                        android:maxLines="3"
+                        android:ellipsize="end"
+                        android:scrollHorizontally="true"
+                        android:hint="@string/CreationView_DescriptionHint"/>
+                </LinearLayout>
+
+            </GridLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/validButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="@string/CreationView_ValidButton"/>
+
+        <Button
+            android:id="@+id/returnButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:text="@string/Generic_Back"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
