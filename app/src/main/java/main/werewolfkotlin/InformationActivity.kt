@@ -96,6 +96,8 @@ class InformationActivity : AppCompatActivity() {
                 } else false
             }
 
+            editText.isFocusable = true
+            editText.isFocusableInTouchMode = true
             editText.imeOptions = EditorInfo.IME_ACTION_NONE
         }
 

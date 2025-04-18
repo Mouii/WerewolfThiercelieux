@@ -20,7 +20,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:gravity="center"
         android:background="#80000000">
 
@@ -58,11 +58,19 @@
                 android:spinnerMode="dropdown" />
 
             <TextView
+                android:id="@+id/attributeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="14sp"
+                android:textColor="@color/white"/>
+
+            <TextView
                 android:id="@+id/descriptionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/white"/>
 
         </LinearLayout>
@@ -72,7 +80,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
+        android:padding="10dp"
         android:orientation="horizontal"
         android:layout_gravity="center_vertical"
         android:gravity="center">
@@ -81,22 +90,47 @@
             android:id="@+id/creationButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create"/>
+            android:text="@string/DescriptionView_CreationButton"/>
 
+
+        <Button
+            android:id="@+id/editionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:text="@string/DescriptionView_EditionButton"/>
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:text="@string/DescriptionView_DeletionButton"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:gravity="center">
 
         <Button
             android:id="@+id/resetButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:text="Reset Roles"/>
+            android:text="@string/DescriptionView_ResetButton"/>
 
         <Button
             android:id="@+id/returnButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:text="@string/GenericButton_Return"/>
+            android:layout_marginStart="70dp"
+            android:text="@string/Generic_Back"/>
 
     </LinearLayout>
 

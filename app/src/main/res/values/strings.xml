@@ -3,8 +3,56 @@
     <string name="app_name">Werewolf</string>
     <string name="title_menu">Werewolves of Miller\'s Hollow</string>
 
+    <!-- Characters -->
+    <string name="Actor">Actor</string>
+    <string name="Angel">Angel</string>
+    <string name="BearTamer">Bear Tamer</string>
+    <string name="BigBadWolf">Big Bad Wolf</string>
+    <string name="Brother">Brother</string>
+    <string name="Crow">Crow</string>
+    <string name="Cupid">Cupid</string>
+    <string name="Defender">Defender</string>
+    <string name="Elder">Elder</string>
+    <string name="Fireman">Fireman</string>
+    <string name="Fox">Fox</string>
+    <string name="Gypsy">Gypsy</string>
+    <string name="Hunter">Hunter</string>
+    <string name="Idiot">Idiot of the village</string>
+    <string name="LittleGirl">Little Girl</string>
+    <string name="Manipulator">Manipulator</string>
+    <string name="Piper">Flute player</string>
+    <string name="RustyKnight">Rusty Knight</string>
+    <string name="Scapegoat">Scapegoat</string>
+    <string name="Seer">Seer</string>
+    <string name="Servant">Devoted Servant</string>
+    <string name="Sister">Sister</string>
+    <string name="StutteringJudge">Stuttering Judge</string>
+    <string name="Thief">Thief</string>
+    <string name="Villager">Villager</string>
+    <string name="VillagerVillager">Villager-Villager</string>
+    <string name="Werewolf">Werewolf</string>
+    <string name="WhiteWerewolf">White Werewolf</string>
+    <string name="WildChild">Wild Child</string>
+    <string name="Witch">Witch</string>
+    <string name="WolfFather">Wolf Father</string>
+    <string name="WolfHound">Wolf Hound</string>
+    <string name="Power_Permanent">Permanent</string>
+    <string name="Power_Consumable">Consumable</string>
+    <string name="Power_Conditional">Conditional</string>
+    <string name="Power_Unique">Unique</string>
+    <string name="Condition_NoCondition">No condition</string>
+    <string name="Condition_OneWerewolf">One Werewolf</string>
+    <string name="Condition_OneVillager">One Villager</string>
+    <string name="Condition_AllWerewolves">All Werewolves</string>
+    <string name="Condition_AllVillagers">All Villagers</string>
+    <string name="Condition_LinkedRoles">Linked Roles</string>
+    <string name="Condition_IsAlone">Is Alone</string>
+
     <!-- Generic -->
-    <string name="GenericButton_Return">Back</string>
+    <string name="Generic_Yes">Yes</string>
+    <string name="Generic_No">No</string>
+    <string name="Generic_Cancel">Cancel</string>
+    <string name="Generic_Back">Back</string>
 
     <!-- Menu buttons -->
     <string name="MenuButton_StartGame">Start</string>
@@ -25,36 +73,36 @@
     <string name="GameButton_Information">Info</string>
     <string name="GameButton_EndGame">End the game</string>
 
-    <!-- Description View -->
-    <string name="DescriptionView_title">Description</string>
-    <string name="DescriptionView_death">Deaths</string>
-    <string name="DescriptionView_deathEdit">Enter the deaths</string>
-    <string name="DescriptionView_lover">Lovers</string>
-    <string name="DescriptionView_loverEdit">Enter the lovers</string>
-    <string name="DescriptionView_defender">Defender</string>
-    <string name="DescriptionView_defenderEdit">Enter the protected</string>
-    <string name="DescriptionView_wildChild">Wild Child</string>
-    <string name="DescriptionView_wildChildEdit">Enter the mentor</string>
-    <string name="DescriptionView_bearTamer">Bear</string>
-    <string name="DescriptionView_bearTamerEdit">Enter the tamer</string>
-    <string name="DescriptionView_ancient">Ancient</string>
-    <string name="DescriptionView_ancientEdit">Enter the ancient</string>
-    <string name="DescriptionView_infected">Infected</string>
-    <string name="DescriptionView_infectedEdit">Enter the infected</string>
-    <string name="DescriptionView_sectarian">Sectarian</string>
-    <string name="DescriptionView_sectarianEdit">Enter the selected</string>
-    <string name="DescriptionView_comedian">Comedian</string>
-    <string name="DescriptionView_comedianEdit">Enter his role</string>
-    <string name="DescriptionView_thief">Thief</string>
-    <string name="DescriptionView_thiefEdit">Enter the trapped</string>
-    <string name="DescriptionView_piper">Piper</string>
-    <string name="DescriptionView_piperEdit">Enter the bewitched</string>
-    <string name="DescriptionView_scapegoat">Scapegoat</string>
-    <string name="DescriptionView_scapegoatEdit">Enter the allowed voter</string>
-    <string name="DescriptionView_switched">Switched</string>
-    <string name="DescriptionView_switchedEdit">Enter the switched</string>
-    <string name="DescriptionView_punished">Punished</string>
-    <string name="DescriptionView_punishedEdit">Enter the punished</string>
+    <!-- Information View -->
+    <string name="InformationView_title">Description</string>
+    <string name="InformationView_death">Deaths</string>
+    <string name="InformationView_deathEdit">Enter the deaths</string>
+    <string name="InformationView_lover">Lovers</string>
+    <string name="InformationView_loverEdit">Enter the lovers</string>
+    <string name="InformationView_defender">Defender</string>
+    <string name="InformationView_defenderEdit">Enter the protected</string>
+    <string name="InformationView_wildChild">Wild Child</string>
+    <string name="InformationView_wildChildEdit">Enter the mentor</string>
+    <string name="InformationView_bearTamer">Bear</string>
+    <string name="InformationView_bearTamerEdit">Enter the tamer</string>
+    <string name="InformationView_ancient">Ancient</string>
+    <string name="InformationView_ancientEdit">Enter the ancient</string>
+    <string name="InformationView_infected">Infected</string>
+    <string name="InformationView_infectedEdit">Enter the infected</string>
+    <string name="InformationView_sectarian">Sectarian</string>
+    <string name="InformationView_sectarianEdit">Enter the selected</string>
+    <string name="InformationView_comedian">Comedian</string>
+    <string name="InformationView_comedianEdit">Enter his role</string>
+    <string name="InformationView_thief">Thief</string>
+    <string name="InformationView_thiefEdit">Enter the trapped</string>
+    <string name="InformationView_piper">Piper</string>
+    <string name="InformationView_piperEdit">Enter the bewitched</string>
+    <string name="InformationView_scapegoat">Scapegoat</string>
+    <string name="InformationView_scapegoatEdit">Enter the allowed voter</string>
+    <string name="InformationView_switched">Switched</string>
+    <string name="InformationView_switchedEdit">Enter the switched</string>
+    <string name="InformationView_punished">Punished</string>
+    <string name="InformationView_punishedEdit">Enter the punished</string>
 
     <!-- Select View -->
     <string name="SelectView_NumberOfCharacters">Number of character selected : %1$d</string>
@@ -68,6 +116,37 @@
     <string name="GameView_phaseDawn">Morning! Let\'s proceed to the eliminations</string>
     <string name="GameView_phaseDay">Day time! Chat and speak about what to do!</string>
     <string name="GameView_phaseEvening">Dinner is served! But watch out, these villagers are alive… so are their enemies…</string>
+
+    <!-- Description View -->
+    <string name="DescriptionView_CreationButton">Create</string>
+    <string name="DescriptionView_EditionButton">Edit Role</string>
+    <string name="DescriptionView_DeletionButton">Delete Role</string>
+    <string name="DescriptionView_ResetButton">Reset roles</string>
+    <string name="DescriptionView_statDescriptionSoloYes">Solo : Yes,</string>
+    <string name="DescriptionView_statDescriptionSoloNo">Solo : No,</string>
+    <string name="DescriptionView_statDescriptionWakeUpYes">Wake up at night : Yes,</string>
+    <string name="DescriptionView_statDescriptionWakeUpNo">Wake up at night : No,</string>
+    <string name="DescriptionView_statDescriptionPower">Power : %s</string>
+    <string name="DescriptionView_DeleteQuestion">Do you wish to delete this role?</string>
+    <string name="DescriptionView_ResetQuestion">Do you wish to reset all the roles and delete the ones you created?</string>
+    <string name="DescriptionView_DialogTitle">Description</string>
+
+    <!-- Creation View -->
+    <string name="CreationView_Picture">A Picture</string>
+    <string name="CreationView_SoloSpinner">Solo</string>
+    <string name="CreationView_NocturneSpinner">Nocturnal</string>
+    <string name="CreationView_WerewolfSpinner">Werewolf</string>
+    <string name="CreationView_Mode">Mode</string>
+    <string name="CreationView_HintMode">Enter your title mode</string>
+    <string name="CreationView_PowerSpinner">Power</string>
+    <string name="CreationView_ConditionSpinner">Condition</string>
+    <string name="CreationView_Linked">Linked roles</string>
+    <string name="CreationView_LinkedButton">Link</string>
+    <string name="CreationView_Action">Action</string>
+    <string name="CreationView_ActionHint">Write the night action</string>
+    <string name="CreationView_Description">Description</string>
+    <string name="CreationView_DescriptionHint">Give the description of your role</string>
+    <string name="CreationView_ValidButton">Validation</string>
 
     <!-- FAQ View -->
     <string name="FaqView_title">F.A.Q</string>
@@ -102,8 +181,12 @@
     <string name="FaqView_answer14">It\'s a special place where you can control the call of some characters depending the evolution of the game. If everybody for example knows the witch has used its two potions, it\'s useless to call her again. You can stop her call of the night there. Every role that can have an evolution is listed there. Watch out on some roles that have the reverse evolution; meaning they don\'t wake up at the beginning but might later like the wild child.</string>
     <string name="FaqView_question15">How is handle the infected by the wolf father? What happened if it is the last werewolf ?</string>
     <string name="FaqView_answer15">The application doesn\'t handle yet the infected. I suggest you don\'t forget for now the werewolves\'turn if it is the last one. How it was conceive is in order so the infected continue to play normally but wakes up at the werewolves\'s turn </string>
-    <string name="FaqView_question16">Where can I contact you for any questions?</string>
-    <string name="FaqView_answer16">You can send me an e-mail on my address : kevin.prudhomme555@gmail.com. Please use a tag like [Werewolf] at the subject so that it catch my attention ;)</string>
+    <string name="FaqView_question16">I can\'t valid the creation of my role; why?</string>
+    <string name="FaqView_answer16">You need to fulfill all the data in order for the button to be enable. Note also that you can\'t create a key type of "NORMAL" or "AUTHOR" since it\'s hardcoded keys.</string>
+    <string name="FaqView_question17">Note on the creation page :</string>
+    <string name="FaqView_answer17">If you want to modify a role you created, you just need to enter the same category key and the application will update your previous version.</string>
+    <string name="FaqView_question18">Where can I contact you for any questions?</string>
+    <string name="FaqView_answer18">You can send me an e-mail on my address : kevin.prudhomme555@gmail.com. Please use a tag like [Werewolf] at the subject so that it catch my attention ;)</string>
 
     <string name="CreationView_Title">Role Creation</string>
 

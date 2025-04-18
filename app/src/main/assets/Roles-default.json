@@ -6,17 +6,23 @@
 			"NORMAL": {
 				"description" : "The actor can play three different roles during the game at night. These roles must be choose outside of the game and are visible to everybody. Once the three have been played, the Actor become a simple villager.",
 				"action" : "The Actor might choose one of the roles visible to play for a complete turn. Once the role has been played, it is discarded.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "CONSUMABLE",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
 				"description" : "The Actor is a doppelganger. He/she choose another character to copy the role and become this one. That can means there can be two seers, two witches, etc... If the Actor copy a solo role, they become a Duo role and must still fulfill the condition but together.",
 				"action" : "The Actor choose a character to copy. He/she become this role too and follow the rules associate to it. If it is a solo role, they must win together now.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "UNIQUE",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -28,17 +34,23 @@
 			"NORMAL": {
 				"description" : "The Angel is a solo role at the beginning. He/she must die on the first turn (night or day) in order to win alone. If he/she survives, then he/she is a simple villager. Putting an Angel makes the game start with the day and not the night (or night with scouting and no actions).",
 				"action" : "No action for the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
 				"description" : "The Angel is a divinator. One time per game, he/she can choose to reveal a role to everybody. The character revealed stay alive.",
 				"action" : "The Angel can choose to reveal the role of a character.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "CONSUMABLE",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}	
@@ -50,9 +62,12 @@
 			"NORMAL": {
 				"description" : "The BearTamer can signal if one of his neighbours is a werewolf. If the game master makes a sound like a bear growl, that means one of the alive neighbours of the BearTamer is a werewolf. The Bear also growls if the BearTamer is infected.",
 				"action" : "No action for the night",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -64,17 +79,23 @@
 			"NORMAL": {
 				"description" : "The big bad wolf can eat a second victim during the night. He/she eats with the others on the common turn then has a unique turn for him/her. This power is lost when a werewolf, wild child, or wolfhound is dead.",
 				"action" : "The BigBadWolf choose a victim to eat. On its only turn, he can eat another victim.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "CONDITIONAL",
+				"condition": "ONEWEREWOLF",
 				"isWerewolf": true,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}, 
 			"AUTHOR": {
 				"description" : "The big bad wolf can eat a second victim during the night. He/she eats with the others on the common turn then has a unique turn for him/her.",
 				"action" : "The BigBadWolf choose a victim to eat. On its only turn, he can eat another victim.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": true,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}		
@@ -86,9 +107,12 @@
 			"NORMAL": {
 				"description" : "The brothers wake up at night and know each others. This can be a big impact about trust. They can communicate at night with signs.",
 				"action" : "The Brother recognize each others and can communicate through signs together.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "CONDITIONAL",
+				"condition": "ISALONE",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 3
 			}
 		}
@@ -100,9 +124,12 @@
 			"NORMAL": {
 				"description" : "The Crow can give two votes to a player that will apply during the day.",
 				"action" : "The Crow choose a player to get two votes for the day to come.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -114,17 +141,23 @@
 			"NORMAL": {
 				"description" : "The Cupid choose two players during the night to put together into a unite couple. They must win together. If one of them dies, so die the other.",
 				"action" : "The Cupid choose two people to put in love together. If one dies, so die the other.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "UNIQUE",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
 				"description" : "The Cupid has been touched too much by love. He/She select two people to fall in love together. Then, he/she choose a cheater and a lover. If the lover dies, the three dies. If the cheater dies, the three dies. If the cheated dies, he's the only one. Lover and cheater can't go against each others. Cheated can't only go against the cheater.",
 				"action" : "The Cupid choose three people to put in a triangle of love. Select two people to make in love, then a cheater and a lover. If the lover dies, the three dies. If the cheater dies, the three dies. If the cheated dies, he's the only one. Lover and cheater can't go against each others. Cheated can't only go against the cheater.",
-				"isNocturnal" : true,
-				"powerState": "PERMANENT",
+				"isSolo": false,
+				"isNocturnal" : true
+				"powerState": "UNIQUE",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}	
@@ -136,9 +169,12 @@
 			"NORMAL": {
 				"description" : "The defender can protect from the werewolves attack at night only. He/she must choose a different player each night and can select himself/herself. Doesn't protect from infection, killing potion.",
 				"action" : "The Defender choose one player to protect from the attack of werewolves. He/she can protect himself/herself. Must choose a different player every night.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}	
@@ -150,9 +186,12 @@
 			"NORMAL": {
 				"description" : "Elder can survive a second attack of werewolves. If the village eliminate him/her, they don't have anymore powers. Doesn't apply from being killed by love. Can't be infected. If he/she gets a heal potion, he/she gets one more life.",
 				"action" : "No action during the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -164,9 +203,12 @@
 			"NORMAL": {
 				"description" : "The Fireman, when he/she dies, kills the two closed alive neighbours.",
 				"action" : "No action during the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -178,9 +220,12 @@
 			"NORMAL": {
 				"description" : "The Fox can scan three players at the same time and see if there is a werewolf among them. If there is at least one, the Fox keeps its power. Otherwise he lost it. The Fox can refuse to use its power to use it later in the game.",
 				"action" : "The Fox CAN choose a person to scan with the two neighbours of the target in order to know if there is werewolf among them. If there is none, he lost his power.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "CONSUMABLE",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -192,9 +237,12 @@
 			"NORMAL": {
 				"description" : "The Gypsy can make players ask questions to the deaths in order to have more information. On his/her turn, he/she choose a card and a player to read it. On the morning, the chosen player will read it. If the chosen player must die, the card isn't read.",
 				"action" : "The Gypsy choose a card between the spiritism cards and a player to read it.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -206,9 +254,12 @@
 			"NORMAL": {
 				"description" : "The Hunter can, when he dies, kill someone else alive.",
 				"action" : "No action during the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -220,9 +271,12 @@
 			"NORMAL": {
 				"description" : "The Idiot of the village has a second chance if he/she's voted to be killed during the day. Considered as not possible dangerous, he/she stay alive revealed. However, he/she lost the possibility of voting. If there is an Elder in your game and the Elder remove the powers, the idiot die.",
 				"action" : "No action during the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -234,17 +288,23 @@
 			"NORMAL": {
 				"description" : "The Little Girl can try to spy the werewolves; but if she's detected, she's dead.",
 				"action" : "The Little Girl spy on the werewolves turn.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": true,
+				"rolesToStick": ["WEREWOLF-NORMAL", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "WOLFFATHER-NORMAL", "WHITEWOLF-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "The Little Girl is a frail child. He/she can't sleep alone and so he/she wakes up to sleep with someone else. He/she choose a character to sleep with. The player wakes up and see the little girl and show his/her role. If it is a werewolf, the little girl is dead. This count as an additional victim.",
-				"action" : "The Little Girl choose another character to sleep with. The character wakes up, show his/her role and see the little girl. If it is a werewolf, the Little Girl die.",
-				"isNocturnal" : true,
+				"description" : "The Little Girl is a frail child. He/she can't sleep alone and so he/she wakes up to sleep with someone else. The target wakes up and see the little girl and show his/her role. If it is a werewolf, the little girl is dead. This count as an additional victim. The Little Girl can't be targeted by werewolves. But if his/her host dies, so is he/she.",
+				"action" : "The Little Girl choose another character to sleep with. The character wakes up, show his/her role and see the little girl. If it is a werewolf, the Little Girl die. If the werewolves kills the host, he/she dies too.",
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -256,17 +316,23 @@
 			"NORMAL": {
 				"description" : "The Manipulator is a solo role where he has to win with only a part of the village. Once the other part is eliminated, he wins.",
 				"action" : "The Manipulator wakes up and see with who is part of his group. He must eliminate all the others. Once they are dead, he wins.",
-				"isNocturnal" : true,
+				"isSolo": true,
+				"isNocturnal" : true
 				"powerState": "UNIQUE",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
 				"description" : "The Manipulator is a kind of racist. He/She select a number of players equal to the number of werewolves (information from the game master). If the selected dies, he/she wins. If there is no more werewolves in the game and the Manipulator is alive, he/she wakes up to kill.",
 				"action" : "The Manipulator choose a number of players equal to the number of werewolves (GM gives the information) that must die in order for him/her to win. If the werewolves are dead, he/she can select a victim to kill.",
-				"isNocturnal" : true,
-				"powerState": "CONSUMABLE",
+				"isSolo": true,
+				"isNocturnal" : true
+				"powerState": "CONDITIONAL",
+				"condition": "ALLWEREWOLVES",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -278,9 +344,12 @@
 			"NORMAL": {
 				"description" : "The piper is a solo role. He/she has to charm all the characters in the village. The charmed will open their eyes, new and old, every night; which will add more difficulties to the piper to stay hidden. Once he manager to charm everybody, no matter when, he wins.",
 				"action" : "The Piper choose two players to charm. Then all the charmed will open their eyes and see who is left.",
-				"isNocturnal" : true,
+				"isSolo": true,
+				"isNocturnal" : true
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -292,17 +361,23 @@
 			"NORMAL": {
 				"description" : "The RustyKnight, if killed during the night, can kill a werewolf from tetanus. The next morning, the alive werewolf the most at the left of the knight will die. This action helps a lot to see innocents between the knight and the killed werewolf.",
 				"action" : "No action during the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
 				"description" : "The RustyKnight, if killed during the night, can kill a werewolf from tetanus. The next morning, the alive werewolf the most at the left of the knight will die. This action helps a lot to see innocents between the knight and the killed werewolf. If he/she dies from the village, the closest villager to the right of the knight dies.",
 				"action" : "No action during the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -314,17 +389,23 @@
 			"NORMAL": {
 				"description" : "The scapegoat is eliminated if there is a tie in the votes during the day. He/she may choose who can vote on the next day. This can be dangerous if the remaining voters are werewolves. It's also dangerous if there is only one person allowed to vote and is killed during the night; leading to no vote.",
 				"action" : "No action during the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
 				"description" : "The Scapegoat is a victim of life and death. When there is a tie during the vote of the day from the village, he/she dies instead and choose who doesn't vote the next day. If he/she's eaten by the werewolves during the night, they got an indigestion and don't eat the next night.",
 				"action" : "No action during the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}	
@@ -336,9 +417,12 @@
 			"NORMAL": {
 				"description" : "The Seer can see the card of another player one time per turn.",
 				"action" : "The Seer choose a card to see.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -350,17 +434,23 @@
 			"NORMAL": {
 				"description" : "The Servant can stop the execution of the selected victim during the day and take his/her place. To do it, the Servant has to reveal himself/herself and take the role of the selected player. The eliminated player stay eliminated however.",
 				"action" : "No action during the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
 				"description" : "The Servant is a promoter. Once a special innocent villager has been killed, she can wakes up during the night and select a character. If it isn't a simple villager, nothing happens. The Servant doesn't see the role. If it is a simple Villager, she can promote the founded to a dead special role. This means a special role can come back in the game. A role like a Witch for example get a refresh of all the actions already done.",
 				"action" : "The Servant try to find simple villager to promote them of innocent villagers role.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "CONSUMABLE",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -372,9 +462,12 @@
 			"NORMAL": {
 				"description" : "The sisters wake up at night and know each others. This can be a big impact about trust. They can communicate at night with signs.",
 				"action" : "The Sister recognize each others and can communicate through signs together.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "CONDITIONAL",
+				"condition": "ISALONE",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 2
 			}
 		}
@@ -386,17 +479,23 @@
 			"NORMAL": {
 				"description" : "The Stuttering Judge can execute a second vote during a day immediately after the first. He must give a sign to the game master and do it during the day in order for the animator to proceed to a second vote.",
 				"action" : "No action during the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
 				"description" : "The Stuttering Judge is a dictator. He/She can during the day, one time per game, reveal himself/herself and kill someone. If the victim is a werewolf, he/she become the captain/mayor. Otherwise, he/she dies.",
 				"action" : "No action during the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -408,9 +507,12 @@
 			"AUTHOR": {
 				"description" : "The Thief is a master trap. He/she can put traps on other characters and have more information. There is three traps available that can be put each one one time per game : silent one (Thief knows if the selected has done something during the night at the morning), noisy one (everybody knows when the role is called), injure one (everybody knows who did something during the night at the morning). If a trap isn't activated, it is available again. Activation is done when a character do an action, meaning the trapped can wakes up but do nothing and so not activate the trap.",
 				"action" : "The Thief choose a trap to put between the three ones : silent one, noisy one, injure one. If the trapped doesn't do anything during the night or don't wake up, the trap is available again.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "CONSUMABLE",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -422,9 +524,12 @@
 			"NORMAL": {
 				"description" : "The villager has no other power than its own deduction to find out the werewolves.",
 				"action" : "No action during the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 7
 			}
 		}
@@ -436,9 +541,12 @@
 			"NORMAL": {
 				"description" : "The villager is someone who everybody knows. He/she can't hide his/her role.",
 				"action" : "No action during the night.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -450,9 +558,12 @@
 			"NORMAL": {
 				"description" : "The werewolf can select a victim during the night to eat and eliminate from the game.",
 				"action" : "The Werewolf choose a victim to eat.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": true,
+				"rolesToStick": ["WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "WOLFFATHER-NORMAL", "WHITEWOLF-NORMAL", "LITTLEGIRL-NORMAL"],
 				"maxOccurrence": 6
 			}
 		}
@@ -464,9 +575,12 @@
 			"NORMAL": {
 				"description" : "The white werewolf is a solo role. He/she wins when he/she is the last one alive. In order to do it, one night on two, he/she can wake up alone and eat one of his/her werewolves companions. He/she still eats villagers like the others in the common turn.",
 				"action" : "The WhiteWerewolf, choose a victim to eat with the pack. On his/her own turn, he/she can eat a werewolf.",
-				"isNocturnal" : true,
+				"isSolo": true,
+				"isNocturnal" : true
 				"powerState": "CONDITIONAL",
+				"condition": "ALLWEREWOLVES",
 				"isWerewolf": true,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -478,9 +592,12 @@
 			"NORMAL": {
 				"description" : "The Wild Child choose a player that he/she consider as his/her model. If the model dies, the Wild Child become a werewolf. Otherwise, he's a simple villager.",
 				"action" : "The WildChild choose a player to be his/her master. If the master dies, he/she become a werewolf.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "CONSUMABLE",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -492,9 +609,12 @@
 			"NORMAL": {
 				"description" : "The Witch has two potions; one of death to kill someone and one of resurrection to save the victim of the werewolves, that she can use in the same time.",
 				"action" : "The Witch can use her potion of life to save the victim, and use her potion of death to kill someone.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "CONSUMABLE",
+				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"rolesToStick": [],
 				"maxOccurrence": 1
 			}
 		}
@@ -506,9 +626,12 @@
 			"NORMAL": {
 				"description" : "The Wolf Father has the power to convert a victim into a werewolf. One time per game, the Wolf Father can give a sign to the animator to infect the victim. The victim will not be eliminated and will wake up with the others on the werewolves turn.",
 				"action" : "The Wolf Father can infect a victim in order to add one more werewolf to the pack instead of killing it.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": true,
+				"rolesToStick": ["WEREWOLF-NORMAL", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "LITTLEGIRL-NORMAL", "WHITEWOLF-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
 				"maxOccurrence": 1
 			}
 		}
@@ -520,17 +643,23 @@
 			"NORMAL": {
 				"description" : "The Wolf Hound is a role that can choose who he/she wants to be between a werewolf and a simple villager.",
 				"action" : "The Wolf Hound choose to wake up and be a werewolf for the game or stay asleep and be a simple villager.",
-				"isNocturnal" : false,
+				"isSolo": false,
+				"isNocturnal" : false
 				"powerState": "CONSUMABLE",
+				"condition": "NOCONDITION",
 				"isWerewolf": true,
+				"rolesToStick": ["WEREWOLF-NORMAL", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "WOLFFATHER-NORMAL", "WHITEWOLF-NORMAL", "LITTLEGIRL-NORMAL"],
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
 				"description" : "The Wolf Hound is a cub Wolf. If he/she dies, the werewolves are angry and eat an additional victim the next night.",
 				"action" : "The Wolf Hound anger the pack of werewolves if he/she dies and add an additional victim the next night.",
-				"isNocturnal" : true,
+				"isSolo": false,
+				"isNocturnal" : true
 				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
 				"isWerewolf": true,
+				"rolesToStick": ["WEREWOLF-NORMAL", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "WOLFFATHER-NORMAL", "WHITEWOLF-NORMAL", "LITTLEGIRL-NORMAL"],
 				"maxOccurrence": 1
 			}
 		}

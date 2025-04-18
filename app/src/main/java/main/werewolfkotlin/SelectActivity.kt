@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.iterator
 import com.google.gson.Gson
 import main.werewolfkotlin.databinding.ActivitySelectBinding
+import java.util.Locale
 
 class SelectActivity : AppCompatActivity() {
 
@@ -156,7 +157,7 @@ class SelectActivity : AppCompatActivity() {
                 .setItems(items.toTypedArray()) { _, which ->
                     // Handle item selection
                     val selectedItem = items[which]
-                    Toast.makeText(this, "Selected Version of ${characterGame.className} : $selectedItem", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Selected Version of ${characterGame.name} : $selectedItem", Toast.LENGTH_SHORT).show()
 
                     //Get the character at the selected version
                     val characterSelected = WorkerEasier.characterListType
@@ -300,7 +301,9 @@ class SelectActivity : AppCompatActivity() {
                 }
 
                 //Name of the text
-                text = "x${charactersSelected.count { x -> x.className == character.className}}"
+                text = String.format("x%s",
+                    charactersSelected.count { x -> x.className == character.className}.toString()
+                )
 
                 //Size of the text
                 textSize = 14f
@@ -383,15 +386,11 @@ class SelectActivity : AppCompatActivity() {
 
         //Check if there is a special case of existing characters
         val existingCharacterGame : CharacterGame?
-            = if((characterGame is LittleGirl && characterGame.mode == "NORMAL")
-            || characterGame is Werewolf
-            || characterGame is WolfFather
-            || characterGame is WolfHound) {
-                //Case of werewolf and little girl, they must play at the same time
-                charactersSelected.firstOrNull{ x -> (x is LittleGirl && x.mode == "NORMAL")
-                        || x is Werewolf
-                        || x is WolfFather
-                        || x is WolfHound}
+            = if(!charactersSelected.any { it.className == characterGame.className }
+                    && characterGame.rolesToStick.isNotEmpty()) {
+                //Each character has a link order configured
+                charactersSelected.firstOrNull{ x -> characterGame.rolesToStick.contains(
+                    x.className.plus("-").plus(x.mode).uppercase(Locale.ROOT))}
         } else {
             //Case same kind of character exist
             charactersSelected.firstOrNull{ x -> x.className == characterGame.className }

@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         //If fail first time => not created
         if(!loadCharacterFromJson()) {
             WorkerEasier.resetCharacters(this)
-            loadCharacterFromJson()
         }
 
         binding.selectButton.setOnClickListener {
@@ -67,7 +66,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadCharacterFromJson() : Boolean {
         try {
-            WorkerEasier.setCharactersFromJson(this.filesDir.toString().plus("/json/Roles.json"))
+            File(this.filesDir.toString().plus("/json/Roles.json")).delete()
+            WorkerEasier.setCharactersFromJson(this.filesDir.toString().plus("/json/Roles.json"), this)
             return true
         } catch (ex : Exception) {
             println(ex)
