@@ -66,7 +66,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadCharacterFromJson() : Boolean {
         try {
-            File(this.filesDir.toString().plus("/json/Roles.json")).delete()
             WorkerEasier.setCharactersFromJson(this.filesDir.toString().plus("/json/Roles.json"), this)
             return true
         } catch (ex : Exception) {
