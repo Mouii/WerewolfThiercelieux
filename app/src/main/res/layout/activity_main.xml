@@ -20,7 +20,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="150dp"
-        android:layout_gravity="center_horizontal|center_vertical">
+        android:gravity="center"
+        android:layout_gravity="center_horizontal">
 
         <Button
             android:id="@+id/selectButton"
@@ -45,6 +46,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/MenuButton_Exit"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/langText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:drawablePadding="10dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:text="@string/MainView_Language"/>
+
+            <Spinner
+                android:id="@+id/langSpinner"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_gravity="start"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:background="@drawable/description_border"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
 
     </LinearLayout>
 

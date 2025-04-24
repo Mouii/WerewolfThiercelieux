@@ -44,9 +44,9 @@ class SelectActivity : AppCompatActivity() {
     //Limit of characters to start playing.(See if can be configured)
     private val limitStartNumber : Int = 8
 
-    ///
-    /// Execution on creation of the activity
-    ///
+    /***
+     * Execution on creation of the activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySelectBinding.inflate(layoutInflater)
@@ -93,9 +93,9 @@ class SelectActivity : AppCompatActivity() {
 
                 // Create the dialog
                 AlertDialog.Builder(this)
-                    .setTitle("Description")
+                    .setTitle(getString(R.string.InformationView_title))
                     .setMessage(character.description)
-                    .setNegativeButton("Okay", null)
+                    .setNegativeButton(R.string.Generic_Okay, null)
                     .show()
                 true // Return true to indicate the long-click event is consumed
             }
@@ -123,9 +123,9 @@ class SelectActivity : AppCompatActivity() {
         }
     }
 
-    ///
-    /// Show a small dialog where user can select type of character
-    ///
+    /***
+     * Show a small dialog where user can select type of character
+     */
     private fun showListDialog(characterGame: CharacterGame) {
 
         //This can't be null and fail
@@ -153,11 +153,11 @@ class SelectActivity : AppCompatActivity() {
 
             // Create the dialog
             val dialog = AlertDialog.Builder(this)
-                .setTitle("Select an Item")
+                .setTitle(getString(R.string.SelectView_selectionTitle))
                 .setItems(items.toTypedArray()) { _, which ->
                     // Handle item selection
                     val selectedItem = items[which]
-                    Toast.makeText(this, "Selected Version of ${characterGame.name} : $selectedItem", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, String.format(getString(R.string.SelectView_selectionMessage), characterGame.name, selectedItem), Toast.LENGTH_SHORT).show()
 
                     //Get the character at the selected version
                     val characterSelected = WorkerEasier.characterListType
@@ -182,9 +182,9 @@ class SelectActivity : AppCompatActivity() {
 
     }
 
-    ///
-    /// Action on canceling the dialog. Refresh the occurrence of the character in the Chart
-    ///
+    /***
+     * Action on canceling the dialog. Refresh the occurrence of the character in the Chart
+     */
     private fun cancelClicking(characterGame : CharacterGame) {
         //Update the chart to select again
         val charChart = characterChart.first{ x -> x.name == characterGame.className}
@@ -197,15 +197,17 @@ class SelectActivity : AppCompatActivity() {
         }
     }
 
-    ///
-    /// Execution on restart of the activity
-    ///
+    /***
+     * Execution on restart of the activity
+     */
     override fun onRestart() {
         super.onRestart()
         recreate() // This will restart the activity
     }
 
-    /// Dynamic update of the string info on number of characters
+    /***
+     * Dynamic update of the string info on number of characters
+     */
     private fun updateSelectedCharacterString() {
         val stringResource = getString(R.string.SelectView_NumberOfCharacters)
 
@@ -213,9 +215,9 @@ class SelectActivity : AppCompatActivity() {
         binding.textMenu.text = String.format(stringResource, charactersSelected.size)
     }
 
-    ///
-    /// This function apply a picture with an image view
-    ///
+    /***
+     * This function apply a picture with an image view
+     */
     private fun setImagePicture(characterGame : CharacterGame): ImageView {
         //Set the resource and image
         val imageView = ImageView(this).apply {
@@ -232,9 +234,9 @@ class SelectActivity : AppCompatActivity() {
         return imageView
     }
 
-    ///
-    /// Enable or disable all the buttons handling the selected characters
-    ///
+    /***
+     * Enable or disable all the buttons handling the selected characters
+     */
     private fun setSelectionButtonEnable(enable : Boolean) {
         binding.leftArrowButton.isEnabled = enable
         binding.rightArrowButton.isEnabled = enable
@@ -242,9 +244,9 @@ class SelectActivity : AppCompatActivity() {
         binding.removeButton.isEnabled = enable
     }
 
-    ///
-    /// Drawing function. Apply some scare selection
-    ///
+    /***
+     * Drawing function. Apply some scare selection
+     */
     private fun drawSelection(characterGame : CharacterGame) {
 
         for(layout in binding.gridSelectedView) {
@@ -259,9 +261,9 @@ class SelectActivity : AppCompatActivity() {
 
     }
 
-    ///
-    /// Refresh of the in game list on selection
-    ///
+    /***
+     * Refresh of the in game list on selection
+     */
     private fun refreshSelectedListCharacters() {
 
         //Always remove to recreate
@@ -351,9 +353,9 @@ class SelectActivity : AppCompatActivity() {
 
                 // Create the dialog
                 AlertDialog.Builder(this)
-                    .setTitle("Description")
+                    .setTitle(getString(R.string.InformationView_title))
                     .setMessage(character.description)
-                    .setNegativeButton("Okay", null)
+                    .setNegativeButton(getString(R.string.Generic_Okay), null)
                     .show()
                 true // Return true to indicate the long-click event is consumed
             }
@@ -377,10 +379,11 @@ class SelectActivity : AppCompatActivity() {
         updateSelectedCharacterString()
     }
 
-    ///
-    /// Add a character to the game
-    ///
+    /***
+     * Add a character to the game
+     */
     private fun addCharacterToGame(characterGame: CharacterGame) {
+
         //Copy the object
         val newCharacterGame : CharacterGame = characterGame.clone()
 
@@ -409,10 +412,10 @@ class SelectActivity : AppCompatActivity() {
         charactersSelected.add(newCharacterGame)
     }
 
-    ///
-    /// Remove the selected characters from the in game list
-    /// A kind of character with multiple occurrence will just reduce the occurrence by one
-    ///
+    /***
+     * Remove the selected characters from the in game list
+     * A kind of character with multiple occurrence will just reduce the occurrence by one
+     */
     private fun removeCharacterToSelection() {
 
         //Protection checking selected character is null
@@ -432,10 +435,10 @@ class SelectActivity : AppCompatActivity() {
         setSelectionButtonEnable(false)
     }
 
-    ///
-    /// Put all the characters at the same order of the selected one
-    /// to one previous position
-    ///
+    /***
+     * Put all the characters at the same order of the selected one
+     * to one previous position
+     */
     private fun previousOrder() {
         //Getting the order of the actual character
         val index : Int = selectedCharacterGameInGame!!.order
@@ -454,10 +457,10 @@ class SelectActivity : AppCompatActivity() {
 
     }
 
-    ///
-    /// Put all the characters at the same order of the selected one
-    /// to one next position
-    ///
+    /***
+     * Put all the characters at the same order of the selected one
+     * to one next position
+     */
     private fun nextOrder() {
         //Getting the order of the actual character
         val index : Int = selectedCharacterGameInGame!!.order
@@ -476,9 +479,9 @@ class SelectActivity : AppCompatActivity() {
 
     }
 
-    ///
-    /// Disable selection of a character in the in game list
-    ///
+    /***
+     * Disable selection of a character in the in game list
+     */
     private fun removeSelectedCharacterInGame() {
 
         selectedCharacterGameInGame = null
@@ -489,9 +492,9 @@ class SelectActivity : AppCompatActivity() {
         setSelectionButtonEnable(false)
     }
 
-    ///
-    /// Refresh the availability of the arrows handling the position of in game characters
-    ///
+    /***
+     * Refresh the availability of the arrows handling the position of in game characters
+     */
     private fun refreshArrowSelectionSelected() {
         if(selectedCharacterGameInGame != null) {
             binding.leftArrowButton.isEnabled = selectedCharacterGameInGame!!.order != 0
@@ -500,9 +503,9 @@ class SelectActivity : AppCompatActivity() {
 
     }
 
-    ///
-    /// Init all the buttons of the activity with their listeners
-    ///
+    /***
+     * Init all the buttons of the activity with their listeners
+     */
     private fun setButtonListenersOfSelected() {
 
         //Starting button
@@ -554,5 +557,4 @@ class SelectActivity : AppCompatActivity() {
             refreshSelectedListCharacters()
         }
     }
-
 }

@@ -11,9 +11,9 @@ class RoleActivity : AppCompatActivity() {
     //Object from the xml view to get all the elements
     private lateinit var binding: ActivityRoleBinding
 
-    ///
-    /// Execution on creation of the activity
-    ///
+    /***
+     * Execution on creation of the activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRoleBinding.inflate(layoutInflater)

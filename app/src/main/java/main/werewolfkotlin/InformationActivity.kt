@@ -19,6 +19,9 @@ class InformationActivity : AppCompatActivity() {
     //Object from the xml view to get all the elements
     private lateinit var binding: ActivityInformationBinding
 
+    /***
+     * Shared text watcher to keep value of text entered
+     */
     private fun createSharedTextWatcher(): TextWatcher {
         return object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -36,11 +39,9 @@ class InformationActivity : AppCompatActivity() {
         }
     }
 
-
-
-    ///
-    /// Execution on creation of the activity
-    ///
+    /***
+     * Execution on creation of the activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInformationBinding.inflate(layoutInflater)
@@ -115,6 +116,9 @@ class InformationActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /***
+     * Add the text to the map on the associated key
+     */
     private fun addToText(key: Int, value: String){
         infoMap[key] = value
     }

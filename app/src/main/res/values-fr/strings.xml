@@ -1,7 +1,7 @@
 <resources>
     <!-- Title -->
-    <string name="app_name">Werewolf</string>
-    <string name="title_menu">Werewolves of Miller\'s Hollow</string>
+    <string name="app_name">Loup-garou</string>
+    <string name="title_menu">Loups-garous de Thiercelieux</string>
 
     <!-- Characters -->
     <string name="Actor">Actor</string>
@@ -49,18 +49,21 @@
     <string name="Condition_IsAlone">Is Alone</string>
 
     <!-- Generic -->
-    <string name="Generic_Yes">Yes</string>
-    <string name="Generic_No">No</string>
-    <string name="Generic_Cancel">Cancel</string>
-    <string name="Generic_Back">Back</string>
-    <string name="Generic_Okay">Okay</string>
-    <string name="Generic_NotFoundedString">String not founded!</string>
+    <string name="Generic_Yes">Oui</string>
+    <string name="Generic_No">Non</string>
+    <string name="Generic_Cancel">Annuler</string>
+    <string name="Generic_Back">Retour</string>
+    <string name="Generic_Okay">Ok</string>
+    <string name="Generic_NotFoundedString">Chaîne absente!</string>
 
     <!-- Menu buttons -->
-    <string name="MenuButton_StartGame">Start</string>
+    <string name="MenuButton_StartGame">Démarrer</string>
     <string name="MenuButton_Role">Roles</string>
     <string name="MenuButton_FAQ">F.A.Q</string>
-    <string name="MenuButton_Exit">Exit</string>
+    <string name="MenuButton_Exit">Quitter</string>
+
+    <!-- Main View -->
+    <string name="MainView_Language">Langue</string>
 
     <!-- Select buttons -->
     <string name="SelectButton_StartGame">Begin</string>
@@ -74,9 +77,6 @@
     <string name="GameButton_NextTurn">Next turn</string>
     <string name="GameButton_Information">Info</string>
     <string name="GameButton_EndGame">End the game</string>
-
-    <!-- Main View -->
-    <string name="MainView_Language">Language</string>
 
     <!-- Information View -->
     <string name="InformationView_title">Description</string>
@@ -208,5 +208,4 @@
     <string name="FaqView_answer19">When you change language, all the roles you have created will not be available. Each time you create a role, it will be associated to the list specific of your language. If you want to have your new role on another language, you need to create it again. Why is it in this way? That\'s from choices of architecture.</string>
     <string name="FaqView_question20">Where can I contact you for any questions?</string>
     <string name="FaqView_answer20">You can send me an e-mail on my address : kevin.prudhomme555@gmail.com. Please use a tag like [Werewolf] at the subject so that it catch my attention ;)</string>
-
 </resources>

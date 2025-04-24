@@ -64,18 +64,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#f44336"
             android:layout_width="wrap_content">
             <Button
                 android:id="@+id/RoleButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#f1c232"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:text="@string/GameButton_Roles"/>
         </LinearLayout>
@@ -112,7 +111,6 @@
                 android:id="@+id/InformationButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#f1c232"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:text="@string/GameButton_Information"/>
 
