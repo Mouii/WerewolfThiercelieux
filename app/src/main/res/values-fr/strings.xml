@@ -46,14 +46,14 @@
     <string name="Condition_AllWerewolves">Tous les Loups</string>
     <string name="Condition_AllVillagers">Tous les Villageois</string>
     <string name="Condition_LinkedRoles">Rôles liés</string>
-    <string name="Condition_IsAlone">Est seul</string>
+    <string name="Condition_IsAlone">Est solitaire</string>
 
     <!-- Generic -->
     <string name="Generic_Yes">Oui</string>
     <string name="Generic_No">Non</string>
     <string name="Generic_Cancel">Annuler</string>
     <string name="Generic_Back">Retour</string>
-    <string name="Generic_Okay">Ok</string>
+    <string name="Generic_Okay">OK</string>
     <string name="Generic_NotFoundedString">Chaîne absente !</string>
 
     <!-- Menu buttons -->
