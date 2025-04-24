@@ -20,8 +20,10 @@ class DescriptionActivity: AppCompatActivity() {
     //Object from the xml view to get all the elements
     private lateinit var binding: ActivityDescriptionBinding
 
+    //Specials keys list
     private val listMode : List<String> = listOf("NORMAL", "AUTHOR")
 
+    //Selected character in the view
     private var selectedCharacter : CharacterGame? = null
 
     class SpinnerPairAdapter(context: Context, private val items: List<Pair<String,String>>) :
@@ -46,7 +48,7 @@ class DescriptionActivity: AppCompatActivity() {
         }
     }
 
-    private class SpinnerAdapter(context: Context, items: List<String>) :
+    class SpinnerAdapter(context: Context, items: List<String>) :
         ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -62,15 +64,13 @@ class DescriptionActivity: AppCompatActivity() {
         }
     }
 
-    ///
-    /// Execution on creation of the activity
-    ///
+    /***
+     * Execution on creation of the activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDescriptionBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
 
         // Data for the dropdown list
         val options = WorkerEasier.characterListType.map { x-> Pair(x.first, WorkerEasier.getStringByKey(x.first)) }.toList()
@@ -126,7 +126,7 @@ class DescriptionActivity: AppCompatActivity() {
                 .setTitle(getString(R.string.DescriptionView_DialogTitle))
                 .setMessage(getString(R.string.DescriptionView_ResetQuestion))
                 .setPositiveButton(getString(R.string.Generic_Yes)) { _, _->
-                    WorkerEasier.resetCharacters(this)
+                    WorkerEasier.resetCharacters()
                     recreate()
                 }
                 .setNegativeButton(getString(R.string.Generic_Cancel), null)
@@ -140,11 +140,17 @@ class DescriptionActivity: AppCompatActivity() {
         }
     }
 
+    /***
+     * Execute on restart function
+     */
     override fun onRestart() {
         super.onRestart()
         recreate()
     }
 
+    /***
+     * Start the creation activity
+     */
     private fun startCreationActivity(editMode: Boolean) {
         //In order to transfer the list to the other activity, we create an intent
         //in direction of the game activity
@@ -160,9 +166,9 @@ class DescriptionActivity: AppCompatActivity() {
         startActivity(intent)
     }
 
-    ///
-    /// This function apply a picture with an image view
-    ///
+    /***
+     * This function apply a picture with an image view
+     */
     private fun setImagePicture(characterGame : CharacterGame): ImageView {
         //Set the resource and image
         val imageView = ImageView(this).apply {
@@ -174,9 +180,9 @@ class DescriptionActivity: AppCompatActivity() {
         return imageView
     }
 
-    ///
-    /// Define the second spinner on type of roles
-    ///
+    /***
+     * Define the second spinner on type of roles
+     */
     private fun setSpinnerType(characterMap : Map<String, CharacterGame>) {
 
         val roles = characterMap.keys.toList()
@@ -206,6 +212,9 @@ class DescriptionActivity: AppCompatActivity() {
         }
     }
 
+    /***
+     * Rewrite the complete information on the selected role
+     */
     private fun updateInformation() {
         binding.descriptionText.text = selectedCharacter!!.description
 
@@ -218,6 +227,9 @@ class DescriptionActivity: AppCompatActivity() {
 
     }
 
+    /***
+     * Handle the buttons of edition and deletion
+     */
     private fun activateDeactivateButtons(mode: String) {
         binding.editionButton.isEnabled = !listMode.contains(mode.uppercase())
         binding.deleteButton.isEnabled = !listMode.contains(mode.uppercase())

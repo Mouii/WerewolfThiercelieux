@@ -31,14 +31,27 @@ class CreationActivity : AppCompatActivity() {
     //Object from the xml view to get all the elements
     private lateinit var binding: ActivityCreationBinding
 
+    //Getting all the inputs associated to the fitting id
     private lateinit var mapValues : MutableMap<Int, String>
 
+    //Linked roles
     private var rolesForLink : MutableList<String> = mutableListOf()
 
+    //Actual character in edition mode
     private var characterEdit : CharacterGame? = null
 
-    private var editionMode : Boolean = false
+    //Map for all the help text
+    private lateinit var mapHelper : MutableMap<Int, String>
 
+    //Getting the yes confirmation in its language
+    private val yes : String = getString(R.string.Generic_Yes)
+
+    //Getting the no negation in its language
+    private val no : String = getString(R.string.Generic_No)
+
+    /***
+     * Shared text watcher between all textEdit
+     */
     private fun createSharedTextWatcher(): TextWatcher {
         return object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -56,6 +69,9 @@ class CreationActivity : AppCompatActivity() {
         }
     }
 
+    /***
+     * Spinner adapter on pair to print the correct associate language but keep the key
+     */
     class SpinnerPairAdapter(context: Context, private val items: List<Pair<String,String>>) :
         ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items.map { it.second}) {
 
@@ -78,6 +94,9 @@ class CreationActivity : AppCompatActivity() {
         }
     }
 
+    /***
+     * Shared listener on listener of spinners with pair adapter
+     */
     private fun createPairSharedItemSelectedListener(): AdapterView.OnItemSelectedListener {
         return object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?,
@@ -106,6 +125,9 @@ class CreationActivity : AppCompatActivity() {
         }
     }
 
+    /***
+     * Spinner adapter simple
+     */
     private class SpinnerAdapter(context: Context, items: List<String>) :
         ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items) {
 
@@ -122,6 +144,9 @@ class CreationActivity : AppCompatActivity() {
         }
     }
 
+    /***
+     * Spinner simple listener
+     */
     private fun createSharedItemSelectedListener(): AdapterView.OnItemSelectedListener {
         return object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?,
@@ -140,13 +165,15 @@ class CreationActivity : AppCompatActivity() {
         }
     }
 
-    ///
-    /// Execution on creation of the activity
-    ///
+    /***
+     * Execution on creation of the activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //=============================JSON part retrieving=========================================
 
         // Retrieve the JSON string from the Intent
         val jsonString = intent.getStringExtra("CharacterEdition")
@@ -156,14 +183,15 @@ class CreationActivity : AppCompatActivity() {
 
         val type = object : TypeToken<CharacterGame>() {}.type
 
-        try {
+        characterEdit = try {
             //Get the list from the JSON
             //Even if null, still pass
-            characterEdit = gson.fromJson(jsonString, type)
-            editionMode = characterEdit != null
+            gson.fromJson(jsonString, type)
         } catch (ex : Exception) {
-            characterEdit = null
+            null
         }
+
+        //======================================Role================================================
 
         //List that will contains all the roles
         val listRoles : MutableList<Pair<String, String>> = mutableListOf()
@@ -212,11 +240,23 @@ class CreationActivity : AppCompatActivity() {
             }
         }
 
-        val idList = listOf( binding.soloSpinner.id, binding.nocturneSpinner.id, binding.werewolfSpinner.id
-            , binding.categoryEdit.id, binding.powerSpinner.id, binding.conditionalSpinner.id, binding.actionEdit.id
-            , binding.descriptionEdit.id)
+        //================================Spinners & Edits==========================================
 
-        mapValues = idList.associateWith { "" }.toMutableMap()
+        val elementList = listOf( binding.soloSpinner, binding.nocturneSpinner, binding.werewolfSpinner
+            , binding.categoryEdit, binding.powerSpinner, binding.conditionalSpinner, binding.actionEdit
+            , binding.descriptionEdit)
+
+        val textList = listOf(binding.soloText, binding.nocturneText, binding.werewolfText
+            , binding.categoryText, binding.powerText, binding.conditionalText, binding.actionText
+            , binding.descriptionText)
+
+
+        mapValues = elementList.map { it.id }.toList().associateWith { "" }.toMutableMap()
+
+        //copy map for helper
+        mapHelper = mapValues.toMutableMap()
+
+        setMapHelper(textList)
 
         //List of editText
         val listEdit = listOf(
@@ -226,7 +266,7 @@ class CreationActivity : AppCompatActivity() {
         )
 
         //In creation, we can safely set the edittext
-        if(!editionMode) {
+        if(characterEdit == null) {
             //Affectation
             listEdit.forEach { editText ->
                 setEditText(editText, "")
@@ -253,7 +293,7 @@ class CreationActivity : AppCompatActivity() {
             spinner.onItemSelectedListener = createPairSharedItemSelectedListener()
         }
 
-        val listYN = listOf("", "YES", "NO")
+        val listYN = listOf("", yes, no)
 
         binding.soloSpinner.adapter = SpinnerAdapter(this, listYN)
 
@@ -267,13 +307,15 @@ class CreationActivity : AppCompatActivity() {
         binding.conditionalSpinner.isEnabled = false
         binding.conditionalSpinner.alpha = 0.5f
 
+        //==================================Link Button=============================================
+
         val arrayCheck = BooleanArray(listLink.size) { false }
 
         binding.linkButton.setOnClickListener {
 
             // Show the dialog when spinner is clicked
             AlertDialog.Builder(this)
-                .setTitle("Choose Options")
+                .setTitle(R.string.CreationView_Linked)
                 .setMultiChoiceItems(
                     listLink.toTypedArray()
                     , arrayCheck) { _, index, isChecked ->
@@ -283,7 +325,7 @@ class CreationActivity : AppCompatActivity() {
                     else
                         rolesForLink.remove(listLink[index])
                 }
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(getString(R.string.Generic_Cancel), null)
                 .show()
         }
 
@@ -295,15 +337,16 @@ class CreationActivity : AppCompatActivity() {
             finish()
         }
 
-        if(editionMode) {
+        //Edition mode, fulfill all the places
+        if(characterEdit != null) {
             val pairPosition = listRoles.map { it.first }.indexOf(characterEdit!!.className)
             binding.roleSpinner.setSelection(pairPosition)
             binding.roleSpinner.isEnabled = false
             binding.roleSpinner.alpha = 0.5f
 
-            setPositionOfSpinner(binding.soloSpinner, listYN, if(characterEdit!!.isSolo) "YES" else "NO")
-            setPositionOfSpinner(binding.werewolfSpinner, listYN, if(characterEdit!!.isWerewolf) "YES" else "NO")
-            setPositionOfSpinner(binding.nocturneSpinner, listYN, if(characterEdit!!.isNocturnal) "YES" else "NO")
+            setPositionOfSpinner(binding.soloSpinner, listYN, if(characterEdit!!.isSolo) yes else no)
+            setPositionOfSpinner(binding.werewolfSpinner, listYN, if(characterEdit!!.isWerewolf) yes else no)
+            setPositionOfSpinner(binding.nocturneSpinner, listYN, if(characterEdit!!.isNocturnal) yes else no)
             setPositionOfSpinner(binding.powerSpinner, PowerState.entries.map { it.value}, characterEdit!!.powerState.value)
             setPositionOfSpinner(binding.conditionalSpinner, ConditionalActivation.entries.map { it.value}, characterEdit!!.condition.value)
 
@@ -320,7 +363,6 @@ class CreationActivity : AppCompatActivity() {
                 }
             }
 
-
             listLink.forEachIndexed { index, element ->
                 if(characterEdit!!.rolesToStick.contains(element)){
                     arrayCheck[index] = true
@@ -330,6 +372,9 @@ class CreationActivity : AppCompatActivity() {
 
     }
 
+    /***
+     * Set the position of the spinner in parameter
+     */
     private fun setPositionOfSpinner(spinner : Spinner, list: List<String>, data : String) {
         val position = list.indexOf(data)
         if(position > -1) {
@@ -338,9 +383,9 @@ class CreationActivity : AppCompatActivity() {
 
     }
 
-    ///
-    /// This function apply a picture with an image view
-    ///
+    /***
+     * This function apply a picture with an image view
+     */
     private fun setImagePicture(characterGame : CharacterGame): ImageView {
         //Set the resource and image
         val imageView = ImageView(this).apply {
@@ -352,17 +397,21 @@ class CreationActivity : AppCompatActivity() {
         return imageView
     }
 
+    /***
+     * Create the new role. If it was an edition, delete the previous one and create the new
+     * This can allow a change of key
+     */
     private fun createOrUpdateNewRole() {
 
         //In edition mode, we delete the previous one
-        if(editionMode)
+        if(characterEdit != null)
             WorkerEasier.deleteCharacterFromList(characterEdit!!)
 
         val descriptionRole = mapValues[binding.descriptionEdit.id]!!
         val actionRole = mapValues[binding.actionEdit.id]!!
-        val isSoloRole = mapValues[binding.soloSpinner.id] == "YES"
-        val nocturneRole = mapValues[binding.nocturneSpinner.id] == "YES"
-        val isWerewolfRole = mapValues[binding.werewolfSpinner.id] == "YES"
+        val isSoloRole = mapValues[binding.soloSpinner.id] == yes
+        val nocturneRole = mapValues[binding.nocturneSpinner.id] == yes
+        val isWerewolfRole = mapValues[binding.werewolfSpinner.id] == yes
         val powerRole = PowerState.valueOf(mapValues[binding.powerSpinner.id]!!)
         val conditionRole = ConditionalActivation.valueOf(mapValues[binding.conditionalSpinner.id]!!)
         val stickRole = rolesForLink.toTypedArray()
@@ -392,6 +441,42 @@ class CreationActivity : AppCompatActivity() {
         finish()
     }
 
+    /***
+     * Setting the map helper for tips on each part of the creation
+     */
+    private fun setMapHelper(list : List<TextView>) {
+        list.forEach { view ->
+            when(view.id) {
+                binding.soloText.id -> mapHelper[view.id] = getString(R.string.CreationView_SoloText)
+                binding.nocturneText.id -> mapHelper[view.id] = getString(R.string.CreationView_NocturneText)
+                binding.werewolfText.id -> mapHelper[view.id] = getString(R.string.CreationView_WerewolfText)
+                binding.categoryText.id -> mapHelper[view.id] = getString(R.string.CreationView_ModeText)
+                binding.powerText.id -> mapHelper[view.id] = getString(R.string.CreationView_PowerText)
+                binding.conditionalText.id -> mapHelper[view.id] = getString(R.string.CreationView_ConditionText)
+                binding.actionText.id -> mapHelper[view.id] = getString(R.string.CreationView_ActionText)
+                binding.descriptionText.id -> mapHelper[view.id] = getString(R.string.CreationView_DescriptionText)
+            }
+
+            view.setOnClickListener {
+
+                val message = mapHelper[view.id]
+
+                // Show the help fitting when clicking
+                AlertDialog.Builder(this)
+                    .setTitle(view.text)
+                    .setMessage(message)
+                    .setNegativeButton(getString(R.string.Generic_Okay), null)
+                    .show()
+
+            }
+
+        }
+    }
+
+    /***
+     * Set the edit text with a possible text in case of edition
+     * Also put the listener on it to keep values for saving
+     */
     private fun setEditText(editText: EditText, text: String) {
 
         editText.setText(text)
@@ -412,6 +497,10 @@ class CreationActivity : AppCompatActivity() {
         editText.isFocusableInTouchMode = true
     }
 
+    /***
+     * Add the info on the associate map and enable/disable the button
+     * for the validation of the formula.
+     */
     private fun addToText(key: Int, value: String){
         mapValues[key] = value
 

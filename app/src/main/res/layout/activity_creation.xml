@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,7 +17,7 @@
         android:textStyle="bold"
         android:textSize="40sp"
         android:layout_gravity="center_horizontal"
-        android:text="@string/CreationView_Title"/>
+        android:text="@string/CreationView_Title" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                     android:layout_height="200dp"
                     android:layout_gravity="center_horizontal"
                     android:src="@android:color/transparent"
-                    android:contentDescription="@string/CreationView_Picture"/>
+                    android:contentDescription="@string/CreationView_Picture" />
 
                 <Spinner
                     android:id="@+id/roleSpinner"
@@ -71,13 +72,15 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/soloText"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:gravity="center"
+                        android:drawablePadding="10dp"
+                        android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_SoloSpinner"
-                        />
+                        app:drawableEndCompat="@drawable/helpicon" />
 
                     <Spinner
                         android:id="@+id/soloSpinner"
@@ -97,13 +100,16 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/nocturneText"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
                         android:gravity="center"
                         android:textColor="@color/white"
+                        android:drawablePadding="10dp"
+                        android:layout_gravity="center_horizontal"
                         android:text="@string/CreationView_NocturneSpinner"
-                        />
+                        app:drawableEndCompat="@drawable/helpicon" />
 
                     <Spinner
                         android:id="@+id/nocturneSpinner"
@@ -123,13 +129,15 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/werewolfText"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:gravity="center"
+                        android:drawablePadding="10dp"
+                        android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_WerewolfSpinner"
-                        />
+                        app:drawableEndCompat="@drawable/helpicon" />
 
                     <Spinner
                         android:id="@+id/werewolfSpinner"
@@ -149,13 +157,15 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/categoryText"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:gravity="center"
+                        android:drawablePadding="10dp"
+                        android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_Mode"
-                        />
+                        app:drawableEndCompat="@drawable/helpicon" />
 
                     <EditText
                         android:id="@+id/categoryEdit"
@@ -176,13 +186,15 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/powerText"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:gravity="center"
+                        android:drawablePadding="10dp"
+                        android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_PowerSpinner"
-                        />
+                        app:drawableEndCompat="@drawable/helpicon" />
 
                     <Spinner
                         android:id="@+id/powerSpinner"
@@ -202,13 +214,15 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/conditionalText"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:gravity="center"
+                        android:drawablePadding="10dp"
+                        android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_ConditionSpinner"
-                        />
+                        app:drawableEndCompat="@drawable/helpicon" />
 
                     <Spinner
                         android:id="@+id/conditionalSpinner"
@@ -228,13 +242,15 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/linkText"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:gravity="center"
+                        android:drawablePadding="10dp"
+                        android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_Linked"
-                        />
+                        app:drawableEndCompat="@drawable/helpicon" />
 
                     <Button
                         android:id="@+id/linkButton"
@@ -251,13 +267,15 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/actionText"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:gravity="center"
+                        android:drawablePadding="10dp"
+                        android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_Action"
-                        />
+                        app:drawableEndCompat="@drawable/helpicon" />
 
                     <EditText
                         android:id="@+id/actionEdit"
@@ -281,13 +299,15 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/descriptionText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:gravity="center"
+                        android:drawablePadding="10dp"
+                        android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_Description"
-                        />
+                        app:drawableEndCompat="@drawable/helpicon" />
 
                     <EditText
                         android:id="@+id/descriptionEdit"
@@ -333,7 +353,5 @@
             android:text="@string/Generic_Back"/>
 
     </LinearLayout>
-
-
 
 </LinearLayout>

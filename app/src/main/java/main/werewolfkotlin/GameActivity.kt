@@ -16,7 +16,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import main.werewolfkotlin.databinding.ActivityGameBinding
 
-//Phase of the game
+/***
+ * //Phase of the game
+ */
 enum class EnumPhase {
     SLEEPING,
     NIGHT,
@@ -25,8 +27,14 @@ enum class EnumPhase {
     SUNSET
 }
 
+/***
+ * Map on information to affect and keep. Is only used by activities deployed during the game
+ */
 val infoMap: MutableMap<Int, String> = mutableMapOf()
 
+/***
+ * Contains the list of active roles that are 'consumable'. Is only used by activities deployed during the game
+ */
 var roleListConsumable : MutableMap<CharacterGame, Boolean>  = mutableMapOf()
 
 class GameActivity : AppCompatActivity() {
@@ -59,9 +67,9 @@ class GameActivity : AppCompatActivity() {
     //Game turn tracing
     private var gameTurn : Int = 0
 
-    ///
-    /// Execution on creation of the activity
-    ///
+    /***
+     * Execution on creation of the activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
@@ -153,6 +161,9 @@ class GameActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /***
+     * On restart override. Allow updating of actual turn in case a change occurred in another activity
+     */
     override fun onRestart() {
         super.onRestart()
 
@@ -183,16 +194,19 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    /***
+     * Override of destroying
+     */
     override fun onDestroy() {
         super.onDestroy()
         infoMap.clear()
         roleListConsumable.clear()
     }
 
-    ///
-    /// Create the good list of characters
-    /// GSon doesn't handle polymorphism, so we recreate each object
-    ///
+    /***
+     * Create the good list of characters
+     * GSon doesn't handle polymorphism, so we recreate each object
+     */
     private fun deserializeProperly(chars : List<CharacterGame>) {
         chars.forEach { character ->
 
@@ -229,9 +243,9 @@ class GameActivity : AppCompatActivity() {
 
     }
 
-    ///
-    /// Show the next night characters
-    ///
+    /***
+     * Show the next night characters
+     */
     private fun showNextCharacters() {
         //Always get max order
         val maxKey: Int = characterGames.maxOf { x -> x.order }
@@ -272,9 +286,9 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    ///
-    /// Fulfill the different actions
-    ///
+    /***
+     * Fulfill the different actions
+     */
     private fun setActions(characterGames : List<CharacterGame>) {
         //Basic string
         var description = ""
@@ -286,9 +300,9 @@ class GameActivity : AppCompatActivity() {
         binding.gameStatusTextView.text = description
     }
 
-    ///
-    /// Set the imageView to show
-    ///
+    /***
+     * Set the imageView to show
+     */
     private fun setImagePicture(characterGame : CharacterGame, withListener: Boolean): ImageView {
         //Create the imageView with some parameters
         val imageView = ImageView(this).apply {
@@ -322,9 +336,9 @@ class GameActivity : AppCompatActivity() {
         return imageView
     }
 
-    ///
-    /// Set all the pictures of the gridlayout
-    ///
+    /***
+     * Set all the pictures of the gridlayout
+     */
     private fun setPictures(characterGameList: List<CharacterGame>, withListener: Boolean) {
         //Refresh the gridLayout by clearing it
         binding.gridCharacterView.removeAllViewsInLayout()
@@ -348,23 +362,23 @@ class GameActivity : AppCompatActivity() {
 
     }
 
-    ///
-    /// Set the background image
-    ///
+    /***
+     * Set the background image
+     */
     private fun setBackground(phase: EnumPhase) {
         binding.root.setBackgroundResource(WorkerEasier.getBackgroundImage(phase))
     }
 
-    ///
-    /// Update the header with turn and phase
-    ///
+    /***
+     * Update the header with turn and phase
+     */
     private fun updateHeader() {
         binding.turnPhase.text = String.format(getString(R.string.GameView_Header), phase, gameTurn)
     }
 
-    ///
-    /// Remove the dead from the active list
-    ///
+    /***
+     * Remove the dead from the active list
+     */
     private fun removeDeadCharacters() {
         if(deadCharacterGames.size > 0) {
             for (characterDead in deadCharacterGames) {
@@ -391,9 +405,9 @@ class GameActivity : AppCompatActivity() {
 
     }
 
-    ///
-    /// Activate the special conditions
-    ///
+    /***
+     * Activate the special conditions
+     */
     private fun specialUpdatesAfterDeath() {
         characterGames.filter { it.powerState == PowerState.CONDITIONAL }.forEach { x ->
             when(x.condition) {
@@ -440,18 +454,18 @@ class GameActivity : AppCompatActivity() {
 
     }
 
-    ///
-    /// Setup the wild child for the turn of werewolf but not awaken
-    ///
+    /***
+     * Setup the wild child for the turn of werewolf but not awaken
+     */
     private fun setupWildChild(child: CharacterGame) {
         child.order = werewolfTurn
         child.isWerewolf = true
         child.isNocturnal = false
     }
 
-    ///
-    /// Global function handling all phases
-    ///
+    /***
+     * Global function handling all phases
+     */
     private fun nextPhase() {
         when(phase) {
             EnumPhase.SLEEPING -> nightPhase()
@@ -462,9 +476,9 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    ///
-    /// Actions on sleeping Phase
-    ///
+    /***
+     * Actions on sleeping Phase
+     */
     private fun sleepingPhase() {
         phase = EnumPhase.SLEEPING //Set the phase
         setBackground(phase)
@@ -475,9 +489,9 @@ class GameActivity : AppCompatActivity() {
         binding.gridCharacterView.removeAllViewsInLayout() //No characters showed
     }
 
-    ///
-    /// Actions on night Phase
-    ///
+    /***
+     * Actions on night Phase
+     */
     private fun nightPhase() {
         phase = EnumPhase.NIGHT // Night phase
         setBackground(phase)
@@ -485,9 +499,9 @@ class GameActivity : AppCompatActivity() {
         showNextCharacters() // Start showing night roles at the first moment
     }
 
-    ///
-    /// Actions on waking Phase
-    ///
+    /***
+     * Actions on waking Phase
+     */
     private fun wakingPhase() {
         phase = EnumPhase.DAWN // Waking phase
         setBackground(phase)
@@ -496,9 +510,9 @@ class GameActivity : AppCompatActivity() {
         setPictures(characterGames, true) // Set the pictures WITH listeners
     }
 
-    ///
-    /// Actions on day Phase
-    ///
+    /***
+     * Actions on day Phase
+     */
     private fun dayPhase() {
         phase = EnumPhase.DAY // Day phase
         binding.gameStatusTextView.text = getString(R.string.GameView_phaseDay)// Day message
@@ -508,9 +522,9 @@ class GameActivity : AppCompatActivity() {
         setPictures(characterGames, true) // Set pictures WITH Listeners
     }
 
-    ///
-    /// Actions on evening Phase
-    ///
+    /***
+     * Actions on evening Phase
+     */
     private fun eveningPhase() {
         phase = EnumPhase.SUNSET // Evening phase
         binding.gameStatusTextView.text = getString(R.string.GameView_phaseEvening) // Evening message

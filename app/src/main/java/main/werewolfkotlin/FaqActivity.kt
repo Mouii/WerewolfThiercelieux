@@ -11,22 +11,26 @@ class FaqActivity : AppCompatActivity() {
     //Object from the xml view to get all the elements
     private lateinit var binding: ActivityFaqBinding
 
-    ///
-    /// Execution on creation of the activity
-    ///
+    /***
+     * Execution on creation of the activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFaqBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        for(i in 1..16) {
+        var index = 1
 
-            val pair : Pair<Int, Int>? = getQuestionAnswer(i)
+        var pair : Pair<String, String>? = null
+
+        do {
+
+            pair = getQuestionAnswer(index)
 
             if(pair != null) {
 
                 val textAsk = TextView(this).apply {
-                    text = getString(pair.first)
+                    text = pair.first
                     setTextColor(Color.WHITE)
                     textSize = 20f
                 }
@@ -34,45 +38,34 @@ class FaqActivity : AppCompatActivity() {
                 binding.gridLayout.addView(textAsk)
 
                 val textAns = TextView(this).apply {
-                    text = getString(pair.second)
+                    text = pair.second
                     setTextColor(Color.WHITE)
                     textSize = 15f
                 }
 
                 binding.gridLayout.addView(textAns)
             }
-        }
+
+            index++
+        } while(pair != null)
 
         binding.returnButton.setOnClickListener {
             finish()
         }
     }
 
+    /***
+     * Return the associate string for the complete FAQ
+     */
+    private fun getQuestionAnswer(number : Int) : Pair<String, String>? {
 
-    private fun getQuestionAnswer(number : Int) : Pair<Int, Int>? {
+        val question = WorkerEasier.getStringByKey("FaqView_question".plus(number))
+        val answer = WorkerEasier.getStringByKey("FaqView_answer".plus(number))
 
-        when(number) {
-            1 -> return Pair(R.string.FaqView_question1, R.string.FaqView_answer1)
-            2 -> return Pair(R.string.FaqView_question2, R.string.FaqView_answer2)
-            3 -> return Pair(R.string.FaqView_question3, R.string.FaqView_answer3)
-            4 -> return Pair(R.string.FaqView_question4, R.string.FaqView_answer4)
-            5 -> return Pair(R.string.FaqView_question5, R.string.FaqView_answer5)
-            6 -> return Pair(R.string.FaqView_question6, R.string.FaqView_answer6)
-            7 -> return Pair(R.string.FaqView_question7, R.string.FaqView_answer7)
-            8 -> return Pair(R.string.FaqView_question8, R.string.FaqView_answer8)
-            9 -> return Pair(R.string.FaqView_question9, R.string.FaqView_answer9)
-            10 -> return Pair(R.string.FaqView_question10, R.string.FaqView_answer10)
-            11 -> return Pair(R.string.FaqView_question11, R.string.FaqView_answer11)
-            12 -> return Pair(R.string.FaqView_question12, R.string.FaqView_answer12)
-            13 -> return Pair(R.string.FaqView_question13, R.string.FaqView_answer13)
-            14 -> return Pair(R.string.FaqView_question14, R.string.FaqView_answer14)
-            15 -> return Pair(R.string.FaqView_question15, R.string.FaqView_answer15)
-            16 -> return Pair(R.string.FaqView_question16, R.string.FaqView_answer16)
-        }
+        if(question == getString(R.string.Generic_NotFoundedString)
+            || answer == getString(R.string.Generic_NotFoundedString))
+            return null
 
-        return null
+        return Pair(question, answer)
     }
-
-
-
 }

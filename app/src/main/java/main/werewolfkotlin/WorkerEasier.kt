@@ -3,6 +3,15 @@ package main.werewolfkotlin
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.TextView
 import androidx.core.content.ContextCompat.getString
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -10,19 +19,28 @@ import kotlinx.serialization.json.Json
 import model.*
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Locale
 
 class WorkerEasier {
 
     companion object {
 
-        private var sourceFilename : String = "Roles-default.json"
+        //Default asset source name
+        private val sourceFilename : String = "Roles-default.json"
 
+        //Will have the complete JSON path for the roles
         private lateinit var completeJSONPath : String
 
+        //List of languages handle by the application
+        val listLang : List<String> = listOf("fr", "en")
+
         @SuppressLint("StaticFieldLeak")
+        //Not recommended, but we keep the first context here to use it better
+        //Possible because each activity except the first one destroy itself once the user quit it
         private var contextHolder : Context? = null
 
         @Serializable
+        //Data class for association with the json file
         data class CharacterJSON (
             val description : String,
             val action : String,
@@ -34,6 +52,7 @@ class WorkerEasier {
             val rolesToStick: Array<String>,
             val maxOccurrence: Int
         ) {
+            //Rewriting of the equals function
             override fun equals(other: Any?): Boolean {
                 if (this === other) return true
                 if (javaClass != other?.javaClass) return false
@@ -52,6 +71,7 @@ class WorkerEasier {
                 return true
             }
 
+            //Rewriting of the hashcode. Necessary for the data class to be valid
             override fun hashCode(): Int {
                 var result = description.hashCode()
                 result = 31 * result + action.hashCode()
@@ -66,16 +86,33 @@ class WorkerEasier {
         }
 
         @Serializable
+        //Another data class that simulate the association
         data class RoleJSON (
             val nameRole: String,
             val roleValues: MutableMap<String, CharacterJSON>
         )
 
+        //MOST IMPORTANT LIST! IT'S THE LIST OF THE CHARACTERS IN THE GAME
         var characterListType : MutableList<Pair<String, MutableMap<String, CharacterGame>>> = mutableListOf()
 
-        fun resetCharacters(context: Activity): Boolean {
+        /***
+         * Function that delete all existing characters in the file read by the app
+         * and reload the default one from the json in the assets
+         */
+        fun resetCharacters(): Boolean {
+
+            //Always getting the language for the name
+            val lang = Locale.getDefault().language
+
+            //Copy of name. The sourceFilename must stay fixed
+            var sourceFile = sourceFilename
+
+            //If the language is handled
+            if(listLang.contains(lang))
+                sourceFile = replaceNameFileWithLang(sourceFile, lang)
+
             return try {
-                context.assets.open(sourceFilename).use { inputStream ->
+                contextHolder!!.assets.open(sourceFile).use { inputStream ->
 
                     val file = File(completeJSONPath)
 
@@ -102,14 +139,29 @@ class WorkerEasier {
             }
         }
 
+        /***
+         * Main function to import the characters from the json
+         * into the list used by the app
+         */
         fun setCharactersFromJson(filename : String, context: Context? = null) {
 
-            if(context != null)
+            if(context != null) {
+
+                completeJSONPath = filename
+
                 contextHolder = context.applicationContext
 
-            completeJSONPath = filename
+                val sharedPreferences = contextHolder!!.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
 
-            val jsonString = File(filename).bufferedReader().use { it.readText() }
+                //Return by default en!
+                val lang = sharedPreferences.getString("language", "en")
+
+                if(listLang.contains(lang) && lang != "en") {
+                    completeJSONPath = replaceNameFileWithLang(completeJSONPath, lang!!)
+                }
+            }
+
+            val jsonString = File(completeJSONPath).bufferedReader().use { it.readText() }
 
             //Getting the complete json
             val json = Json.decodeFromString<List<RoleJSON>>(jsonString)
@@ -148,16 +200,35 @@ class WorkerEasier {
 
         }
 
+        /***
+         * Add the fitting suffix language in order to get the good file
+         */
+        private fun replaceNameFileWithLang(filename : String, lang : String): String {
+            val lastIndex = filename.lastIndexOf("/")
+            val firstPart = filename.substring(0, lastIndex + 1)
+            var realName = filename.substring(lastIndex + 1 )
+            realName = realName.replace(".json", "-".plus(lang).plus(".json"))
+
+            return firstPart.plus(realName)
+        }
+
+        /***
+         * Allow getting a string resource by a string name
+         */
         fun getStringByKey(key : String) : String {
             if(contextHolder != null) {
                 val idRes = contextHolder!!.resources.getIdentifier(key, "string", contextHolder!!.packageName)
 
-                return if (idRes != 0) contextHolder!!.getString(idRes) else "String not found"
+                return if (idRes != 0) contextHolder!!.getString(idRes) else contextHolder!!.getString(R.string.Generic_NotFoundedString)
             } else
                 return ""
 
         }
 
+        /***
+         * Getting the string resource from its key
+         * Mainly used for places that aren't activities
+         */
         fun getString(key : Int) : String  {
             return if(contextHolder != null)
                 contextHolder!!.getString(key)
@@ -165,6 +236,20 @@ class WorkerEasier {
                 ""
         }
 
+        /***
+         * When resetting language, we reset the path and context
+         */
+        fun resetDataSaved() {
+
+            //Reset important values for restarting
+            contextHolder = null
+            completeJSONPath = ""
+
+        }
+
+        /***
+         * Add a new character even from edition mode
+         */
         fun addOrUpdateNewCharacter(character: CharacterGame, role: String, type: String) {
             val mapValue = characterListType.first { it.first == role }.second
             mapValue[type] = character
@@ -194,6 +279,11 @@ class WorkerEasier {
             updateJSON.writeText(Json.encodeToString(json))
         }
 
+        /***
+         * Delete a character
+         * Note that it can't delete the characters that were wrote by default
+         * except on hacking
+         */
         fun deleteCharacterFromList(character: CharacterGame) {
             val mapCharacter = characterListType.first { it.first == character.className }.second
 
@@ -214,6 +304,9 @@ class WorkerEasier {
             updateJSON.writeText(Json.encodeToString(json))
         }
 
+        /***
+         * Regenerate the good object character from its role
+         */
         fun getGoodCharacterCast(character : CharacterGame, role: String) : CharacterGame {
             when(role) {
                 "Actor" -> return Actor(character.description
@@ -574,6 +667,9 @@ class WorkerEasier {
             return character
         }
 
+        /***
+         * Return the associate picture from the object itself
+         */
         fun getCharacterImage(classObject : CharacterGame) : Int {
             when(classObject) {
                 is Actor -> {
@@ -677,6 +773,9 @@ class WorkerEasier {
             return 0
         }
 
+        /***
+         * Handle background images for the game
+         */
         fun getBackgroundImage(phase: EnumPhase) : Int {
             return when(phase) {
                 EnumPhase.SLEEPING -> R.drawable.game_activity_night
