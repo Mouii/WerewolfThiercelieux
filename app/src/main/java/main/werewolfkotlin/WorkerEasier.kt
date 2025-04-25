@@ -32,7 +32,7 @@ class WorkerEasier {
         private lateinit var completeJSONPath : String
 
         //List of languages handle by the application
-        val listLang : List<String> = listOf("fr", "en")
+        val listLang : List<String> = listOf("en", "fr")
 
         @SuppressLint("StaticFieldLeak")
         //Not recommended, but we keep the first context here to use it better
@@ -101,14 +101,16 @@ class WorkerEasier {
          */
         fun resetCharacters(): Boolean {
 
-            //Always getting the language for the name
-            val lang = Locale.getDefault().language
-
             //Copy of name. The sourceFilename must stay fixed
             var sourceFile = sourceFilename
 
+            val sharedPreferences = contextHolder!!.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+
+            //Return by default en!
+            val lang = sharedPreferences.getString("language", "en")!!
+
             //If the language is handled
-            if(listLang.contains(lang))
+            if(listLang.contains(lang) && lang != "en")
                 sourceFile = replaceNameFileWithLang(sourceFile, lang)
 
             return try {
@@ -154,10 +156,10 @@ class WorkerEasier {
                 val sharedPreferences = contextHolder!!.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
 
                 //Return by default en!
-                val lang = sharedPreferences.getString("language", "en")
+                val lang = sharedPreferences.getString("language", "en")!!
 
                 if(listLang.contains(lang) && lang != "en") {
-                    completeJSONPath = replaceNameFileWithLang(completeJSONPath, lang!!)
+                    completeJSONPath = replaceNameFileWithLang(completeJSONPath, lang)
                 }
             }
 
@@ -219,7 +221,7 @@ class WorkerEasier {
             if(contextHolder != null) {
                 val idRes = contextHolder!!.resources.getIdentifier(key, "string", contextHolder!!.packageName)
 
-                return if (idRes != 0) contextHolder!!.getString(idRes) else contextHolder!!.getString(R.string.Generic_NotFoundedString)
+                return if (idRes != 0) contextHolder!!.getString(idRes) else ""
             } else
                 return ""
 

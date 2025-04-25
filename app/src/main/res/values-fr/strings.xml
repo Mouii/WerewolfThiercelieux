@@ -125,10 +125,10 @@
     <string name="GameView_phaseEvening">Le dîner est servi ! Attention, ces villageois sont encore vivants, mais leurs ennemis le sont tout autant…</string>
 
     <!-- Description View -->
-    <string name="DescriptionView_CreationButton">Créer un rôle</string>
-    <string name="DescriptionView_EditionButton">Modifier le rôle</string>
-    <string name="DescriptionView_DeletionButton">Supprimer le rôle</string>
-    <string name="DescriptionView_ResetButton">Réinitialiser les rôles</string>
+    <string name="DescriptionView_CreationButton">Créer</string>
+    <string name="DescriptionView_EditionButton">Modifier</string>
+    <string name="DescriptionView_DeletionButton">Supprimer</string>
+    <string name="DescriptionView_ResetButton">Réinitialiser</string>
     <string name="DescriptionView_statDescriptionSoloYes">Solitaire : Oui,</string>
     <string name="DescriptionView_statDescriptionSoloNo">Solitaire : Non,</string>
     <string name="DescriptionView_statDescriptionWakeUpYes">Se réveille la nuit : Oui,</string>

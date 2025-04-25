@@ -44,10 +44,10 @@ class CreationActivity : AppCompatActivity() {
     private lateinit var mapHelper : MutableMap<Int, String>
 
     //Getting the yes confirmation in its language
-    private val yes : String = getString(R.string.Generic_Yes)
+    private lateinit var yes : String
 
     //Getting the no negation in its language
-    private val no : String = getString(R.string.Generic_No)
+    private lateinit var no : String
 
     /***
      * Shared text watcher between all textEdit
@@ -172,6 +172,9 @@ class CreationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        yes = getString(R.string.Generic_Yes)
+        no = getString(R.string.Generic_No)
 
         //=============================JSON part retrieving=========================================
 

@@ -125,10 +125,10 @@
     <string name="GameView_phaseEvening">Dinner is served! But watch out, these villagers are alive, so are their enemies…</string>
 
     <!-- Description View -->
-    <string name="DescriptionView_CreationButton">Create a role</string>
-    <string name="DescriptionView_EditionButton">Edit role</string>
-    <string name="DescriptionView_DeletionButton">Delete role</string>
-    <string name="DescriptionView_ResetButton">Reset roles</string>
+    <string name="DescriptionView_CreationButton">Create</string>
+    <string name="DescriptionView_EditionButton">Edit</string>
+    <string name="DescriptionView_DeletionButton">Delete</string>
+    <string name="DescriptionView_ResetButton">Reset</string>
     <string name="DescriptionView_statDescriptionSoloYes">Solitary : Yes,</string>
     <string name="DescriptionView_statDescriptionSoloNo">Solitary : No,</string>
     <string name="DescriptionView_statDescriptionWakeUpYes">Wakes up at night : Yes,</string>

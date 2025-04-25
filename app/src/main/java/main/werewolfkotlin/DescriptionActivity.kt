@@ -156,10 +156,10 @@ class DescriptionActivity: AppCompatActivity() {
         //in direction of the game activity
         val intent = Intent(this, CreationActivity::class.java)
 
-        if(editMode) {
+        /*if(editMode) {
             val gsonCharacter = Gson().toJson(selectedCharacter)
             intent.putExtra("CharacterEdition", gsonCharacter)
-        }
+        }*/
 
 
         //Start the other activity

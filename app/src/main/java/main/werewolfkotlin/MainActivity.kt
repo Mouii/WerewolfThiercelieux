@@ -42,8 +42,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // Apply locale before setting the content view
         val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-        val selectedLanguage = sharedPreferences.getString("language", "en")!!
-        updateLocal(selectedLanguage)
+        val selectedLanguage = sharedPreferences.getString("language", null)
+
+        if(selectedLanguage != null) {
+            val updatedContext = updateLocal(selectedLanguage, this)
+
+            // Apply new configuration to the app resources
+            resources.updateConfiguration(updatedContext.resources.configuration, updatedContext.resources.displayMetrics)
+        }
 
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -121,6 +127,8 @@ class MainActivity : AppCompatActivity() {
                         // Save the selection
                         sharedPreferences.edit().putInt("spinner_position", position).apply()
 
+                        WorkerEasier.characterListType.clear()
+
                         recreate()
                     }
             }
@@ -136,21 +144,21 @@ class MainActivity : AppCompatActivity() {
      * Change the language of the application
      * lang : String
      */
-    private fun updateLocal(lang : String) {
+    private fun updateLocal(lang : String, context : Context) : Context {
 
         //Change local
         val locale = Locale(lang)
         Locale.setDefault(locale)
 
         //Change configuration
-        val config = Configuration()
+        val config = Configuration(context.resources.configuration)
         config.setLocale(locale)
 
         //Reset important values for restarting
         WorkerEasier.resetDataSaved()
 
         // Create and return a new context with the updated locale
-        return this.resources.updateConfiguration(config, this.resources.displayMetrics)
+        return context.createConfigurationContext(config)
 
     }
 

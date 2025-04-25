@@ -62,8 +62,7 @@ class FaqActivity : AppCompatActivity() {
         val question = WorkerEasier.getStringByKey("FaqView_question".plus(number))
         val answer = WorkerEasier.getStringByKey("FaqView_answer".plus(number))
 
-        if(question == getString(R.string.Generic_NotFoundedString)
-            || answer == getString(R.string.Generic_NotFoundedString))
+        if(question == "" || answer == "")
             return null
 
         return Pair(question, answer)
