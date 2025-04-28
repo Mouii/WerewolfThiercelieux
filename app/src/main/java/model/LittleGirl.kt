@@ -1,6 +1,7 @@
 package model
 
 class LittleGirl(
+    name: String,
     description: String,
     action: String,
     isSolo: Boolean,
@@ -13,6 +14,7 @@ class LittleGirl(
     maxOccurrence: Int,
     characterMode: String
 ) : CharacterGame(
+    name,
     description,
     action,
     isSolo,
@@ -27,5 +29,5 @@ class LittleGirl(
 ) {
 
 
-    override fun clone() = LittleGirl(this.description, this.action, this.isSolo, this.isNocturnal, this.powerState, this.condition, this.isWerewolf, this.rolesToStick, this.order, this.maxOccurrence, this.mode)
+    override fun clone() = LittleGirl(this.name, this.description, this.action, this.isSolo, this.isNocturnal, this.powerState, this.condition, this.isWerewolf, this.rolesToStick, this.order, this.maxOccurrence, this.mode)
 }

@@ -1,6 +1,7 @@
 package model
 
 class BearTamer(
+    name: String,
     description: String,
     action: String,
     isSolo: Boolean,
@@ -13,6 +14,7 @@ class BearTamer(
     maxOccurrence: Int,
     characterMode: String
 ) : CharacterGame(
+    name,
     description,
     action,
     isSolo,
@@ -26,6 +28,6 @@ class BearTamer(
     characterMode
 ) {
 
-    override fun clone() = BearTamer(this.description, this.action, this.isSolo, this.isNocturnal, this.powerState, this.condition, this.isWerewolf, this.rolesToStick, this.order, this.maxOccurrence, this.mode)
+    override fun clone() = BearTamer(this.name, this.description, this.action, this.isSolo, this.isNocturnal, this.powerState, this.condition, this.isWerewolf, this.rolesToStick, this.order, this.maxOccurrence, this.mode)
 
 }

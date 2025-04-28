@@ -1,6 +1,7 @@
 package model
 
 class Brother(
+    name: String,
     description: String,
     action: String,
     isSolo: Boolean,
@@ -13,6 +14,7 @@ class Brother(
     maxOccurrence: Int,
     characterMode: String
 ) : CharacterGame(
+    name,
     description,
     action,
     isSolo,
@@ -26,5 +28,5 @@ class Brother(
     characterMode
 ) {
 
-    override fun clone() = Brother(this.description, this.action, this.isSolo, this.isNocturnal, this.powerState, this.condition, this.isWerewolf, this.rolesToStick, this.order, this.maxOccurrence, this.mode)
+    override fun clone() = Brother(this.name, this.description, this.action, this.isSolo, this.isNocturnal, this.powerState, this.condition, this.isWerewolf, this.rolesToStick, this.order, this.maxOccurrence, this.mode)
 }

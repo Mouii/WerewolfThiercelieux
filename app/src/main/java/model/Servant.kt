@@ -1,6 +1,7 @@
 package model
 
 class Servant(
+    name: String,
     description: String,
     action: String,
     isSolo: Boolean,
@@ -13,6 +14,7 @@ class Servant(
     maxOccurrence: Int,
     characterMode: String
 ) : CharacterGame(
+    name,
     description,
     action,
     isSolo,
@@ -26,6 +28,6 @@ class Servant(
     characterMode
 ) {
 
-    override fun clone() = Servant(this.description, this.action, this.isSolo, this.isNocturnal, this.powerState, this.condition, this.isWerewolf, this.rolesToStick, this.order, this.maxOccurrence, this.mode)
+    override fun clone() = Servant(this.name, this.description, this.action, this.isSolo, this.isNocturnal, this.powerState, this.condition, this.isWerewolf, this.rolesToStick, this.order, this.maxOccurrence, this.mode)
 
 }

@@ -73,7 +73,7 @@ class DescriptionActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         // Data for the dropdown list
-        val options = WorkerEasier.characterListType.map { x-> Pair(x.first, WorkerEasier.getStringByKey(x.first)) }.toList()
+        val options = WorkerEasier.characterListType.map { x-> Pair(x.first, x.second.values.first().name) }.toList()
 
         val roleAdapter = SpinnerPairAdapter(this, options)
 
@@ -126,7 +126,7 @@ class DescriptionActivity: AppCompatActivity() {
                 .setTitle(getString(R.string.DescriptionView_DialogTitle))
                 .setMessage(getString(R.string.DescriptionView_ResetQuestion))
                 .setPositiveButton(getString(R.string.Generic_Yes)) { _, _->
-                    WorkerEasier.resetCharacters()
+                    WorkerEasier.resetCharacters(this@DescriptionActivity)
                     recreate()
                 }
                 .setNegativeButton(getString(R.string.Generic_Cancel), null)
@@ -218,13 +218,13 @@ class DescriptionActivity: AppCompatActivity() {
     private fun updateInformation() {
         binding.descriptionText.text = selectedCharacter!!.description
 
-        binding.attributeText.text = String.format("%s %s %s"
+        binding.attributeText.text = String.format("%s %s %s %s"
         , if(selectedCharacter!!.isSolo) getString(R.string.DescriptionView_statDescriptionSoloYes)
             else getString(R.string.DescriptionView_statDescriptionSoloNo)
         , if(selectedCharacter!!.isNocturnal) getString(R.string.DescriptionView_statDescriptionWakeUpYes)
             else getString(R.string.DescriptionView_statDescriptionWakeUpNo)
-        , String.format(getString(R.string.DescriptionView_statDescriptionPower), selectedCharacter!!.powerState.value))
-
+        , String.format(getString(R.string.DescriptionView_statDescriptionPower), WorkerEasier.mapPowerTranslation[selectedCharacter!!.powerState])
+        , String.format(getString(R.string.DescriptionView_statDescriptionCondition), WorkerEasier.mapConditionTranslation[selectedCharacter!!.condition]))
     }
 
     /***

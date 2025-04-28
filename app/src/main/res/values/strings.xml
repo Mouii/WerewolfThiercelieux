@@ -36,17 +36,17 @@
     <string name="Witch">Witch</string>
     <string name="WolfFather">Wolf Father</string>
     <string name="WolfHound">Wolf Hound</string>
-    <string name="Power_Permanent">Permanent</string>
-    <string name="Power_Consumable">Consumable</string>
-    <string name="Power_Conditional">Conditional</string>
-    <string name="Power_Unique">Unique</string>
-    <string name="Condition_NoCondition">No condition</string>
-    <string name="Condition_OneWerewolf">One Werewolf</string>
-    <string name="Condition_OneVillager">One Villager</string>
-    <string name="Condition_AllWerewolves">All Werewolves</string>
-    <string name="Condition_AllVillagers">All Villagers</string>
-    <string name="Condition_LinkedRoles">Linked Roles</string>
-    <string name="Condition_IsAlone">Is solitary</string>
+    <string name="Power_PERMANENT">Permanent</string>
+    <string name="Power_CONSUMABLE">Consumable</string>
+    <string name="Power_CONDITIONAL">Conditional</string>
+    <string name="Power_UNIQUE">Unique</string>
+    <string name="Condition_NOCONDITION">No condition</string>
+    <string name="Condition_ONEWEREWOLF">One Werewolf</string>
+    <string name="Condition_ONEVILLAGER">One Villager</string>
+    <string name="Condition_ALLWEREWOLVES">All Werewolves</string>
+    <string name="Condition_ALLVILLAGERS">All Villagers</string>
+    <string name="Condition_LINKEDROLES">Linked Roles</string>
+    <string name="Condition_ISALONE">Is solitary</string>
 
     <!-- Generic -->
     <string name="Generic_Yes">Yes</string>
@@ -134,6 +134,7 @@
     <string name="DescriptionView_statDescriptionWakeUpYes">Wakes up at night : Yes,</string>
     <string name="DescriptionView_statDescriptionWakeUpNo">Wakes up at night : No,</string>
     <string name="DescriptionView_statDescriptionPower">Power : %s</string>
+    <string name="DescriptionView_statDescriptionCondition">Condition : %s</string>
     <string name="DescriptionView_DeleteQuestion">Do you wish to delete this role?</string>
     <string name="DescriptionView_ResetQuestion">Do you wish to reset all the roles and delete the ones you created?</string>
     <string name="DescriptionView_DialogTitle">Description</string>

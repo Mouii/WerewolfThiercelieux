@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
         //If fail first time => not created
         if(!loadCharacterFromJson()) {
-            WorkerEasier.resetCharacters()
+            WorkerEasier.resetCharacters(this)
         }
 
         binding.selectButton.setOnClickListener {
@@ -127,7 +127,8 @@ class MainActivity : AppCompatActivity() {
                         // Save the selection
                         sharedPreferences.edit().putInt("spinner_position", position).apply()
 
-                        WorkerEasier.characterListType.clear()
+                        //Reset for new import
+                        WorkerEasier.resetForTranslation()
 
                         recreate()
                     }

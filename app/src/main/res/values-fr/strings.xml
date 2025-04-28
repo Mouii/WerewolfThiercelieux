@@ -36,17 +36,17 @@
     <string name="Witch">Sorcière</string>
     <string name="WolfFather">Grand-père des Loups</string>
     <string name="WolfHound">Chien-Loup</string>
-    <string name="Power_Permanent">Permanent</string>
-    <string name="Power_Consumable">Consommable</string>
-    <string name="Power_Conditional">Conditionnel</string>
-    <string name="Power_Unique">Unique</string>
-    <string name="Condition_NoCondition">Pas de condition</string>
-    <string name="Condition_OneWerewolf">Un Loup</string>
-    <string name="Condition_OneVillager">Un Villageois</string>
-    <string name="Condition_AllWerewolves">Tous les Loups</string>
-    <string name="Condition_AllVillagers">Tous les Villageois</string>
-    <string name="Condition_LinkedRoles">Rôles liés</string>
-    <string name="Condition_IsAlone">Est solitaire</string>
+    <string name="Power_PERMANENT">Permanent</string>
+    <string name="Power_CONSUMABLE">Consommable</string>
+    <string name="Power_CONDITIONAL">Conditionnel</string>
+    <string name="Power_UNIQUE">Unique</string>
+    <string name="Condition_NOCONDITION">Pas de condition</string>
+    <string name="Condition_ONEWEREWOLF">Un Loup</string>
+    <string name="Condition_ONEVILLAGER">Un Villageois</string>
+    <string name="Condition_ALLWEREWOLVES">Tous les Loups</string>
+    <string name="Condition_ALLVILLAGERS">Tous les Villageois</string>
+    <string name="Condition_LINKEDROLES">Rôles liés</string>
+    <string name="Condition_ISALONE">Est solitaire</string>
 
     <!-- Generic -->
     <string name="Generic_Yes">Oui</string>
@@ -134,6 +134,7 @@
     <string name="DescriptionView_statDescriptionWakeUpYes">Se réveille la nuit : Oui,</string>
     <string name="DescriptionView_statDescriptionWakeUpNo">Se réveille la nuit : Non,</string>
     <string name="DescriptionView_statDescriptionPower">Pouvoir : %s</string>
+    <string name="DescriptionView_statDescriptionCondition">Condition : %s</string>
     <string name="DescriptionView_DeleteQuestion">Voulez-vous supprimer ce rôle ?</string>
     <string name="DescriptionView_ResetQuestion">Voulez-vous réinitialiser tous les rôles et supprimer ceux que vous avez créés ?</string>
     <string name="DescriptionView_DialogTitle">Description</string>

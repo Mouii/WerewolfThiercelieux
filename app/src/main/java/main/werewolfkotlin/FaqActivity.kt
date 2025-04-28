@@ -59,12 +59,13 @@ class FaqActivity : AppCompatActivity() {
      */
     private fun getQuestionAnswer(number : Int) : Pair<String, String>? {
 
-        val question = WorkerEasier.getStringByKey("FaqView_question".plus(number))
-        val answer = WorkerEasier.getStringByKey("FaqView_answer".plus(number))
+        val question = WorkerEasier.getStringByKey("FaqView_question".plus(number), this)
+        val answer = WorkerEasier.getStringByKey("FaqView_answer".plus(number), this)
 
         if(question == "" || answer == "")
             return null
 
         return Pair(question, answer)
     }
+
 }

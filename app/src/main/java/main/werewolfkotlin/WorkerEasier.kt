@@ -34,11 +34,6 @@ class WorkerEasier {
         //List of languages handle by the application
         val listLang : List<String> = listOf("en", "fr")
 
-        @SuppressLint("StaticFieldLeak")
-        //Not recommended, but we keep the first context here to use it better
-        //Possible because each activity except the first one destroy itself once the user quit it
-        private var contextHolder : Context? = null
-
         @Serializable
         //Data class for association with the json file
         data class CharacterJSON (
@@ -95,16 +90,21 @@ class WorkerEasier {
         //MOST IMPORTANT LIST! IT'S THE LIST OF THE CHARACTERS IN THE GAME
         var characterListType : MutableList<Pair<String, MutableMap<String, CharacterGame>>> = mutableListOf()
 
+        //Maps containing the translation. Done one time in order to avoid multiple call of translation
+        var mapPowerTranslation : MutableMap<PowerState, String> = mutableMapOf()
+        var mapConditionTranslation : MutableMap<ConditionalActivation, String> = mutableMapOf()
+
+
         /***
          * Function that delete all existing characters in the file read by the app
          * and reload the default one from the json in the assets
          */
-        fun resetCharacters(): Boolean {
+        fun resetCharacters(context : Context): Boolean {
 
             //Copy of name. The sourceFilename must stay fixed
             var sourceFile = sourceFilename
 
-            val sharedPreferences = contextHolder!!.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+            val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
 
             //Return by default en!
             val lang = sharedPreferences.getString("language", "en")!!
@@ -114,7 +114,7 @@ class WorkerEasier {
                 sourceFile = replaceNameFileWithLang(sourceFile, lang)
 
             return try {
-                contextHolder!!.assets.open(sourceFile).use { inputStream ->
+                context.assets.open(sourceFile).use { inputStream ->
 
                     val file = File(completeJSONPath)
 
@@ -131,7 +131,7 @@ class WorkerEasier {
                         inputStream.copyTo(outputStream)
                     }
 
-                    setCharactersFromJson(completeJSONPath)
+                    setCharactersFromJson(completeJSONPath, context)
 
                 }
                 true // Successful copy
@@ -145,23 +145,19 @@ class WorkerEasier {
          * Main function to import the characters from the json
          * into the list used by the app
          */
-        fun setCharactersFromJson(filename : String, context: Context? = null) {
+        fun setCharactersFromJson(filename : String, context: Context) {
 
-            if(context != null) {
+            completeJSONPath = filename
 
-                completeJSONPath = filename
+            val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
 
-                contextHolder = context.applicationContext
+            //Return by default en!
+            val lang = sharedPreferences.getString("language", "en")!!
 
-                val sharedPreferences = contextHolder!!.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-
-                //Return by default en!
-                val lang = sharedPreferences.getString("language", "en")!!
-
-                if(listLang.contains(lang) && lang != "en") {
-                    completeJSONPath = replaceNameFileWithLang(completeJSONPath, lang)
-                }
+            if(listLang.contains(lang) && lang != "en") {
+                completeJSONPath = replaceNameFileWithLang(completeJSONPath, lang)
             }
+
 
             val jsonString = File(completeJSONPath).bufferedReader().use { it.readText() }
 
@@ -176,6 +172,7 @@ class WorkerEasier {
                 roleObject.roleValues.forEach { (key, value) ->
 
                     val characterGame = CharacterGame(
+                        getStringByKey(roleObject.nameRole, context),
                         value.description,
                         value.action,
                         value.isSolo,
@@ -200,6 +197,16 @@ class WorkerEasier {
 
             }
 
+            //Adding translations of powers
+            PowerState.entries.forEach { power ->
+                mapPowerTranslation[power] = getStringByKey("Power_".plus(power.toString()), context)
+            }
+
+            //Adding translation of conditions
+            ConditionalActivation.entries.forEach { condition ->
+                mapConditionTranslation[condition] = getStringByKey("Condition_".plus(condition.toString()), context)
+            }
+
         }
 
         /***
@@ -217,36 +224,19 @@ class WorkerEasier {
         /***
          * Allow getting a string resource by a string name
          */
-        fun getStringByKey(key : String) : String {
-            if(contextHolder != null) {
-                val idRes = contextHolder!!.resources.getIdentifier(key, "string", contextHolder!!.packageName)
+        fun getStringByKey(key : String, context: Context) : String {
+            val idRes = context.resources.getIdentifier(key, "string", context.packageName)
 
-                return if (idRes != 0) contextHolder!!.getString(idRes) else ""
-            } else
-                return ""
+            return if (idRes != 0) context.getString(idRes) else ""
 
-        }
-
-        /***
-         * Getting the string resource from its key
-         * Mainly used for places that aren't activities
-         */
-        fun getString(key : Int) : String  {
-            return if(contextHolder != null)
-                contextHolder!!.getString(key)
-            else
-                ""
         }
 
         /***
          * When resetting language, we reset the path and context
          */
         fun resetDataSaved() {
-
             //Reset important values for restarting
-            contextHolder = null
             completeJSONPath = ""
-
         }
 
         /***
@@ -306,12 +296,22 @@ class WorkerEasier {
             updateJSON.writeText(Json.encodeToString(json))
         }
 
+        /**
+         * Reset important data for translation
+         */
+        fun resetForTranslation() {
+            characterListType.clear()
+            mapPowerTranslation.clear()
+            mapConditionTranslation.clear()
+        }
+
         /***
          * Regenerate the good object character from its role
          */
         fun getGoodCharacterCast(character : CharacterGame, role: String) : CharacterGame {
             when(role) {
-                "Actor" -> return Actor(character.description
+                "Actor" -> return Actor(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -322,7 +322,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Angel" -> return Angel(character.description
+                "Angel" -> return Angel(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -333,7 +334,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "BearTamer" -> return BearTamer(character.description
+                "BearTamer" -> return BearTamer(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -344,7 +346,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "BigBadWolf" -> return  BigBadWolf(character.description
+                "BigBadWolf" -> return  BigBadWolf(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -355,7 +358,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Brother" -> return Brother(character.description
+                "Brother" -> return Brother(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -366,7 +370,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Crow" -> return Crow(character.description
+                "Crow" -> return Crow(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -377,7 +382,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Cupid" -> return Cupid(character.description
+                "Cupid" -> return Cupid(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -388,7 +394,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Defender" -> return Defender(character.description
+                "Defender" -> return Defender(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -399,7 +406,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Elder" -> return Elder(character.description
+                "Elder" -> return Elder(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -410,7 +418,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Fireman" -> return Fireman(character.description
+                "Fireman" -> return Fireman(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -421,7 +430,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Fox" -> return Fox(character.description
+                "Fox" -> return Fox(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -432,7 +442,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Gypsy" -> return Gypsy(character.description
+                "Gypsy" -> return Gypsy(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -443,7 +454,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Hunter" -> return Hunter(character.description
+                "Hunter" -> return Hunter(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -454,7 +466,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Idiot" -> return Idiot(character.description
+                "Idiot" -> return Idiot(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -465,7 +478,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "LittleGirl" -> return LittleGirl(character.description
+                "LittleGirl" -> return LittleGirl(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -476,7 +490,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Manipulator" -> return Manipulator(character.description
+                "Manipulator" -> return Manipulator(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -487,7 +502,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Piper" -> return Piper(character.description
+                "Piper" -> return Piper(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -498,7 +514,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "RustyKnight" -> return RustyKnight(character.description
+                "RustyKnight" -> return RustyKnight(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -509,7 +526,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Scapegoat" -> return Scapegoat(character.description
+                "Scapegoat" -> return Scapegoat(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -520,7 +538,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Seer" -> return Seer(character.description
+                "Seer" -> return Seer(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -531,7 +550,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Servant" -> return Servant(character.description
+                "Servant" -> return Servant(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -542,7 +562,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Sister" -> return Sister(character.description
+                "Sister" -> return Sister(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -553,7 +574,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "StutteringJudge" -> return StutteringJudge(character.description
+                "StutteringJudge" -> return StutteringJudge(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -564,7 +586,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Thief" -> return Thief(character.description
+                "Thief" -> return Thief(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -575,7 +598,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Villager" -> return Villager(character.description
+                "Villager" -> return Villager(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -586,7 +610,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "VillagerVillager" -> return VillagerVillager(character.description
+                "VillagerVillager" -> return VillagerVillager(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -597,7 +622,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Werewolf" -> return Werewolf(character.description
+                "Werewolf" -> return Werewolf(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -608,7 +634,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "WhiteWerewolf" -> return WhiteWerewolf(character.description
+                "WhiteWerewolf" -> return WhiteWerewolf(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -619,7 +646,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "WildChild" -> return WildChild(character.description
+                "WildChild" -> return WildChild(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -630,7 +658,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Witch" -> return Witch(character.description
+                "Witch" -> return Witch(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -641,7 +670,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "WolfFather" -> return WolfFather(character.description
+                "WolfFather" -> return WolfFather(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal
@@ -652,7 +682,8 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "WolfHound" -> return WolfHound(character.description
+                "WolfHound" -> return WolfHound(character.name
+                    , character.description
                     , character.action
                     , character.isSolo
                     , character.isNocturnal

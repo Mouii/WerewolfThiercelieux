@@ -1,26 +1,24 @@
 package model
 
-import main.werewolfkotlin.R
-import main.werewolfkotlin.WorkerEasier
-
-enum class PowerState(val value: String) {
-    PERMANENT(WorkerEasier.getString(R.string.Power_Permanent)),
-    CONSUMABLE(WorkerEasier.getString(R.string.Power_Consumable)),
-    CONDITIONAL(WorkerEasier.getString(R.string.Power_Conditional)),
-    UNIQUE(WorkerEasier.getString(R.string.Power_Unique))
+enum class PowerState {
+    PERMANENT,
+    CONSUMABLE,
+    CONDITIONAL,
+    UNIQUE
 }
 
-enum class ConditionalActivation(val value: String)  {
-    NOCONDITION(WorkerEasier.getString(R.string.Condition_NoCondition)),
-    ONEWEREWOLF(WorkerEasier.getString(R.string.Condition_OneWerewolf)),
-    ONEVILLAGER(WorkerEasier.getString(R.string.Condition_OneVillager)),
-    ALLWEREWOLVES(WorkerEasier.getString(R.string.Condition_AllWerewolves)),
-    ALLVILLAGERS(WorkerEasier.getString(R.string.Condition_AllVillagers)),
-    LINKEDROLES(WorkerEasier.getString(R.string.Condition_LinkedRoles)),
-    ISALONE(WorkerEasier.getString(R.string.Condition_IsAlone))
+enum class ConditionalActivation {
+    NOCONDITION,
+    ONEWEREWOLF,
+    ONEVILLAGER,
+    ALLWEREWOLVES,
+    ALLVILLAGERS,
+    LINKEDROLES,
+    ISALONE
 }
 
 open class CharacterGame(
+    var name : String,
     var description: String,
     var action: String,
     val isSolo: Boolean,
@@ -37,9 +35,6 @@ open class CharacterGame(
     //Keep the classname for different purposes
     val className: String = this.javaClass.simpleName
 
-    //Name adapted to language
-    val name : String = WorkerEasier.getStringByKey(className)
-
     //Useful to trigger chance of status from the original night state
     val originalNightState = if(powerState != PowerState.CONDITIONAL)
         null
@@ -53,7 +48,8 @@ open class CharacterGame(
         return action
     }
 
-    public override fun clone() = CharacterGame(this.description
+    public override fun clone() = CharacterGame(this.name
+        , this.description
         , this.action
         , this.isNocturnal
         , this.isSolo
