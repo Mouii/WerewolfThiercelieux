@@ -4,8 +4,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Actor can play three differents roles during the game at night. These roles must be choose outside of the game and are visible to everybody. Once the three have been played, the Actor become a simple villager.",
-				"action" : "The Actor might choose one of the roles visible to play for a complete turn. Once the role has been played, it is discarded.",
+				"description" : "The Actor can play three different roles during the game at night. These roles must be chosen outside of the game and are visible to everybody. Once all three have been played, the Actor becomes a simple Villager.",
+				"action" : "The Actor may choose one of the roles visible to play for a complete turn. Once the role has been played, it is discarded.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONSUMABLE",
@@ -15,8 +15,8 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "The Actor is a doppelganger. He/she choose another character to copy the role and become this one. That can means there can be two seers, two witches, etc... If the Actor copy a solo role, they become a Duo role and must still fulfill the condition but together.",
-				"action" : "The Actor choose a character to copy. He/she become this role too and follow the rules associate to it. If it is a solo role, they must win together now.",
+				"description" : "The Actor is a doppelganger. On the first night, they choose a player whose role is revealed to the Actor. The Actor now copies this role for the rest of the game. That means there can be two Seers, two Witches, etc. If the Actor copies a solitary role, they become a Duo role and must fulfill their win condition together.",
+				"action" : "The Actor chooses a player and copies their role. They also play this role and follow the rules associated to it. If it is a solitary role, both the Actor and the copied player must win together.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "UNIQUE",
@@ -32,7 +32,7 @@
 		"roleValues":	
 		{
 			"NORMAL": {
-				"description" : "The Angel is a solo role at the beginning. He/she must die on the first turn (night or day) in order to win alone. If he/she survives, then he/she is a Simple Willager. Putting an Angel makes the game start with the day and not the night (or night with scouting and no actions).",
+				"description" : "The Angel is a solitary role at first. They must die on the first turn (night or day) in order to win. If they survive, then they are a simple Villager. Having an Angel in play makes the game start with the day and not the night (or night with scouting and no actions).",
 				"action" : "No action for the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -43,7 +43,7 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "The Angel is a divinator. One time per game, he/she can choose to reveal a role to everybody. The character revealed stay alive.",
+				"description" : "The Angel is a divinator. Once per game, they can choose to reveal a role to everybody. The character revealed stays alive.",
 				"action" : "The Angel can choose to reveal the role of a character.",
 				"isSolo": false,
 				"isNocturnal" : true,
@@ -61,7 +61,7 @@
 		{
 			"NORMAL": {
 				"description" : "The Bear Tamer can signal if one of his neighbours is a Werewolf. If the game master makes a sound like a bear growl, that means one of the alive neighbours of the Bear Tamer is a Werewolf. The Bear also growls if the Bear Tamer is infected.",
-				"action" : "No action for the night",
+				"action" : "No action for the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -77,8 +77,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Big Bad Wolf can eat a second victim during the night. He/she eats with the others on the common turn then has a unique turn for him/her. This power is lost when a Werewolf, Wild Child, or Wolfhound is dead.",
-				"action" : "The Big Bad Wolf choose a victim to eat. On its only turn, he can eat another victim.",
+				"description" : "The Big Bad Wolf can eat a second victim during the night. They eat with the others Werewolves on their turn, then has a unique turn for themselves. This power is lost when a Werewolf, Wild Child, or Wolfhound is dead.",
+				"action" : "The Big Bad Wolf chooses a victim to eat. On its only turn, they can eat another victim.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONDITIONAL",
@@ -88,8 +88,8 @@
 				"maxOccurrence": 1
 			}, 
 			"AUTHOR": {
-				"description" : "The Big Bad Wolf can eat a second victim during the night. He/she eats with the others on the common turn then has a unique turn for him/her.",
-				"action" : "The Big Bad Wolf choose a victim to eat. On its only turn, he can eat another victim.",
+				"description" : "The Big Bad Wolf can eat a second victim during the night. They eat with the others Werewolves on their turn, then has a unique turn for themselves.",
+				"action" : "The Big Bad Wolf chooses a victim to eat. On its only turn, they can eat another victim.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -105,8 +105,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Brothers wake up at night and know each others. This can be a big impact about trust. They can communicate at night with signs.",
-				"action" : "The Brother recognize each others and can communicate through signs together.",
+				"description" : "The Brothers wake up at night and know each other. They can communicate at night with signs.",
+				"action" : "The Brothers recognize each other and can communicate through signs.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONDITIONAL",
@@ -123,7 +123,7 @@
 		{
 			"NORMAL": {
 				"description" : "The Crow can give two votes to a player that will apply during the day.",
-				"action" : "The Crow choose a player to get two votes for the day to come.",
+				"action" : "The Crow chooses a player that will get two votes for the day to come.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -139,8 +139,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Cupid choose two players during the night to put together into a unite couple. They must win together. If one of them dies, so die the other.",
-				"action" : "The Cupid choose two people to put in love together. If one dies, so die the other.",
+				"description" : "The Cupid chooses two players during the night to put together into a unite couple. They must win together. If one of them dies, so does the other.",
+				"action" : "The Cupid chooses two people to put in love together. If one dies, so does the other.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "UNIQUE",
@@ -150,8 +150,8 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "The Cupid has been touched too much by love. He/She select two people to fall in love together. Then, he/she choose a cheater and a lover. If the lover dies, the three dies. If the cheater dies, the three dies. If the cheated dies, he's the only one. Lover and cheater can't go against each others. Cheated can't only go against the cheater.",
-				"action" : "The Cupid choose three people to put in a triangle of love. Select two people to make in love, then a cheater and a lover. If the lover dies, the three dies. If the cheater dies, the three dies. If the cheated dies, he's the only one. Lover and cheater can't go against each others. Cheated can't only go against the cheater.",
+				"description" : "The Cupid has been touched too much by love. They select two players that will fall in love. Then, they choose one of the two that will be the cheater, and a third player that will be the cheated. If the lover or the cheater dies, the three die. If the cheated dies, he is the only one to do so. The lover and cheater cannot go against each others. Cheated cannot go against the cheater.",
+				"action" : "The Cupid choose three people to put in a triangle of love. They select two players that will fall in love. Then, they choose one of the two that will be the cheater, and a third player that will be the cheated. If the lover or the cheater dies, the three die. If the cheated dies, he is the only one to do so. The lover and cheater cannot go against each others. Cheated cannot go against the cheater.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "UNIQUE",
@@ -167,8 +167,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Defender can protect from the werewolves attack at night only. He/she must choose a different player each night and can select himself/herself. Doesn't protect from infection, killing potion.",
-				"action" : "The Defender choose one player to protect from the attack of werewolves. He/she can protect himself/herself. Must choose a different player every night.",
+				"description" : "The Defender can protect a player from the Werewolves attack. They must choose a different player each night and can select themselves. The protection only works at night, and does not prevent infection, or the Witch's killing potion.",
+				"action" : "The Defender chooses one player to protect from the Werewolves attack. They can protect themselves. Must choose a different player every night.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -184,7 +184,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Elder can survive a second attack from the Werewolves. If the village eliminate him/her, they lose their powers except the solo roles. Doesn't apply from being killed by love. Can't be infected. If he/she gets a heal potion, he/she gets one more life.",
+				"description" : "The Elder can survive a second attack from the Werewolves. If the village eliminates them, all special Villagers lose their powers, except the solitary roles. The second life does not prevent from being killed by love. The Elder cannot be infected. If they get a heal potion from the Witch, they gain another life.",
 				"action" : "No action during the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -201,7 +201,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Fireman, when he/she dies, kills the two closed alive neighbours.",
+				"description" : "The Arsonist kills their two closest alive neighbours when they die.",
 				"action" : "No action during the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -218,8 +218,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Fox can scan three players at the same time and see if there is a Werewolf among them. If there is at least one, the Fox keeps its power. Otherwise he lost it. The Fox can refuse to use its power to use it later in the game.",
-				"action" : "The Fox CAN choose a person to scan with the two neighbours of the target in order to know if there is werewolf among them. If there is none, he lost his power.",
+				"description" : "The Fox can scan three adjacent players and see if there are Werewolves among them. If there is at least one, the Fox keeps its power, it is lost otherwise.",
+				"action" : "The Fox can choose a player to scan along with its two neighbors, to see if there are Werewolves among them. If there are none, the Fox loses their power.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONSUMABLE",
@@ -235,8 +235,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Gypsy can make players ask questions to the deaths in order to have more information. On his/her turn, he/she choose a card and a player to read it. On the morning, the chosen player will read it. If the chosen player must die, the card isn't read.",
-				"action" : "The Gypsy choose a card between the spiritism cards and a player to read it.",
+				"description" : "The Gypsy can make players ask questions to the dead so the remaining players can have more information about the game. On their turn, they choose a card and a player that will read it in the morning. If the chosen player must die, the card is not read.",
+				"action" : "The Gypsy chooses one of the Spiritism cards, and a player that will read it.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -252,7 +252,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Hunter can, when he dies, kill someone else alive.",
+				"description" : "The Hunter kills someone else when they die.",
 				"action" : "No action during the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -269,7 +269,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Idiot of the village has a second chance if he/she's voted to be killed during the day. Considered as not possible dangerous, he/she stay alive revealed. However, he/she lost the possibility of voting. If there is an Elder in your game and the Elder remove the powers, the idiot die.",
+				"description" : "The Idiot of the Village has a second chance if they are voted to be killed during the day. Considered as too idiotic to be dangerous, they stay alive with their role revealed. However, they lose their voting ability. If there is an Elder in play, and the Elder removes the special Villager's powers, the Idiot dies.",
 				"action" : "No action during the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -286,8 +286,8 @@
 		"roleValues" :
 		{
 			"NORMAL": {
-				"description" : "The Little Girl can try to spy the Werewolves; but if she's detected, she's the selected victim at their turn.",
-				"action" : "The Little Girl spy on the werewolves turn.",
+				"description" : "The Little Girl can try to spy on the Werewolves, but if she gets spotted, she is the selected victim at their turn.",
+				"action" : "The Little Girl spies on the Werewolves turn.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -297,8 +297,8 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "The Little Girl is a frail child. He/she can't sleep alone and so he/she wakes up to sleep with someone else. The target wakes up and see the little girl and show his/her role. If it is a werewolf, the Little Girl is dead. This count as an additional victim. The Little Girl can't be targeted by werewolves. But if his/her host dies, so is he/she. This doesn't apply if the host is killed in another way than the kill of the Werewolves.",
-				"action" : "The Little Girl choose another character to sleep with. The character wakes up, show his/her role and see the little girl. If it is a Werewolf, the Little Girl die. If the werewolves kills the host, he/she dies too.",
+				"description" : "The Little Girl is a frail child. Too scared to sleep alone, they wake up to sleep with someone else. The Little Girl chooses a player, which is woken up. Both see each other, and the role of the target is revealed to the Little Girl. If it is a Werewolf, the Little Girl is eliminated. This counts as an additional victim for the night. The Little Girl cannot be directly targeted by werewolves. But if their host dies, so do they. This does not apply if the host is killed in another way than the kill of the Werewolves.",
+				"action" : "The Little Girl chooses another player to sleep with. The target wakes up, shows their role and sees the little girl. If it is a Werewolf, the Little Girl dies. If the werewolves kills the host, they die too.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -314,8 +314,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Manipulator is a solo role where he has to win with only a part of the village. Once the other part is eliminated, he wins.",
-				"action" : "The Manipulator wakes up and see with who is part of his group. He must eliminate all the others. Once they are dead, he wins.",
+				"description" : "The Manipulator is a solitary role. Their objective is to to win with a part of the village. Once the other part is eliminated, they win.",
+				"action" : "The Manipulator wakes up and sees the players part of their group. The Manipulator wins when all the players that are not part of their group are dead.",
 				"isSolo": true,
 				"isNocturnal" : true,
 				"powerState": "UNIQUE",
@@ -325,8 +325,8 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "The Manipulator is a racist. He/She select a number of players equal to the number of werewolves (information from the game master). If the selected dies, he/she wins. If there is no more werewolves in the game and the Manipulator is alive, he/she wakes up to kill. If there is no werewolves from the beginning of the game, the game master choose the number.",
-				"action" : "The Manipulator choose a number of players that must die in order for him/her to win. This number is given by the game master. If the werewolves are dead, he/she can select a victim to kill.",
+				"description" : "The Manipulator is a racist. They select a number of players equal to the number of Werewolves in play (an information given by the Game Master). If the selected players are eliminated, the Manipulator wins. If the Manipulator is still alive when there are no more Werewolves in play, the Manipulator wakes up to kill in their name. If there are no Werewolves in play at the beginning of the game, the Game Master can choose the number of players to eliminate.",
+				"action" : "The Manipulator chooses a number of players that must die in order for them to win. This number is given by the Game Master. If all the Werewolves are dead, they can select a victim to kill.",
 				"isSolo": true,
 				"isNocturnal" : true,
 				"powerState": "CONDITIONAL",
@@ -342,8 +342,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Piper is a solo role. He/she has to charm all the characters in the village. The charmed will open their eyes, new and old, every night; which will add more difficulties to the piper to stay hidden. Once he manager to charm everybody, no matter when, he wins.",
-				"action" : "The Piper choose two players to charm. Then all the charmed will open their eyes and see who is left.",
+				"description" : "The Piper is a solitary role. They have to charm all the players in the village. Each night, the Piper chooses two players to charm; they, along with the previously charmed players, all wake up at the same time. As more players are charmed, the difficulty for the Piper to stay hidden increases. Once they manage to charm everybody, no matter when, they win.",
+				"action" : "The Piper chooses two players to charm. Then all the charmed players wake up.",
 				"isSolo": true,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -359,7 +359,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Rusty Knight, if killed during the night, can kill a Werewolf from tetanus. The next morning, the Werewolf alive the most on his/her left will die. This action helps a lot to see innocents between the Knight and the killed Werewolf.",
+				"description" : "The Rusty Knight, if killed during the night, can kill a Werewolf from tetanus. The next morning, the closest Werewolf on their left dies. This action helps a lot to see innocents between the Knight and the killed Werewolf.",
 				"action" : "No action during the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -370,7 +370,7 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "The Rusty Knight, if killed during the night, can kill a Werewolf from tetanus. The next morning, the Werewolf alive the most on his/her left will die. This action helps a lot to see innocents between the Knight and the killed Werewolf. If he/she dies by the the village, or a villager during the night, the closest villager to the right of the Knight dies.",
+				"description" : "The Rusty Knight, if killed during the night, can kill a Werewolf from tetanus. The next morning, the closest Werewolf on their left dies. This action helps a lot to see innocents between the Knight and the killed Werewolf. If they die by the the village, or a Villager during the night, the closest Villager to the right of the Rusty Knight dies.",
 				"action" : "No action during the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -387,7 +387,7 @@
 		"roleValues": 
 		{
 			"NORMAL": {
-				"description" : "The Scapegoat is eliminated if there is a tie in the votes during the day. He/she may choose who can vote on the next day. This can be dangerous if the remaining voters are Werewolves. It's also dangerous if there is only one person allowed to vote and is killed during the night; leading to no vote.",
+				"description" : "The Scapegoat is eliminated if there is a tie in the votes during the day. If they are eliminated this way, they may choose who can vote on the next day. This can be dangerous if the remaining voters are Werewolves. It is also dangerous if there is only one player allowed to vote, and that player is killed during the night; leading to no vote.",
 				"action" : "No action during the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -398,7 +398,7 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "The Scapegoat is a victim of life and death. When there is a tie during the vote of the day from the village, he/she dies instead and choose who doesn't vote the next day. If he/she's eaten by the Werewolves during the night, they got an indigestion and don't eat the next night.",
+				"description" : "The Scapegoat is a victim of life. When there is a tie during the vote of the day from the Village, they die instead, and choose who is not allowed to vote the next day. If they are eaten by the Werewolves during the night, the Werewolves get sick and will not kill the following night.",
 				"action" : "No action during the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -415,8 +415,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Seer can see the card of another player one time per turn.",
-				"action" : "The Seer choose a card to see.",
+				"description" : "The Seer can see the role of another player one time per turn.",
+				"action" : "The Seer chooses a player, whose role is revealed to the Seer.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -432,7 +432,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Servant can stop the execution of the selected victim during the day and take his/her place. To do it, the Servant has to reveal himself/herself and take the role of the selected player. The eliminated player stay eliminated however.",
+				"description" : "The Servant can stop the execution of the selected victim during the day and take their place. To perform this action, the Servant has to reveal themselves. They then acquire the role of the selected player, which is still eliminated.",
 				"action" : "No action during the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -443,8 +443,8 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "The Servant is a promoter. Once a special innocent Villager has been killed, she can wakes up during the night and select a character. If it isn't a Simple Villager, nothing happens. The Servant doesn't see the role. If it is a Simple Villager, she can promote the founded to a dead special role. This means a special role can come back in the game. A role like a Witch for example get a refresh of all the actions already done. The Servant can select a dead role from a character that was infected; the infection isn't linked to the role itself.",
-				"action" : "The Servant choose a player to try to find a Simple Villager in order to promote him/her on dead innocents villagers role. The infection doesn't impact anything.",
+				"description" : "The Servant is a promoter. Once a special Villager has been killed, they wake up at night and select a player. If it is a simple Villager, they promote the simple Villager to one of the special Villager roles previously eliminated. This special role is now back in the game. Roles with consumable powers are restored to their initial state, like the Witch which regains their potions. The Servant can select a dead role from a character that was infected, as the infection is not linked to the role itself.",
+				"action" : "The Servant attempts to find a simple Villager in order to promote them with a dead player's role.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONSUMABLE",
@@ -460,8 +460,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Sisters wake up at night and know each others. This can be a big impact about trust. They can communicate at night with signs.",
-				"action" : "The Sister recognize each others and can communicate through signs together.",
+				"description" : "The Sisters wake up at night and know each other. They can communicate at night with signs.",
+				"action" : "The Sisters recognize each other and can communicate through signs.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONDITIONAL",
@@ -477,7 +477,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Stuttering Judge can execute a second vote during a day immediately after the first. He must give a sign to the game master and do it during the day in order for the animator to proceed to a second vote.",
+				"description" : "The Stuttering Judge can run a second vote during a day immediately after the first one. They must give a sign to the Game Master so the second vote is initiated.",
 				"action" : "No action during the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -488,7 +488,7 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "The Stuttering Judge is a dictator. He/She can during the day, one time per game, reveal himself/herself and kill someone. If the victim is a Werewolf, he/she become the captain/mayor. Otherwise, he/she dies.",
+				"description" : "The Stuttering Judge is a dictator. Once per game during daytime, they can reveal themselves select a player to kill. If the victim is a Werewolf, the Village rejoices and they become the Captain (mayor). Otherwise, they die.",
 				"action" : "No action during the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -505,8 +505,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Thief is the first one to wake up during the night. He/she can select a role from two side roles that the game master choose not in the game. If one of the two roles is a Werewolf, he/she must select it.",
-				"action" : "The Thief choose a card between the two that the game master has selected. If there is a Werewolf among them, he has to select it.",
+				"description" : "The Thief is the first role to wake up at night. They select one out of two roles proposed by the Game Master that are not in play. If one of the two roles is a Werewolf, the Thief must select it.",
+				"action" : "The Thief chooses one of the two roles proposed by the Game Master. If there is a Werewolf among them, the Thief has to select it.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "UNIQUE",
@@ -516,8 +516,8 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "The Thief is a trap master. He/she can put traps on other characters and have more information. There is three traps available that can be put each one one time per game : silent one (Thief knows if the selected has done something during the night at the morning), noisy one (everybody knows when the role is called), injure one (everybody knows who did something during the night at the morning). If a trap isn't activated, it is available again. Activation is done when a character do an action, meaning the trapped can wakes up but do nothing and so not activate the trap.",
-				"action" : "The Thief choose a trap to put between the three ones : silent one, noisy one, injure one. If the trapped doesn't do anything during the night or don't wake up, the trap is available again.",
+				"description" : "The Thief is a trap master. They can place traps on other players in order to have more information about the game. The Thief has three traps that they can each use once during the game: Silent (the Thief knows if their target has woken up and performed an action during the night), Noisy (everybody is notified of the target's role when they are woken up), Harming (everybody sees the player that has woken up, but not their role). If a trap isn not triggered, it is available again. The trap triggers only when the target performs an action, meaning that waking up but not doing anything is not considered as triggering the trap.",
+				"action" : "The Thief chooses player to trap. The available traps are: Silent, Noisy, Hurtful. If the trapped player wakes up but does not perform an action during the night, or does not wake up at all, the trap is not triggered and is available again.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONSUMABLE",
@@ -533,7 +533,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Villager has no other power than its own deduction to find out the Werewolves.",
+				"description" : "The simple Villager has no power other than its own deduction skills to find out who the Werewolves are.",
 				"action" : "No action during the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -550,7 +550,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Villager-Villager is someone who everybody knows. He/she can't hide his/her role.",
+				"description" : "The Villager-Villager is a role known to everyone. They cannot hide their own role, as their card is double-sided with the Villager icon.",
 				"action" : "No action during the night.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -567,8 +567,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Werewolf can select a victim during the night to eat and eliminate from the game.",
-				"action" : "The Werewolf choose a victim to eat.",
+				"description" : "The Werewolves can select a victim to eat during the night. The victim is eliminated from the game.",
+				"action" : "The Werewolves choose a player to eat.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -584,8 +584,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The White Werewolf is a solo role. He/she wins when he/she is the last one alive. In order to do it, one night on two, he/she can wake up alone and eat one of his/her Werewolves companions. He/she still eats Villagers like the others in the common turn.",
-				"action" : "The White Werewolf, choose a victim to eat with the pack. On his/her own turn, he/she can eat a Werewolf.",
+				"description" : "The White Werewolf is a solitary role. They win when they are the last one alive. Every two nights, they wake up alone and eat one of their Werewolves companions. They still eat Villagers like the other Werewolves.",
+				"action" : "The White Werewolf chooses a victim to eat with the pack. On their own turn, they can eat a Werewolf.",
 				"isSolo": true,
 				"isNocturnal" : true,
 				"powerState": "CONDITIONAL",
@@ -601,8 +601,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Wild Child choose a player that he/she consider as his/her model. If the model dies, the Wild Child become a Werewolf. Otherwise, he's a Simple Villager.",
-				"action" : "The Wild Child choose a player to be his/her master. If the master dies, he/she become a Werewolf.",
+				"description" : "The Wild Child chooses a player as their mentor. The Wild Child is a simple Villager until their mentor is eliminated, at which point they become a Werewolf.",
+				"action" : "The Wild Child chooses a player as their mentor. If the mentor dies, the Wild Child becomes a Werewolf.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONSUMABLE",
@@ -618,8 +618,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Witch has two potions; one of death to kill someone and one of resurrection to save the victim of the werewolves, that she can use in the same time.",
-				"action" : "The Witch can use her potion of life to save the victim, and use her potion of death to kill someone.",
+				"description" : "The Witch has two potions, one of death to kill another player, and one of resurrection to save the victim of the Werewolves. The Witch can use both potions on the same night.",
+				"action" : "The Witch can use her potion of life to save the victim of the Werewolves, and use her potion of death to kill another player.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONSUMABLE",
@@ -635,7 +635,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Wolf Father has the power to convert a victim into a Werewolf. One time per game, the Wolf Father can give a sign to the game master to infect the victim. The victim will not be eliminated and will wakes up with the others on the Werewolves's turn.",
+				"description" : "The Wolf Father has the power to convert a victim into a Werewolf. Once per game, the Wolf Father can signal the Game Master that they want to infect the victim of the Werewolves. The victim will not be eliminated and will instead wake up as a Werewolf for the remaining nights.",
 				"action" : "The Wolf Father can infect a victim in order to add one more Werewolf to the pack instead of killing it.",
 				"isSolo": false,
 				"isNocturnal" : true,
@@ -652,8 +652,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "The Wolf Hound is a role that can choose who he/she wants to be between a Werewolf and a Simple Villager.",
-				"action" : "The Wolf Hound choose to wake up and be a Werewolf for the game or stay asleep and be a Simple Villager.",
+				"description" : "The Wolf Hound is a role that can choose whether they want to be a Werewolf at the beginning of the game.",
+				"action" : "The Wolf Hound chooses to wake up and be a Werewolf for the game or stay asleep and be a simple Villager.",
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "CONSUMABLE",
@@ -663,8 +663,8 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "The Wolf Hound is a cub Wolf. If he/she dies, the werewolves are angry and eat an additional victim the next night.",
-				"action" : "The Wolf Hound provokes the anger the pack of werewolves on death. They can add an additional victim the next night.",
+				"description" : "The Wolf Hound is a cub Wolf. If they die, the Werewolves become angry and will kill an additional player the next night.",
+				"action" : "The Wolf Hound provokes the anger the pack of Werewolves on death. They will kill an additional player the next night.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
