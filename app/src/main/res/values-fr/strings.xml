@@ -75,8 +75,8 @@
     <!-- Game buttons -->
     <string name="GameButton_Roles">Rôles</string>
     <string name="GameButton_NextTurn">Tour suivant</string>
-    <string name="GameButton_Information">Informations</string>
-    <string name="GameButton_EndGame">Arrêter la partie</string>
+    <string name="GameButton_Information">Infos</string>
+    <string name="GameButton_EndGame">Arrêter</string>
 
     <!-- Information View -->
     <string name="InformationView_title">Description</string>
