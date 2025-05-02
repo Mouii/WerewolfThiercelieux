@@ -131,7 +131,7 @@ class WorkerEasier {
                         inputStream.copyTo(outputStream)
                     }
 
-                    setCharactersFromJson(completeJSONPath, context)
+                    setCharactersFromJson(completeJSONPath, context, true)
 
                 }
                 true // Successful copy
@@ -145,19 +145,20 @@ class WorkerEasier {
          * Main function to import the characters from the json
          * into the list used by the app
          */
-        fun setCharactersFromJson(filename : String, context: Context) {
+        fun setCharactersFromJson(filename : String, context: Context, cameFromReset : Boolean = false) {
 
-            completeJSONPath = filename
+            if(!cameFromReset) {
+                completeJSONPath = filename
 
-            val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
 
-            //Return by default en!
-            val lang = sharedPreferences.getString("language", "en")!!
+                //Return by default en!
+                val lang = sharedPreferences.getString("language", "en")!!
 
-            if(listLang.contains(lang) && lang != "en") {
-                completeJSONPath = replaceNameFileWithLang(completeJSONPath, lang)
+                if(listLang.contains(lang) && lang != "en") {
+                    completeJSONPath = replaceNameFileWithLang(completeJSONPath, lang)
+                }
             }
-
 
             val jsonString = File(completeJSONPath).bufferedReader().use { it.readText() }
 

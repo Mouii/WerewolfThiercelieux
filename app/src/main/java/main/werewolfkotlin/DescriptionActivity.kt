@@ -126,6 +126,9 @@ class DescriptionActivity: AppCompatActivity() {
                 .setTitle(getString(R.string.DescriptionView_DialogTitle))
                 .setMessage(getString(R.string.DescriptionView_ResetQuestion))
                 .setPositiveButton(getString(R.string.Generic_Yes)) { _, _->
+                    //Reset important values for restarting
+                    WorkerEasier.resetDataSaved()
+
                     WorkerEasier.resetCharacters(this@DescriptionActivity)
                     recreate()
                 }
