@@ -24,7 +24,6 @@ import main.werewolfkotlin.databinding.ActivityCreationBinding
 import model.CharacterGame
 import model.ConditionalActivation
 import model.PowerState
-import java.util.Locale
 
 class CreationActivity : AppCompatActivity() {
 
@@ -44,10 +43,10 @@ class CreationActivity : AppCompatActivity() {
     private lateinit var mapHelper : MutableMap<Int, String>
 
     //Getting the yes confirmation in its language
-    private val yes : String = getString(R.string.Generic_Yes)
+    private lateinit var yes : String
 
     //Getting the no negation in its language
-    private val no : String = getString(R.string.Generic_No)
+    private lateinit var no : String
 
     /***
      * Shared text watcher between all textEdit
@@ -111,7 +110,7 @@ class CreationActivity : AppCompatActivity() {
 
                     if(spinnerId == binding.powerSpinner.id) {
                         binding.conditionalSpinner.isEnabled =
-                            binding.powerSpinner.selectedItem == PowerState.CONDITIONAL.value
+                            binding.powerSpinner.selectedItem == WorkerEasier.mapPowerTranslation[PowerState.CONDITIONAL]!!
                         binding.conditionalSpinner.alpha =
                             if (binding.conditionalSpinner.isEnabled) 1.0f else 0.5f
                     }
@@ -172,6 +171,9 @@ class CreationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        yes = getString(R.string.Generic_Yes)
+        no = getString(R.string.Generic_No)
 
         //=============================JSON part retrieving=========================================
 
@@ -301,9 +303,9 @@ class CreationActivity : AppCompatActivity() {
 
         binding.nocturneSpinner.adapter = SpinnerAdapter(this, listYN)
 
-        binding.powerSpinner.adapter = SpinnerPairAdapter(this, PowerState.entries.map { x -> Pair(x.name, x.value)})
+        binding.powerSpinner.adapter = SpinnerPairAdapter(this, PowerState.entries.map { x -> Pair(x.name, WorkerEasier.mapPowerTranslation[x]!!)})
 
-        binding.conditionalSpinner.adapter = SpinnerPairAdapter(this, ConditionalActivation.entries.map { x -> Pair(x.name, x.value)})
+        binding.conditionalSpinner.adapter = SpinnerPairAdapter(this, ConditionalActivation.entries.map { x -> Pair(x.name, WorkerEasier.mapConditionTranslation[x]!!)})
         binding.conditionalSpinner.isEnabled = false
         binding.conditionalSpinner.alpha = 0.5f
 
@@ -347,8 +349,8 @@ class CreationActivity : AppCompatActivity() {
             setPositionOfSpinner(binding.soloSpinner, listYN, if(characterEdit!!.isSolo) yes else no)
             setPositionOfSpinner(binding.werewolfSpinner, listYN, if(characterEdit!!.isWerewolf) yes else no)
             setPositionOfSpinner(binding.nocturneSpinner, listYN, if(characterEdit!!.isNocturnal) yes else no)
-            setPositionOfSpinner(binding.powerSpinner, PowerState.entries.map { it.value}, characterEdit!!.powerState.value)
-            setPositionOfSpinner(binding.conditionalSpinner, ConditionalActivation.entries.map { it.value}, characterEdit!!.condition.value)
+            setPositionOfSpinner(binding.powerSpinner, PowerState.entries.map { x -> WorkerEasier.mapPowerTranslation[x]!!}, WorkerEasier.mapPowerTranslation[characterEdit!!.powerState]!!)
+            setPositionOfSpinner(binding.conditionalSpinner, ConditionalActivation.entries.map { x -> WorkerEasier.mapConditionTranslation[x]!!}, WorkerEasier.mapConditionTranslation[characterEdit!!.condition]!!)
 
             rolesForLink = characterEdit!!.rolesToStick.toMutableList()
 
@@ -421,6 +423,7 @@ class CreationActivity : AppCompatActivity() {
         val maxOccurrenceRole = WorkerEasier.characterListType.first { it.first == baseRole }.second.values.first().maxOccurrence
 
         val newCharacterGame = CharacterGame(
+            WorkerEasier.getStringByKey(baseRole, this),
             descriptionRole,
             actionRole,
             isSoloRole,

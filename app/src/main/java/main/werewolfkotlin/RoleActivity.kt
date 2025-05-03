@@ -30,7 +30,7 @@ class RoleActivity : AppCompatActivity() {
                 run {
 
                     val switch = SwitchCompat(this).apply {
-                        text = characterMap.key.className
+                        text = characterMap.key.name
                         isChecked = roleListConsumable[characterMap.key]!!
                         isEnabled = !roleListConsumable[characterMap.key]!!
                         setTextColor(Color.WHITE)
