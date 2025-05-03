@@ -36,6 +36,11 @@
     <string name="Witch">Sorcière</string>
     <string name="WolfFather">Grand-père des Loups</string>
     <string name="WolfHound">Chien-Loup</string>
+    <string name="Phase_SLEEPING">Endormissement</string>
+    <string name="Phase_NIGHT">Nuit</string>
+    <string name="Phase_DAWN">Aube</string>
+    <string name="Phase_DAY">Jour</string>
+    <string name="Phase_SUNSET">Crépuscule</string>
     <string name="Power_PERMANENT">Permanent</string>
     <string name="Power_CONSUMABLE">Consommable</string>
     <string name="Power_CONDITIONAL">Conditionnel</string>

@@ -36,6 +36,11 @@
     <string name="Witch">Witch</string>
     <string name="WolfFather">Wolf Father</string>
     <string name="WolfHound">Wolf Hound</string>
+    <string name="Phase_SLEEPING">Sleeping</string>
+    <string name="Phase_NIGHT">Night</string>
+    <string name="Phase_DAWN">Dawn</string>
+    <string name="Phase_DAY">Day</string>
+    <string name="Phase_SUNSET">Sunset</string>
     <string name="Power_PERMANENT">Permanent</string>
     <string name="Power_CONSUMABLE">Consumable</string>
     <string name="Power_CONDITIONAL">Conditional</string>

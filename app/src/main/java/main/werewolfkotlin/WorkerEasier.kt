@@ -91,6 +91,7 @@ class WorkerEasier {
         var characterListType : MutableList<Pair<String, MutableMap<String, CharacterGame>>> = mutableListOf()
 
         //Maps containing the translation. Done one time in order to avoid multiple call of translation
+        var mapPhaseTranslation : MutableMap<EnumPhase, String> = mutableMapOf()
         var mapPowerTranslation : MutableMap<PowerState, String> = mutableMapOf()
         var mapConditionTranslation : MutableMap<ConditionalActivation, String> = mutableMapOf()
 
@@ -198,6 +199,10 @@ class WorkerEasier {
 
             }
 
+            EnumPhase.entries.forEach { phase ->
+                mapPhaseTranslation[phase] = getStringByKey("Phase_".plus(phase.toString()), context)
+            }
+
             //Adding translations of powers
             PowerState.entries.forEach { power ->
                 mapPowerTranslation[power] = getStringByKey("Power_".plus(power.toString()), context)
@@ -302,6 +307,7 @@ class WorkerEasier {
          */
         fun resetForTranslation() {
             characterListType.clear()
+            mapPhaseTranslation.clear()
             mapPowerTranslation.clear()
             mapConditionTranslation.clear()
         }

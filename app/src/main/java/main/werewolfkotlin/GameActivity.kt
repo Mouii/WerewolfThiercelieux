@@ -373,7 +373,7 @@ class GameActivity : AppCompatActivity() {
      * Update the header with turn and phase
      */
     private fun updateHeader() {
-        binding.turnPhase.text = String.format(getString(R.string.GameView_Header), phase, gameTurn)
+        binding.turnPhase.text = String.format(getString(R.string.GameView_Header), WorkerEasier.mapPhaseTranslation[phase], gameTurn)
     }
 
     /***
