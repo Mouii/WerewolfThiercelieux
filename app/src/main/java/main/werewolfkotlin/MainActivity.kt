@@ -3,6 +3,7 @@ package main.werewolfkotlin
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,9 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import main.werewolfkotlin.databinding.ActivityMainBinding
+import java.lang.System.exit
 import java.util.Locale
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,12 +29,16 @@ class MainActivity : AppCompatActivity() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = super.getView(position, convertView, parent) as TextView
             view.gravity = android.view.Gravity.CENTER // Center the text
+            view.setTextColor(Color.BLACK)
+            view.setBackgroundColor(Color.WHITE)
             return view
         }
 
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = super.getDropDownView(position, convertView, parent) as TextView
             view.gravity = android.view.Gravity.CENTER // Center dropdown items' text
+            view.setTextColor(Color.BLACK)
+            view.setBackgroundColor(Color.WHITE)
             return view
         }
     }
@@ -62,9 +69,12 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        //If fail first time => not created
-        if(!loadCharacterFromJson()) {
-            WorkerEasier.resetCharacters(this)
+        if(WorkerEasier.characterListType.isEmpty()) {
+
+            //If fail first time => not created
+            if(!loadCharacterFromJson()) {
+                WorkerEasier.resetCharacters(this)
+            }
         }
 
         binding.selectButton.setOnClickListener {
@@ -103,7 +113,7 @@ class MainActivity : AppCompatActivity() {
             finishAffinity()
 
             //Close actual activity
-            finish()
+            exitProcess(0)
 
         }
 

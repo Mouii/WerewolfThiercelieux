@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:forceDarkAllowed="false"
     android:padding="5dp"
     android:background="@drawable/main_activity_alpha">
 
@@ -51,6 +52,7 @@
                     android:gravity="center"
                     android:layout_marginTop="20dp"
                     android:padding="10dp"
+                    android:textColor="#000000"
                     android:background="@drawable/description_border"
                     android:spinnerMode="dropdown" />
             </LinearLayout>
@@ -89,6 +91,7 @@
                         android:layout_gravity="start"
                         android:layout_marginTop="10dp"
                         android:padding="10dp"
+                        android:textColor="@color/black"
                         android:background="@drawable/description_border"
                         android:spinnerMode="dropdown" />
                 </LinearLayout>
@@ -118,6 +121,7 @@
                         android:layout_gravity="start"
                         android:layout_marginTop="10dp"
                         android:padding="10dp"
+                        android:textColor="@color/black"
                         android:background="@drawable/description_border"
                         android:spinnerMode="dropdown" />
                 </LinearLayout>
@@ -146,6 +150,7 @@
                         android:layout_gravity="start"
                         android:layout_marginTop="10dp"
                         android:padding="10dp"
+                        android:textColor="@color/black"
                         android:background="@drawable/description_border"
                         android:spinnerMode="dropdown" />
                 </LinearLayout>
@@ -203,6 +208,7 @@
                         android:layout_gravity="start"
                         android:layout_marginTop="10dp"
                         android:padding="10dp"
+                        android:textColor="@color/black"
                         android:background="@drawable/description_border"
                         android:spinnerMode="dropdown" />
                 </LinearLayout>
@@ -231,6 +237,7 @@
                         android:layout_gravity="start"
                         android:layout_marginTop="10dp"
                         android:padding="10dp"
+                        android:textColor="@color/black"
                         android:background="@drawable/description_border"
                         android:spinnerMode="dropdown" />
                 </LinearLayout>

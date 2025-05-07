@@ -37,13 +37,17 @@ val infoMap: MutableMap<Int, String> = mutableMapOf()
  */
 var roleListConsumable : MutableMap<CharacterGame, Boolean>  = mutableMapOf()
 
+
+/**
+ * List of the characters
+ */
+var characterGames : MutableList<CharacterGame> = mutableListOf()
+
 class GameActivity : AppCompatActivity() {
 
     //Object from the xml view to get all the elements
     private lateinit var binding: ActivityGameBinding
 
-    //List of the characters
-    private var characterGames : MutableList<CharacterGame> = mutableListOf()
 
     //List of dead characters
     private val deadCharacterGames : MutableList<CharacterGame> = mutableListOf()
@@ -161,38 +165,6 @@ class GameActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    /***
-     * On restart override. Allow updating of actual turn in case a change occurred in another activity
-     */
-    override fun onRestart() {
-        super.onRestart()
-
-        var activeCharacterGames : List<CharacterGame>
-
-        if(phase == EnumPhase.NIGHT) {
-            //Set the list of active characters from the index
-            if(currentIndex == werewolfTurn) {
-                activeCharacterGames =  characterGames.filter { x -> x.isWerewolf && x.isNocturnal }
-
-                //If there is only one werewolf at this turn, better skip it
-                if(activeCharacterGames.size == 1 && (activeCharacterGames[0] is BigBadWolf || activeCharacterGames[0] is WhiteWerewolf))
-                    activeCharacterGames = emptyList()
-
-            } else {
-                activeCharacterGames =  characterGames.filter { x -> x.order == currentIndex && x.isNocturnal }
-            }
-
-            //End of list, empty active characters next phase
-            if (activeCharacterGames.isEmpty()) {
-                showNextCharacters()
-            } else {
-
-                //Show the active characters with their descriptions
-                setPictures(activeCharacterGames, false)
-                setActions(activeCharacterGames)
-            }
-        }
-    }
 
     /***
      * Override of destroying
@@ -200,8 +172,10 @@ class GameActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         infoMap.clear()
+        characterGames.clear()
         roleListConsumable.clear()
     }
+
 
     /***
      * Create the good list of characters
@@ -226,15 +200,17 @@ class GameActivity : AppCompatActivity() {
         if(roleListConsumable.isEmpty())
             binding.RoleButton.isEnabled = false
 
-        //Order reference : werewolf > wolfFather > bigBadWolf > wolfHound > others
-        val characterGameReference : CharacterGame? = characterGames.firstOrNull{ x ->
-                    x is Werewolf
-                    || x is WolfFather
-                    || x is BigBadWolf
-                    || x is WolfHound
-                    || x is WhiteWerewolf
-                    || x.isWerewolf
-        }
+        //In order to determine the werewolf turn, we check in order :
+        //Order reference : werewolf > wolfFather > > wolfHound > bigBadWolf > others > whiteWolf
+        val characterGameReference : CharacterGame? =
+            characterGames.firstOrNull{ it is Werewolf} ?:
+            characterGames.firstOrNull{ it is WolfFather } ?:
+            characterGames.firstOrNull{ it is WolfHound } ?:
+            characterGames.firstOrNull{ it is BigBadWolf } ?:
+            characterGames.firstOrNull{ it.isWerewolf } ?:
+            characterGames.firstOrNull{ it is WhiteWerewolf }
+
+
 
         //Set special pack wolf turn
         if(characterGameReference != null) {
@@ -264,6 +240,11 @@ class GameActivity : AppCompatActivity() {
 
             } else {
                 activeCharacterGames =  characterGames.filter { x -> x.order == currentIndex }
+
+                //Special cases : if in the unity there are at the same time sleeping roles and awaken roles
+                //We filter the non awaken roles
+                if(activeCharacterGames.any { it.isNocturnal } && activeCharacterGames.any { !it.isNocturnal })
+                    activeCharacterGames = activeCharacterGames.filter { it.isNocturnal }
             }
 
         //Two cases to finish the loop, reaching the end of list,
@@ -412,46 +393,54 @@ class GameActivity : AppCompatActivity() {
         characterGames.filter { it.powerState == PowerState.CONDITIONAL }.forEach { x ->
             when(x.condition) {
                 ConditionalActivation.LINKEDROLES -> {
-                    if(deadCharacterGames.map{ it.className}.toSet().intersect(x.rolesToStick.toSet()).isNotEmpty()) {
-                        x.isNocturnal = !x.originalNightState!! //Always the reverse
-                        x.powerState = PowerState.PERMANENT//Become permanent
+                    if(!characterGames.any { x.rolesToStick.contains(it.className.uppercase().plus("-").plus(it.mode.uppercase())) }) {
+                        changeNocturnePower(x)
                     }
                 }
 
                 ConditionalActivation.ONEWEREWOLF -> {
                     if(deadCharacterGames.any { it.isWerewolf }) {
-                        x.isNocturnal = !x.originalNightState!! //Always the reverse
-                        x.powerState = PowerState.PERMANENT//Become permanent
+
+                        //Unique special case for big bad wolf
+                        if(x is BigBadWolf && x.mode == "NORMAL") {
+                            x.order = werewolfTurn
+                            x.powerState = PowerState.PERMANENT
+                        } else {
+                            changeNocturnePower(x)
+                        }
+
+
                     }
                 }
                 ConditionalActivation.ONEVILLAGER -> {
                     if(deadCharacterGames.any { !it.isWerewolf }) {
-                        x.isNocturnal = !x.originalNightState!! //Always the reverse
-                        x.powerState = PowerState.PERMANENT//Become permanent
+                        changeNocturnePower(x)
                     }
                 }
                 ConditionalActivation.ALLWEREWOLVES -> {
                     if(!characterGames.any { it.isWerewolf }) {
-                        x.isNocturnal = !x.originalNightState!! //Always the reverse
-                        x.powerState = PowerState.PERMANENT//Become permanent
+                        changeNocturnePower(x)
                     }
                 }
                 ConditionalActivation.ALLVILLAGERS -> {
                     if(characterGames.filter { it != x }.all { it.isWerewolf }) {
-                        x.isNocturnal = !x.originalNightState!! //Always the reverse
-                        x.powerState = PowerState.PERMANENT//Become permanent
+                        changeNocturnePower(x)
                     }
                 }
                 ConditionalActivation.ISALONE -> {
                     if(characterGames.filter { it.className == x.className }.size == 1) {
-                        x.isNocturnal = !x.originalNightState!! //Always the reverse
-                        x.powerState = PowerState.PERMANENT//Become permanent
+                        changeNocturnePower(x)
                     }
                 }
                 ConditionalActivation.NOCONDITION -> {}
             }
         }
 
+    }
+
+    private fun changeNocturnePower(characterGame: CharacterGame) {
+        characterGame.isNocturnal = characterGame.originalNightState!! //Always the reverse
+        characterGame.powerState = PowerState.PERMANENT //Become permanent
     }
 
     /***

@@ -1,6 +1,7 @@
 package main.werewolfkotlin
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -78,6 +79,8 @@ class CreationActivity : AppCompatActivity() {
             val view = super.getView(position, convertView, parent) as TextView
             view.text = items[position].second // Display the associated text
             view.gravity = android.view.Gravity.CENTER // Center the text
+            view.setTextColor(Color.BLACK)
+            view.setBackgroundColor(Color.WHITE)
             return view
         }
 
@@ -85,6 +88,8 @@ class CreationActivity : AppCompatActivity() {
             val view = super.getDropDownView(position, convertView, parent) as TextView
             view.text = items[position].second // Display the associated text
             view.gravity = android.view.Gravity.CENTER // Center dropdown items' text
+            view.setTextColor(Color.BLACK)
+            view.setBackgroundColor(Color.WHITE)
             return view
         }
 
@@ -133,12 +138,16 @@ class CreationActivity : AppCompatActivity() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = super.getView(position, convertView, parent) as TextView
             view.gravity = android.view.Gravity.CENTER // Center the text
+            view.setTextColor(Color.BLACK)
+            view.setBackgroundColor(Color.WHITE)
             return view
         }
 
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = super.getDropDownView(position, convertView, parent) as TextView
             view.gravity = android.view.Gravity.CENTER // Center dropdown items' text
+            view.setTextColor(Color.BLACK)
+            view.setBackgroundColor(Color.WHITE)
             return view
         }
     }

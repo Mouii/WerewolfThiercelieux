@@ -83,6 +83,11 @@
     <!-- Main View -->
     <string name="MainView_Language">Language</string>
 
+    <!-- Role View -->
+    <string name="RoleView_DialogTitle">Elder power</string>
+    <string name="RoleView_DialogDescription">Do you wish to remove the powers of all the villagers not solo?</string>
+    <string name="RoleView_AncientButton">Elder</string>
+
     <!-- Information View -->
     <string name="InformationView_title">Description</string>
     <string name="InformationView_death">Deaths</string>
@@ -118,6 +123,9 @@
     <string name="SelectView_NumberOfCharacters">Number of characters selected : %1$d</string>
     <string name="SelectView_selectionTitle">Select an item</string>
     <string name="SelectView_selectionMessage">Selected version of %s : %s</string>
+    <string name="SelectView_clearButton">Clear</string>
+    <string name="SelectView_clearDialogTitle">Clear the list</string>
+    <string name="SelectView_clearDialogMessage">You\'re about to clear the list of selected characters for your game. Are you sure you want to do this ?</string>
 
     <!-- Game View -->
     <string name="GameView_StartGame">Start the game</string>
@@ -128,6 +136,7 @@
     <string name="GameView_phaseDawn">Morning, proceed with the eliminations!</string>
     <string name="GameView_phaseDay">Day time! Chat and speak about what to do!</string>
     <string name="GameView_phaseEvening">Dinner is served! But watch out, these villagers are alive, so are their enemies…</string>
+    <string name="GameView_numberCharacters">Number of characters in game : %1$d</string>
 
     <!-- Description View -->
     <string name="DescriptionView_CreationButton">Create</string>

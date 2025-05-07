@@ -2,6 +2,7 @@ package main.werewolfkotlin
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,8 @@ class DescriptionActivity: AppCompatActivity() {
             val view = super.getView(position, convertView, parent) as TextView
             view.text = items[position].second // Display the associated text
             view.gravity = android.view.Gravity.CENTER // Center the text
+            view.setTextColor(Color.BLACK)
+            view.setBackgroundColor(Color.WHITE)
             return view
         }
 
@@ -40,6 +43,8 @@ class DescriptionActivity: AppCompatActivity() {
             val view = super.getDropDownView(position, convertView, parent) as TextView
             view.text = items[position].second // Display the associated text
             view.gravity = android.view.Gravity.CENTER // Center dropdown items' text
+            view.setTextColor(Color.BLACK)
+            view.setBackgroundColor(Color.WHITE)
             return view
         }
 
@@ -54,12 +59,16 @@ class DescriptionActivity: AppCompatActivity() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = super.getView(position, convertView, parent) as TextView
             view.gravity = android.view.Gravity.CENTER // Center the text
+            view.setTextColor(Color.BLACK)
+            view.setBackgroundColor(Color.WHITE)
             return view
         }
 
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = super.getDropDownView(position, convertView, parent) as TextView
             view.gravity = android.view.Gravity.CENTER // Center dropdown items' text
+            view.setTextColor(Color.BLACK)
+            view.setBackgroundColor(Color.WHITE)
             return view
         }
     }
@@ -126,17 +135,12 @@ class DescriptionActivity: AppCompatActivity() {
                 .setTitle(getString(R.string.DescriptionView_DialogTitle))
                 .setMessage(getString(R.string.DescriptionView_ResetQuestion))
                 .setPositiveButton(getString(R.string.Generic_Yes)) { _, _->
-                    //Reset important values for restarting
-                    WorkerEasier.resetDataSaved()
-
                     WorkerEasier.resetCharacters(this@DescriptionActivity)
                     recreate()
                 }
                 .setNegativeButton(getString(R.string.Generic_Cancel), null)
                 .show()
         }
-
-        binding.resetButton.isEnabled = WorkerEasier.characterListType.any { it.second.keys.any { key -> !listMode.contains(key) } }
 
         binding.returnButton.setOnClickListener {
             finish()

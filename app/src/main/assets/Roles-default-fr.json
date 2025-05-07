@@ -122,8 +122,8 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "Le Corbeau peut choisir un joueur dont le vote comptera double le prochain jour.",
-				"action" : "Le Corbeau peut choisir un joueur dont le vote comptera double le prochain jour.",
+				"description" : "Le Corbeau peut choisir un joueur qui aura deux voix contre lui le prochain jour.",
+				"action" : "Le Corbeau peut choisir un joueur qui aura deux voix contre lui le prochain jour.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -150,8 +150,8 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "Cupidon forme un triangle amoureux. Dans un premier temps, il choisit deux joueurs à mettre en couple puis sélectionne parmi ces deux joueurs qui est le trompeur. Il choisit ensuite un troisième joueur qui est l'amant. Si l'un des deux joueurs du couple original meurt, les trois joueurs du triangle meurent. Si l'amant meurt, les deux autres joueurs ne sont pas affectés.",
-				"action" : "Cupidon choisit trois joueurs à mettre dans un triangle amoureux. Il sélectionne d'abord le couple, puis le trompeur parmi eux, et un troisième joueur (le trompé). Si l'un des deux joueurs du couple meurt, les trois joueurs meurent. Si le trompé meurt, rien d'autre ne se passe.",
+				"description" : "Cupidon forme un triangle amoureux. Dans un premier temps, il choisit deux joueurs à mettre en couple puis sélectionne parmi ces deux joueurs qui est le trompeur. Il choisit ensuite un troisième joueur qui est l'amant. Si l'amant ou le trompeur meurt, les trois joueurs du triangle meurent. Si le trompé meurt, les deux autres joueurs ne sont pas affectés.",
+				"action" : "Cupidon choisit trois joueurs à mettre dans un triangle amoureux. Il sélectionne d'abord le couple, puis le trompeur parmi eux, et un troisième joueur (le trompé). Si l'amant ou le trompeur meurt, les trois joueurs meurent. Si le trompé meurt, rien d'autre ne se passe.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "UNIQUE",
@@ -167,7 +167,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "Le Salvateur peut protéger un joueur de l'attaque des Loups-Garous pendant la nuit. Il peut se choisir lui-même, mais ne peut pas choisir le même joeur deux nuits de suite. La protection fonctionne uniqument la nuit, et ne protège pas de l'infection ni de la potion de mort de la Sorcière, par exemple.",
+				"description" : "Le Salvateur peut protéger un joueur de l'attaque des Loups-Garous pendant la nuit. Il peut se choisir lui-même, mais ne peut pas choisir le même joueur deux nuits de suite. La protection n'agit pas contre l'infection, ni contre la potion de mort de la Sorcière, par exemple.",
 				"action" : "Le Salvateur choisit un joueur à protéger de l'attaque des Loups-Garous. Il peut se désigner lui-même, mais ne peut pas protéger le même joueur deux nuits de suite.",
 				"isSolo": false,
 				"isNocturnal" : true,
@@ -184,7 +184,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "L'ancien dispose d'une vie supplémentaire contre l'attaque des Loups-Garous. Si le village élimine l'Ancien, tous les villageois spéciaux perdent leur pouvoir, rôles solitaires exclus. La deuxième vie ne protège pas de la mort de chagrin de Cupidon. L'Ancien ne peut pas être infecté. Si l'Ancien est la cible d'une potion de vie de la Sorcière, il dispose d'une vie supplémentaire.",
+				"description" : "L'ancien dispose d'une vie supplémentaire contre l'attaque des Loups-Garous. Si le village élimine l'Ancien, tous les villageois spéciaux perdent leur pouvoir, rôles solitaires exclus. Cet effet ne fonctionne pas par mort de chagrin de Cupidon. L'Ancien ne peut pas être infecté. Si l'Ancien est la cible d'une potion de vie de la Sorcière, il dispose d'une vie supplémentaire.",
 				"action" : "Pas d'action pendant la nuit.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -235,7 +235,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "La Bohémienne peut donner des cartes Spiritisme à lire, pour que les joueurs aient des informations supplémentaires sur la partie en cours. Pendant son tour, la Bohémienne choisit une carte Spiritisme et un joueur qui la lira le matin venu. Si le joueur choisi meurt, la carte n'est pas lue.",
+				"description" : "La Bohémienne peut donner des cartes Spiritisme à lire, pour que les joueurs aient des informations supplémentaires sur la partie en cours. Pendant son tour, la Bohémienne choisit une carte et un joueur qui la lira le matin venu. Si le joueur choisi meurt, la carte n'est pas lue.",
 				"action" : "La Bohémienne choisit une carte Spiritisme et un joueur qui la lira.",
 				"isSolo": false,
 				"isNocturnal" : true,
@@ -297,8 +297,8 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "La Petite Fille est un enfant fragile. Trop apeurée à l'idée de dormir seule, elle se réveille et choisit un joueur chez lequel elle dormira. Celui-ci se réveille, et son rôle est révélé à la Petite Fille. Si le joueur choisi est un Loup-Garou, la Petite Fille est éliminée. Ceci compte pour une élimination supplémentaire de la nuit. La Petite Fille ne peut pas être éliminée par les Loups-Garous, mais si son hôte meurt, la Petite Fille meurt aussi.",
-				"action" : "La Petite Fille choisit un joueur chez lequel elle va dormir. Le rôle de ce dernier est révélé à la Petite Fille. Si le joueur choisi est un Loup-Garou, la Petite Fille est éliminée. Si le joueur choisi est éliminé, la Petite Fille meurt aussi.",
+				"description" : "La Petite Fille est un enfant fragile. Trop apeurée à l'idée de dormir seule, elle se réveille et choisit un joueur chez lequel elle dormira. Celui-ci se réveille, et son rôle est révélé à la Petite Fille. Si le joueur choisi est un Loup-Garou, la Petite Fille est éliminée. Ceci compte pour une élimination supplémentaire de la nuit. La Petite Fille ne peut pas être éliminée par les Loups-Garous, mais si son hôte meurt, la Petite Fille meurt aussi. La Petite Fille ne peut re-sélectionner un joueur qu'elle a déjà visité.",
+				"action" : "La Petite Fille choisit un joueur chez lequel elle va dormir qu'elle n'a pas déjà sélectionné une fois. Le rôle de ce dernier est révélé à la Petite Fille. Si le joueur choisi est un Loup-Garou, la Petite Fille est éliminée. Si le joueur choisi est éliminé, la Petite Fille meurt aussi.",
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -387,7 +387,7 @@
 		"roleValues": 
 		{
 			"NORMAL": {
-				"description" : "Le Bouc Emissaire est éliminé si une égalité se produit lors du vote de la journée. S'il est éliminé de cette façon, il peut choisir les joueurs qui seront autorisés à voter le jour suivant. Cela est dangereux si les joueurs désignés sont tous des Loups-Garous, ou s'il n'y a qu'un seul joueur autorisé à voter, et que celui-ci meurt avant le vote.",
+				"description" : "Le Bouc Emissaire est éliminé si une égalité se produit lors du vote de la journée. De cette manière, il peut choisir les joueurs qui seront autorisés à voter le jour suivant. Cela est dangereux si les joueurs désignés sont tous des Loups-Garous, ou s'il n'y a qu'un seul joueur autorisé à voter, et que celui-ci meurt avant le vote.",
 				"action" : "Pas d'action pendant la nuit.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -398,7 +398,7 @@
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
-				"description" : "Le Bouc Emissaire est une victime des misères de la vie. Il est éliminé si une égalité se produit lors du vote de la journée. S'il est éliminé de cette façon, il peut choisir les joueurs qui ne seront pas autorisés à voter le jour suivant. Si le Bouc Emissaire est dévoré par les Loups-Garous, ceux-ci tombent malades et ne dévoreront pas la nuit suivante.",
+				"description" : "Le Bouc Emissaire est une victime des misères de la vie. Il est éliminé si une égalité se produit lors du vote de la journée. De cette manière, il peut choisir les joueurs qui ne seront pas autorisés à voter le jour suivant. Si le Bouc Emissaire est dévoré par les Loups-Garous, ceux-ci tombent malades et ne dévoreront pas la nuit suivante.",
 				"action" : "Pas d'action pendant la nuit.",
 				"isSolo": false,
 				"isNocturnal" : false,
@@ -574,7 +574,7 @@
 				"powerState": "PERMANENT",
 				"condition": "NOCONDITION",
 				"isWerewolf": true,
-				"rolesToStick": ["WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "WOLFFATHER-NORMAL", "WHITEWOLF-NORMAL", "LITTLEGIRL-NORMAL"],
+				"rolesToStick": ["WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR", "WOLFFATHER-NORMAL", "LITTLEGIRL-NORMAL"],
 				"maxOccurrence": 6
 			}
 		}
@@ -618,7 +618,7 @@
 		"roleValues":
 		{
 			"NORMAL": {
-				"description" : "La Sorcière possède deux potions. Une potion de mort servant à tuer le joueur de son choix, et une potion de vie servant à sauver le joueur victime des Loups-Garous. La Sorcière peut utiliser ses deux potions la même nuit.",
+				"description" : "La Sorcière possède deux potions : une potion de mort servant à tuer le joueur de son choix, et une potion de vie servant à sauver le joueur victime des Loups-Garous. La Sorcière peut utiliser ses deux potions la même nuit.",
 				"action" : "La Sorcière peut utiliser sa potion de vie pour sauver la victime des Loups-Garous, et sa potion de mort pour éliminer un autre joueur.",
 				"isSolo": false,
 				"isNocturnal" : true,
@@ -642,7 +642,7 @@
 				"powerState": "PERMANENT",
 				"condition": "NOCONDITION",
 				"isWerewolf": true,
-				"rolesToStick": ["WEREWOLF-NORMAL", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "LITTLEGIRL-NORMAL", "WHITEWOLF-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
+				"rolesToStick": ["WEREWOLF-NORMAL", "LITTLEGIRL-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
 				"maxOccurrence": 1
 			}
 		}
@@ -659,7 +659,7 @@
 				"powerState": "CONSUMABLE",
 				"condition": "NOCONDITION",
 				"isWerewolf": true,
-				"rolesToStick": ["WEREWOLF-NORMAL", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "WOLFFATHER-NORMAL", "WHITEWOLF-NORMAL", "LITTLEGIRL-NORMAL"],
+				"rolesToStick": ["WEREWOLF-NORMAL", "WOLFFATHER-NORMAL", "LITTLEGIRL-NORMAL"],
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
@@ -670,7 +670,7 @@
 				"powerState": "PERMANENT",
 				"condition": "NOCONDITION",
 				"isWerewolf": true,
-				"rolesToStick": ["WEREWOLF-NORMAL", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "WOLFFATHER-NORMAL", "WHITEWOLF-NORMAL", "LITTLEGIRL-NORMAL"],
+				"rolesToStick": ["WEREWOLF-NORMAL", "WOLFFATHER-NORMAL", "LITTLEGIRL-NORMAL"],
 				"maxOccurrence": 1
 			}
 		}

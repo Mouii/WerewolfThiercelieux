@@ -60,10 +60,10 @@
             android:layout_marginTop="10dp">
 
         <Button
-            android:id="@+id/startButton"
+            android:id="@+id/clearButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/SelectButton_StartGame"/>
+            android:text="@string/SelectView_clearButton"/>
 
             <LinearLayout
                 style="?android:attr/buttonBarStyle"
@@ -110,9 +110,16 @@
             android:layout_gravity="center_horizontal">
 
             <Button
+                android:id="@+id/startButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/SelectButton_StartGame"/>
+
+            <Button
                 android:id="@+id/closeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
                 android:text="@string/Generic_Back"/>
         </LinearLayout>
 

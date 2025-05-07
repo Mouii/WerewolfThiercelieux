@@ -574,7 +574,7 @@
 				"powerState": "PERMANENT",
 				"condition": "NOCONDITION",
 				"isWerewolf": true,
-				"rolesToStick": ["WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "WOLFFATHER-NORMAL", "WHITEWOLF-NORMAL", "LITTLEGIRL-NORMAL"],
+				"rolesToStick": ["WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR", "WOLFFATHER-NORMAL", "LITTLEGIRL-NORMAL"],
 				"maxOccurrence": 6
 			}
 		}
@@ -642,7 +642,7 @@
 				"powerState": "PERMANENT",
 				"condition": "NOCONDITION",
 				"isWerewolf": true,
-				"rolesToStick": ["WEREWOLF-NORMAL", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "LITTLEGIRL-NORMAL", "WHITEWOLF-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
+				"rolesToStick": ["WEREWOLF-NORMAL", "LITTLEGIRL-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
 				"maxOccurrence": 1
 			}
 		}
@@ -659,7 +659,7 @@
 				"powerState": "CONSUMABLE",
 				"condition": "NOCONDITION",
 				"isWerewolf": true,
-				"rolesToStick": ["WEREWOLF-NORMAL", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "WOLFFATHER-NORMAL", "WHITEWOLF-NORMAL", "LITTLEGIRL-NORMAL"],
+				"rolesToStick": ["WEREWOLF-NORMAL", "WOLFFATHER-NORMAL", "LITTLEGIRL-NORMAL"],
 				"maxOccurrence": 1
 			},
 			"AUTHOR": {
@@ -670,7 +670,7 @@
 				"powerState": "PERMANENT",
 				"condition": "NOCONDITION",
 				"isWerewolf": true,
-				"rolesToStick": ["WEREWOLF-NORMAL", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "WOLFFATHER-NORMAL", "WHITEWOLF-NORMAL", "LITTLEGIRL-NORMAL"],
+				"rolesToStick": ["WEREWOLF-NORMAL", "WOLFFATHER-NORMAL", "LITTLEGIRL-NORMAL"],
 				"maxOccurrence": 1
 			}
 		}

@@ -118,9 +118,6 @@ class SelectActivity : AppCompatActivity() {
         //Need an amount of characters to start
         binding.startButton.isEnabled = false
 
-        binding.closeButton.setOnClickListener {
-            finish()
-        }
     }
 
     /***
@@ -195,14 +192,6 @@ class SelectActivity : AppCompatActivity() {
             charChart.image.isEnabled = true
             charChart.image.alpha = 1f
         }
-    }
-
-    /***
-     * Execution on restart of the activity
-     */
-    override fun onRestart() {
-        super.onRestart()
-        recreate() // This will restart the activity
     }
 
     /***
@@ -508,6 +497,45 @@ class SelectActivity : AppCompatActivity() {
      */
     private fun setButtonListenersOfSelected() {
 
+        binding.clearButton.setOnClickListener {
+            // Create the dialog
+            AlertDialog.Builder(this)
+                .setTitle(getString(R.string.SelectView_clearDialogTitle))
+                .setMessage(getString(R.string.SelectView_clearDialogMessage))
+                .setPositiveButton(getString(R.string.Generic_Yes)) { _, _ ->
+                    while(charactersSelected.isNotEmpty()) {
+                        selectedCharacterGameInGame = charactersSelected.last()
+                        removeCharacterToSelection()
+                    }
+                    refreshSelectedListCharacters()
+                }
+                .setNegativeButton(getString(R.string.Generic_No), null)
+                .show()
+        }
+
+        //Left arrow button listener
+        binding.leftArrowButton.setOnClickListener {
+            previousOrder()
+            refreshSelectedListCharacters()
+        }
+
+        //Right arrow button listener
+        binding.rightArrowButton.setOnClickListener {
+            nextOrder()
+            refreshSelectedListCharacters()
+        }
+
+        //Cancel button listener
+        binding.cancelButton.setOnClickListener {
+            removeSelectedCharacterInGame()
+        }
+
+        //Remove button listener
+        binding.removeButton.setOnClickListener {
+            removeCharacterToSelection()
+            refreshSelectedListCharacters()
+        }
+
         //Starting button
         binding.startButton.setOnClickListener {
 
@@ -534,27 +562,8 @@ class SelectActivity : AppCompatActivity() {
 
         }
 
-        //Left arrow button listener
-        binding.leftArrowButton.setOnClickListener {
-            previousOrder()
-            refreshSelectedListCharacters()
-        }
-
-        //Right arrow button listener
-        binding.rightArrowButton.setOnClickListener {
-            nextOrder()
-            refreshSelectedListCharacters()
-        }
-
-        //Cancel button listener
-        binding.cancelButton.setOnClickListener {
-            removeSelectedCharacterInGame()
-        }
-
-        //Remove button listener
-        binding.removeButton.setOnClickListener {
-            removeCharacterToSelection()
-            refreshSelectedListCharacters()
+        binding.closeButton.setOnClickListener {
+            finish()
         }
     }
 }

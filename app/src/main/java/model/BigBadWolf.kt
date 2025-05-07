@@ -28,6 +28,14 @@ class BigBadWolf(
     characterMode
 ) {
 
+    /**
+     * Special case for basic big bad wolf.
+     * We don't want to cancel the night yet for it
+     */
+    override fun action(): String {
+        return action
+    }
+
     override fun clone() = BigBadWolf(this.name, this.description, this.action, this.isSolo, this.isNocturnal, this.powerState, this.condition, this.isWerewolf, this.rolesToStick, this.order, this.maxOccurrence, this.mode)
 
 }

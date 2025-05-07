@@ -42,7 +42,10 @@ open class CharacterGame(
         isNocturnal
 
     open fun action(): String {
-        if(powerState == PowerState.UNIQUE)
+        //In unique statement, call one time then over
+        //In conditional, call one time then over, then handled in the game activity to start again
+        if(powerState == PowerState.UNIQUE || (!isWerewolf && powerState == PowerState.CONDITIONAL
+                                                && condition != ConditionalActivation.ISALONE))
             isNocturnal = false
 
         return action

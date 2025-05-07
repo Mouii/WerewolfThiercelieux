@@ -19,7 +19,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="450dp"
         android:layout_gravity="center_vertical|center_horizontal"
         android:padding="5dp">
         <GridLayout
@@ -29,15 +29,32 @@
             android:alignmentMode="alignBounds"
             android:useDefaultMargins="true"
             android:padding="5dp"
-            android:columnCount="3">
+            android:columnCount="1">
         </GridLayout>
     </ScrollView>
-    <Button
-        android:id="@+id/returnButton"
-        android:layout_marginTop="50dp"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:text="@string/Generic_Back"/>
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/ancientButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/RoleView_AncientButton"/>
+
+        <Button
+            android:id="@+id/returnButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:text="@string/Generic_Back"/>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>
