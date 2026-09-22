@@ -118,6 +118,22 @@
 		}
 	},
 	{
+		"nameRole": "Colossus",
+		"roleValues": {
+			"NORMAL": {
+				"description": "The Colossus retaliates against one of the Werewolves when he is killed by them.",
+				"action": "The Colossus chooses one of the Werewolves to kill in revenge for its own death.",
+				"isSolo": false,
+				"isNocturnal": false,
+				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
+				"isWerewolf": false,
+				"rolesToStick": [],
+				"maxOccurrence": 1
+			}
+		}
+	},
+	{
 		"nameRole":"Crow",
 		"roleValues":
 		{
@@ -355,6 +371,38 @@
 		}
 	},
 	{
+		"nameRole": "PowerfulMotherOfWolves",
+		"roleValues": {
+			"NORMAL": {
+				"description": "The Powerful Mother Of Wolves wakes up alone the first two nights and chooses a player. The targeted player loses its role and becomes a Villager.",
+				"action": "The Powerful Mother Of Wolves chooses a player that will lose its powers and become a Villager.",
+				"isSolo": false,
+				"isNocturnal": true,
+				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
+				"isWerewolf": true,
+				"rolesToStick": ["WEREWOLF-NORMAL", "LITTLEGIRL-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
+				"maxOccurrence": 1
+			}
+		}
+	},
+	{
+		"nameRole": "Puppeteer",
+		"roleValues": {
+			"NORMAL": {
+				"description": "The Puppeteer is protected once against attacks from the Werewolves, the first hit breaks its puppet and leaves the Puppeteer alive but shocked, they can only communicate without talking afterwards.",
+				"action": "No action during the night.",
+				"isSolo": false,
+				"isNocturnal": false,
+				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
+				"isWerewolf": false,
+				"rolesToStick": [],
+				"maxOccurrence": 1
+			}
+		}
+	},
+	{
 		"nameRole":"RustyKnight",
 		"roleValues":
 		{
@@ -521,6 +569,22 @@
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONSUMABLE",
+				"condition": "NOCONDITION",
+				"isWerewolf": false,
+				"rolesToStick": [],
+				"maxOccurrence": 1
+			}
+		}
+	},
+	{
+		"nameRole": "TrainedMonkey",
+		"roleValues": {
+			"NORMAL": {
+				"description": "Once per game, the Trained Monkey wakes up and chooses whether they want to activate their power. If they do, they can choose to see the roles of any number of players, one by one. They can stop whenever, but they die if a Werewolf is revealed.",
+				"action": "Once per game, the Trained Monkey can decide to look at other player's roles one by one. They die if a Werewolf is revealed.",
+				"isSolo": false,
+				"isNocturnal": true,
+				"powerState": "PERMANENT",
 				"condition": "NOCONDITION",
 				"isWerewolf": false,
 				"rolesToStick": [],
