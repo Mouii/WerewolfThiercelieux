@@ -408,20 +408,26 @@ class SelectActivity : AppCompatActivity() {
     private fun removeCharacterToSelection() {
 
         //Protection checking selected character is null
-        if(selectedCharacterGameInGame != null) {
-
-            //Character removed
-            charactersSelected.remove(selectedCharacterGameInGame)
-
-            //Update the chart to select again
-            cancelClicking(selectedCharacterGameInGame!!)
+        if (selectedCharacterGameInGame == null) {
+            setSelectionButtonEnable(false)
+            return
         }
 
-        //No selected characters
-        selectedCharacterGameInGame = null
+        val index = charactersSelected.indexOf(selectedCharacterGameInGame)
+        charactersSelected.remove(selectedCharacterGameInGame)
+        cancelClicking(selectedCharacterGameInGame!!)
 
-        //Disable list
-        setSelectionButtonEnable(false)
+        if (charactersSelected.isEmpty()) {
+            // Clear selection on empty list
+            selectedCharacterGameInGame = null
+            setSelectionButtonEnable(false)
+        } else if (index >= charactersSelected.size) {
+            // Last character has been removed, select new last
+            selectedCharacterGameInGame = charactersSelected.last()
+        } else {
+            // Select the character that took its place
+            selectedCharacterGameInGame = charactersSelected[index]
+        }
     }
 
     /***
