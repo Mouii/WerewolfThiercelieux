@@ -139,8 +139,8 @@
     <string name="GameView_GameOver">Partie terminée</string>
     <string name="GameView_Header">Phase %1$s, tour %2$d</string>
     <string name="GameView_phaseSleeping">C\'est la nuit, le village s\'endort !</string>
-    <string name="GameView_phaseDawn">Le jour se lève, procédons aux éliminations !</string>
-    <string name="GameView_phaseDay">C\'est le jour, débattez sur les décisions à prendre !</string>
+    <string name="GameView_phaseDawn">Le jour se lève, sélectionner les rôles éliminés pendant la nuit !</string>
+    <string name="GameView_phaseDay">C\'est le jour, débattez et sélectionner un ou plusieurs rôles éliminés par le vote du village !</string>
     <string name="GameView_phaseEvening">Le dîner est servi ! Attention, ces villageois sont encore vivants, mais leurs ennemis le sont tout autant…</string>
     <string name="GameView_numberCharacters">Nombre de personnages encore en jeu : %1$d</string>
 

@@ -137,8 +137,8 @@
     <string name="GameView_GameOver">Game over</string>
     <string name="GameView_Header">Phase %1$s, turn %2$d</string>
     <string name="GameView_phaseSleeping">The night has come, the village goes to sleep!</string>
-    <string name="GameView_phaseDawn">Morning, proceed with the eliminations!</string>
-    <string name="GameView_phaseDay">Day time! Chat and speak about what to do!</string>
+    <string name="GameView_phaseDawn">Morning, select the roles eliminated during the night!</string>
+    <string name="GameView_phaseDay">Day time! Decide what to do and select one or more roles eliminated by the village\'s vote.</string>
     <string name="GameView_phaseEvening">Dinner is served! But watch out, these villagers are alive, so are their enemies…</string>
     <string name="GameView_numberCharacters">Number of characters in game : %1$d</string>
 
