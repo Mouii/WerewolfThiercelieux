@@ -752,7 +752,7 @@ class WorkerEasier {
             is BearTamer -> R.drawable.beartamer
             is BigBadWolf -> R.drawable.bigbadwolf
             is Brother -> R.drawable.threebrothers
-            is Colossus -> R.drawable.helpicon
+            is Colossus -> R.drawable.colossus
             is Crow -> R.drawable.crow
             is Cupid -> R.drawable.cupid
             is Defender -> R.drawable.defender
@@ -765,8 +765,8 @@ class WorkerEasier {
             is LittleGirl -> R.drawable.littlegirl
             is Manipulator -> R.drawable.manipulator
             is Piper -> R.drawable.piper
-            is PowerfulMotherOfWolves -> R.drawable.helpicon
-            is Puppeteer -> R.drawable.helpicon
+            is PowerfulMotherOfWolves -> R.drawable.powerfulmotherofwolves
+            is Puppeteer -> R.drawable.puppeteer
             is RustyKnight -> R.drawable.rustyknight
             is Scapegoat -> R.drawable.scapegoat
             is Seer -> R.drawable.seer
@@ -774,7 +774,7 @@ class WorkerEasier {
             is Sister -> R.drawable.twosister
             is StutteringJudge -> R.drawable.stutteringjudge
             is Thief -> R.drawable.thief
-            is TrainedMonkey -> R.drawable.helpicon
+            is TrainedMonkey -> R.drawable.trainedmonkey
             is Villager -> R.drawable.simplevillager
             is VillagerVillager -> R.drawable.villagervillager
             is Werewolf -> R.drawable.werewolf
