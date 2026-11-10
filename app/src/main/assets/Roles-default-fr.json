@@ -541,7 +541,7 @@
 				"condition": "NOCONDITION",
 				"isWerewolf": false,
 				"rolesToStick": [],
-				"maxOccurrence": 7
+				"maxOccurrence": 10
 			}
 		}
 	},

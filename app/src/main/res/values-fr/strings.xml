@@ -90,34 +90,10 @@
 
     <!-- Information View -->
     <string name="InformationView_title">Description</string>
-    <string name="InformationView_death">Morts</string>
-    <string name="InformationView_deathEdit">Entrer les morts</string>
-    <string name="InformationView_lover">Amoureux</string>
-    <string name="InformationView_loverEdit">Entrer les amoureux</string>
-    <string name="InformationView_defender">Salvateur</string>
-    <string name="InformationView_defenderEdit">Entrer le protégé</string>
-    <string name="InformationView_wildChild">Enfant Sauvage</string>
-    <string name="InformationView_wildChildEdit">Entrer le mentor</string>
-    <string name="InformationView_bearTamer">Ours</string>
-    <string name="InformationView_bearTamerEdit">Entrer le dresseur</string>
-    <string name="InformationView_ancient">Ancien</string>
-    <string name="InformationView_ancientEdit">Entrer l\'Ancien</string>
-    <string name="InformationView_infected">Infecté</string>
-    <string name="InformationView_infectedEdit">Entrer l\'Infecté</string>
-    <string name="InformationView_sectarian">Ab. Sectaire</string>
-    <string name="InformationView_sectarianEdit">Entrer les désignés</string>
-    <string name="InformationView_comedian">Comédien</string>
-    <string name="InformationView_comedianEdit">Entrer le rôle copié</string>
-    <string name="InformationView_thief">Voleur</string>
-    <string name="InformationView_thiefEdit">Entrer le joueur piégé</string>
-    <string name="InformationView_piper">Joueur de Flûte</string>
-    <string name="InformationView_piperEdit">Entrer les envoûtés</string>
-    <string name="InformationView_scapegoat">Bouc Emissaire</string>
-    <string name="InformationView_scapegoatEdit">Entrer les joueurs autorisés à voter</string>
-    <string name="InformationView_switched">Changements de place</string>
-    <string name="InformationView_switchedEdit">Entrer les changements de place</string>
-    <string name="InformationView_punished">Puni</string>
-    <string name="InformationView_punishedEdit">Entrer les joueurs punis</string>
+    <string name="InformationView_Add">Ajouter</string>
+    <string name="InformationView_holdDescription">Entrez votre texte ici…</string>
+    <string name="InformationView_NewName">Double tape pour changer le nom</string>
+    <string name="InformationView_ChangeName">Changer le nom</string>
 
     <!-- Select View -->
     <string name="SelectView_NumberOfCharacters">Nombre de joueurs sélectionnés : %1$d</string>

@@ -90,34 +90,10 @@
 
     <!-- Information View -->
     <string name="InformationView_title">Description</string>
-    <string name="InformationView_death">Deaths</string>
-    <string name="InformationView_deathEdit">Enter the deaths</string>
-    <string name="InformationView_lover">Lovers</string>
-    <string name="InformationView_loverEdit">Enter the lovers</string>
-    <string name="InformationView_defender">Defender</string>
-    <string name="InformationView_defenderEdit">Enter the protected</string>
-    <string name="InformationView_wildChild">Wild Child</string>
-    <string name="InformationView_wildChildEdit">Enter the mentor</string>
-    <string name="InformationView_bearTamer">Bear</string>
-    <string name="InformationView_bearTamerEdit">Enter the tamer</string>
-    <string name="InformationView_ancient">Ancient</string>
-    <string name="InformationView_ancientEdit">Enter the ancient</string>
-    <string name="InformationView_infected">Infected</string>
-    <string name="InformationView_infectedEdit">Enter the infected</string>
-    <string name="InformationView_sectarian">Sectarian</string>
-    <string name="InformationView_sectarianEdit">Enter the designated players</string>
-    <string name="InformationView_comedian">Comedian</string>
-    <string name="InformationView_comedianEdit">Enter the copied role</string>
-    <string name="InformationView_thief">Thief</string>
-    <string name="InformationView_thiefEdit">Enter the trapped player</string>
-    <string name="InformationView_piper">Piper</string>
-    <string name="InformationView_piperEdit">Enter the bewitched</string>
-    <string name="InformationView_scapegoat">Scapegoat</string>
-    <string name="InformationView_scapegoatEdit">Enter the allowed voters</string>
-    <string name="InformationView_switched">Seat changes</string>
-    <string name="InformationView_switchedEdit">Enter the players who switched seats</string>
-    <string name="InformationView_punished">Punished</string>
-    <string name="InformationView_punishedEdit">Enter the punished</string>
+    <string name="InformationView_Add">Add</string>
+    <string name="InformationView_holdDescription">Enter your text here…</string>
+    <string name="InformationView_NewName">Double tap to change name</string>
+    <string name="InformationView_ChangeName">Change the name</string>
 
     <!-- Select View -->
     <string name="SelectView_NumberOfCharacters">Number of characters selected : %1$d</string>

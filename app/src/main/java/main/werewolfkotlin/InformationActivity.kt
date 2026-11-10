@@ -4,40 +4,34 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.KeyEvent
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import main.werewolfkotlin.databinding.ActivityInformationBinding
+
+data class Information(
+    var name: String,
+    var description: String
+)
 
 class InformationActivity : AppCompatActivity() {
 
     //Object from the xml view to get all the elements
     private lateinit var binding: ActivityInformationBinding
 
-    /***
-     * Shared text watcher to keep value of text entered
-     */
-    private fun createSharedTextWatcher(): TextWatcher {
-        return object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(editable: Editable?) {
-                // Get the current EditText using binding's focused child (or track focus manually)
-                val currentEditText = currentFocus as? EditText
-
-                addToText(currentEditText!!.id, currentEditText.text.toString())
-            }
-        }
-    }
+    //List of information blocks
+    private val informations = mutableListOf<Information>()
 
     /***
      * Execution on creation of the activity
@@ -47,61 +41,65 @@ class InformationActivity : AppCompatActivity() {
         binding = ActivityInformationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        /*binding.gridLayout.setOnTouchListener(object : OnSwipeTouchListener(this@InformationActivity) {
-            @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-            override fun onSwipeRight() {
-                sweepRight()
-            }
-        })*/
+        //Load blocks before adapter
+        load()
+
+        val recycler = findViewById<RecyclerView>(R.id.recyclerView)
+        val adapter  = InformationAdapter(informations)  { save() }
+        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.adapter = adapter
+
+        // Drag & drop : link ItemTouchHelper to Adapter
+        val touchHelper = ItemTouchHelper(adapter.dragCallback)
+        touchHelper.attachToRecyclerView(recycler)
+        adapter.touchHelper = touchHelper //Needed to start drag
+
+        // Listener on adding button
+        findViewById<Button>(R.id.btnAjouter).setOnClickListener {
+            informations.add(Information(getString(R.string.InformationView_NewName), ""))
+            adapter.notifyItemInserted(informations.size - 1)
+        }
 
         //Listener on button
         binding.returnButton.setOnClickListener {
             finish()
         }
+    }
 
-        //Object watcher
-        val sharedTextWatcher = createSharedTextWatcher()
+    override fun onPause() {
+        super.onPause()
+        save()
+    }
 
-        //List of editText
-        val listEdit = listOf(
-            binding.deathEdit
-            ,binding.loverEdit
-            ,binding.defenderEdit
-            ,binding.wildEdit
-            ,binding.bearEdit
-            ,binding.ancientEdit
-            ,binding.infectedEdit
-            ,binding.sectarianEdit
-            ,binding.comedianEdit
-            ,binding.thiefEdit
-            ,binding.piperEdit
-            ,binding.scapegoatEdit
-            ,binding.switchEdit
-            ,binding.punishedEdit
-        )
-
-        //Affectation
-        listEdit.forEach { editText ->
-
-            //Must be put before, otherwise crash application if listener is put
-            if(infoMap.containsKey(editText.id)) {
-                editText.setText(infoMap[editText.id])
-            }
-
-            editText.addTextChangedListener(sharedTextWatcher)
-            editText.setOnKeyListener { _, keyCode, event ->
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(editText.windowToken, 0)
-                    true
-                } else false
-            }
-
-            editText.isFocusable = true
-            editText.isFocusableInTouchMode = true
-            editText.imeOptions = EditorInfo.IME_ACTION_NONE
+    private fun save() {
+        val prefs = getSharedPreferences("informations", Context.MODE_PRIVATE)
+        val json  = org.json.JSONArray()
+        for (p in informations) {
+            json.put(org.json.JSONObject().apply {
+                put("name", p.name)
+                put("description", p.description)
+            })
         }
+        prefs.edit().putString("list", json.toString()).apply()
+    }
 
+    private fun load() {
+        val prefs = getSharedPreferences("informations", Context.MODE_PRIVATE)
+        val json  = prefs.getString("list", null)
+
+        if (json != null) {
+            val arr = org.json.JSONArray(json)
+            for (i in 0 until arr.length()) {
+                val obj = arr.getJSONObject(i)
+                informations.add(Information(
+                    name = obj.getString("name"),
+                    description = obj.getString("description")
+                ))
+            }
+        } else {
+            //First launch : value by default
+            informations.add(Information("Morts", ""))
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
@@ -116,11 +114,135 @@ class InformationActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    /***
-     * Add the text to the map on the associated key
-     */
-    private fun addToText(key: Int, value: String){
-        infoMap[key] = value
+}
+
+// ADAPTER
+class InformationAdapter(
+    private val informations: MutableList<Information>,
+    private val onSave: () -> Unit //Save function
+) : RecyclerView.Adapter<InformationAdapter.ViewHolder>() {
+
+    //Reference to touchHelper after activity creation
+    var touchHelper: ItemTouchHelper? = null
+
+    // ── ViewHolder : how the card is represented
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val nameLabel: TextView = view.findViewById(R.id.nameLabel)
+        val descriptionField: EditText  = view.findViewById(R.id.descriptionField)
+        val deleteButton: ImageButton = view.findViewById(R.id.btnDelete)
+        val holdForDrag: View = view.findViewById(R.id.dragHold)
+
+        // Create only one time the listeners
+        init {
+
+            // Get activity
+            val activity = itemView.context as AppCompatActivity
+
+            nameLabel.setOnClickListener(object : DoubleClickListener() {
+                override fun onDoubleClick() {
+                    val pos = bindingAdapterPosition
+                    if (pos < 0) return
+                    val input = EditText(activity).apply { setText(informations[pos].name) }
+                    AlertDialog.Builder(activity)   // ← activity au lieu de itemView.context
+                        .setTitle(R.string.InformationView_ChangeName)
+                        .setView(input)
+                        .setPositiveButton(R.string.Generic_Okay) { _, _ ->
+                            informations[pos].name = input.text.toString()
+                            nameLabel.text = informations[pos].name
+                            onSave()
+                        }.show()
+                }
+            })
+        }
     }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val vue = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_information, parent, false)
+        return ViewHolder(vue)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val information = informations[position]
+        val estLePremier = position == 0 //First block doesn't move
+
+        // ── Display
+        holder.nameLabel.text = information.name
+        holder.descriptionField.setText(information.description)
+
+        // Dynamic update. Remove watcher, put text so that the update is effective
+        val ancienWatcher = holder.descriptionField.tag as? android.text.TextWatcher
+        holder.descriptionField.removeTextChangedListener(ancienWatcher)
+        holder.descriptionField.setText(information.description)
+
+        val watcher = object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(e: android.text.Editable?) {
+                // Getting position in case of drag'n'drop
+                val pos = holder.bindingAdapterPosition
+                if (pos >= 0) {
+                    informations[pos].description = e?.toString() ?: ""
+                    onSave()
+                }
+            }
+        }
+        holder.descriptionField.tag = watcher
+        holder.descriptionField.addTextChangedListener(watcher)
+
+        // Allow deletion except the first
+        if (estLePremier) {
+            holder.deleteButton.visibility = View.INVISIBLE
+            holder.holdForDrag.visibility  = View.INVISIBLE
+        } else {
+            holder.deleteButton.visibility = View.VISIBLE
+            holder.holdForDrag.visibility  = View.VISIBLE
+
+            holder.deleteButton.setOnClickListener {
+                val pos = holder.bindingAdapterPosition
+                informations.removeAt(pos)
+                notifyItemRemoved(pos)
+                onSave()
+            }
+
+            // Drag & drop
+            holder.holdForDrag.setOnTouchListener { _, event ->
+                if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                    touchHelper?.startDrag(holder)
+                }
+                false
+            }
+        }
+    }
+
+    override fun getItemCount() = informations.size
+
+    // Callback drag & drop
+    // Allow move of drag'n'drop except on the first one
+    val dragCallback = object : ItemTouchHelper.SimpleCallback(
+        ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0
+    ) {
+        override fun onMove(rv: RecyclerView, vh: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            val startPosition  = vh.bindingAdapterPosition
+            val endPosition = target.bindingAdapterPosition
+            if (endPosition == 0) return false  // don't go on the first bloc
+            val item = informations.removeAt(startPosition)
+            informations.add(endPosition, item)
+            notifyItemMoved(startPosition, endPosition)
+            onSave()
+            return true
+        }
+        override fun onSwiped(vh: RecyclerView.ViewHolder, dir: Int) {}
+    }
+}
+
+// HELPER double-tap = utility class for double tape
+abstract class DoubleClickListener : View.OnClickListener {
+    private var lastClick = 0L
+    override fun onClick(v: View) {
+        val now = System.currentTimeMillis()
+        if (now - lastClick < 300) onDoubleClick()
+        lastClick = now
+    }
+    abstract fun onDoubleClick()
 }
