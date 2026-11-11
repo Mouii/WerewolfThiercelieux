@@ -9,7 +9,6 @@
     <string name="BearTamer">Bear Tamer</string>
     <string name="BigBadWolf">Big Bad Wolf</string>
     <string name="Brother">Brother</string>
-    <string name="Colossus">Colossus</string>
     <string name="Crow">Crow</string>
     <string name="Cupid">Cupid</string>
     <string name="Defender">Defender</string>
@@ -22,8 +21,6 @@
     <string name="LittleGirl">Little Girl</string>
     <string name="Manipulator">Manipulator</string>
     <string name="Piper">Flute Player</string>
-    <string name="PowerfulMotherOfWolves">Powerful Mother Of Wolves</string>
-    <string name="Puppeteer">Puppeteer</string>
     <string name="RustyKnight">Rusty Knight</string>
     <string name="Scapegoat">Scapegoat</string>
     <string name="Seer">Seer</string>
@@ -31,7 +28,6 @@
     <string name="Sister">Sister</string>
     <string name="StutteringJudge">Stuttering Judge</string>
     <string name="Thief">Thief</string>
-    <string name="TrainedMonkey">Trained Monkey</string>
     <string name="Villager">Villager</string>
     <string name="VillagerVillager">Villager-Villager</string>
     <string name="Werewolf">Werewolf</string>
@@ -113,8 +109,8 @@
     <string name="GameView_GameOver">Game over</string>
     <string name="GameView_Header">Phase %1$s, turn %2$d</string>
     <string name="GameView_phaseSleeping">The night has come, the village goes to sleep!</string>
-    <string name="GameView_phaseDawn">Morning, select the roles eliminated during the night!</string>
-    <string name="GameView_phaseDay">Day time! Decide what to do and select one or more roles eliminated by the village\'s vote.</string>
+    <string name="GameView_phaseDawn">Morning, proceed with the eliminations!</string>
+    <string name="GameView_phaseDay">Day time! Chat and speak about what to do!</string>
     <string name="GameView_phaseEvening">Dinner is served! But watch out, these villagers are alive, so are their enemies…</string>
     <string name="GameView_numberCharacters">Number of characters in game : %1$d</string>
 
@@ -204,4 +200,50 @@
     <string name="FaqView_question20">How can I reach out to the developers of this app?</string>
     <string name="FaqView_answer20">You can send me an e-mail on my address : kevin.prudhomme555@gmail.com. Be sure to use a tag like [Werewolf] in the subject so that it catches my attention!</string>
 
+    <string name="SeatDefaultName">Player %1$d</string>
+    <string name="SeatDialog_Title">Player</string>
+    <string name="SeatDialog_Name">Player name</string>
+    <string name="SeatDialog_NoRole">— No role —</string>
+    <string name="SeatDialog_MarkDead">Mark as dead</string>
+    <string name="SeatDialog_UnmarkDead">Cancel death</string>
+    <string name="SeatDialog_Resurrect">Resurrect</string>
+    <string name="Band_Title">TURN ORDER</string>
+    <string name="Band_OrderButton">Turn order</string>
+    <string name="Band_OrderTitle">Turn order</string>
+    <string name="Band_Awake">Awake at night</string>
+    <string name="Band_WakeUp">Wake up</string>
+    <string name="Band_PutToSleep">Put to sleep</string>
+    <string name="Band_Pending">Takes effect when the night ends</string>
+    <string name="Band_NightOnly">The order can\'t be changed during the night</string>
+    <string name="Band_NotCalledTonight">This role sleeps tonight</string>
+    <string name="Band_CallOnlyAtNight">Roles can only be called during the night</string>
+    <string name="Block_Infected">Infected</string>
+    <string name="Pack_Infected">Infected players, awake too: %1$s</string>
+    <string name="WolfTurn_Name">Werewolf turn</string>
+    <string name="WolfTurn_Description">Calls the pack of werewolves at this moment of the night. Move it where you want.</string>
+    <string name="WolfTurn_Switch">Werewolf turn</string>
+    <string name="RoleView_Alive">%1$d/%2$d alive</string>
+    <string name="InformationView_TabPlayers">Players</string>
+    <string name="InformationView_TabRoles">Roles</string>
+    <string name="InformationView_TabInfos">Infos</string>
+    <string name="InformationView_TabHistory">Historic</string>
+    <string name="InformationView_NotAssigned">%1$d not assigned yet</string>
+    <string name="InformationView_InfectSolo">Solo roles</string>
+    <string name="InformationView_AddPlayer">+ Player</string>
+    <string name="InformationView_RemoveSelected">Remove selected</string>
+    <string name="InformationView_NoPlayer">No player available</string>
+    <string name="InformationView_NewBlock">Name of the new block</string>
+    <string name="InformationView_HistoryEmpty">Nothing has happened yet</string>
+    <string name="History_Stamp">Turn %1$d · %2$s</string>
+    <string name="History_Dead">%1$s (%2$s) is set as dead</string>
+    <string name="History_Alive">%1$s (%2$s) is set as alive</string>
+    <string name="History_Target">%1$s: target %2$s</string>
+    <string name="History_TargetRemoved">%1$s: %2$s is no longer a target</string>
+    <string name="History_Infected">%1$s (%2$s) is infected</string>
+    <string name="History_Disinfected">%1$s (%2$s) is no longer infected</string>
+    <string name="History_Awake">%1$s now wakes up at night</string>
+    <string name="History_Asleep">%1$s now sleeps at night</string>
+    <string name="History_AwakePending">%1$s will wake up at night from the next night</string>
+    <string name="History_AsleepPending">%1$s will sleep at night from the next night</string>
+    <string name="History_Elder">The powers of the special villagers are removed</string>
 </resources>

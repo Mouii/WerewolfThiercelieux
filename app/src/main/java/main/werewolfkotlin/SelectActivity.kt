@@ -7,6 +7,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.widget.FrameLayout
 import android.widget.GridLayout
 import android.widget.ImageView
@@ -43,6 +44,9 @@ class SelectActivity : AppCompatActivity() {
 
     //Limit of characters to start playing.(See if can be configured)
     private val limitStartNumber : Int = 8
+
+    //Avoid reacting to the switch of the werewolf turn when we are the ones changing it
+    private var wolfTurnSyncing : Boolean = false
 
     /***
      * Execution on creation of the activity
@@ -108,6 +112,14 @@ class SelectActivity : AppCompatActivity() {
 
         //Adding listeners to the buttons for game
         setButtonListenersOfSelected()
+
+        //Werewolf turn, for the games without simple werewolf
+        binding.wolfTurnSwitch.setOnCheckedChangeListener { _, checked ->
+            if (!wolfTurnSyncing) {
+                if (checked) addWolfTurnMarker() else removeWolfTurnMarker()
+                refreshSelectedListCharacters()
+            }
+        }
 
         //Disable by default buttons for list selection
         setSelectionButtonEnable(false)
@@ -183,6 +195,8 @@ class SelectActivity : AppCompatActivity() {
      * Action on canceling the dialog. Refresh the occurrence of the character in the Chart
      */
     private fun cancelClicking(characterGame : CharacterGame) {
+        if(characterGame.className == WOLF_TURN) return
+
         //Update the chart to select again
         val charChart = characterChart.first{ x -> x.name == characterGame.className}
         charChart.occurrence -= 1
@@ -201,7 +215,7 @@ class SelectActivity : AppCompatActivity() {
         val stringResource = getString(R.string.SelectView_NumberOfCharacters)
 
         //Set message
-        binding.textMenu.text = String.format(stringResource, charactersSelected.size)
+        binding.textMenu.text = String.format(stringResource, charactersSelected.count { it.className != WOLF_TURN })
     }
 
     /***
@@ -221,6 +235,31 @@ class SelectActivity : AppCompatActivity() {
         imageView.layoutParams = layoutParams
 
         return imageView
+    }
+
+    /***
+     * Put the werewolf turn at the end of the order. It can then be moved like the other cards
+     */
+    private fun addWolfTurnMarker() {
+        if(charactersSelected.any { it.className == WOLF_TURN }) return
+
+        val order = if(charactersSelected.isEmpty()) 0 else charactersSelected.maxOf { x -> x.order } + 1
+        charactersSelected.add(WerewolfTurn(getString(R.string.WolfTurn_Name), getString(R.string.WolfTurn_Description), order))
+    }
+
+    private fun removeWolfTurnMarker() {
+        if(selectedCharacterGameInGame?.className == WOLF_TURN) selectedCharacterGameInGame = null
+        charactersSelected.removeAll { it.className == WOLF_TURN }
+    }
+
+    private fun syncWolfTurnSwitch() {
+        val hasSimpleWerewolf = charactersSelected.any { it.className == "Werewolf" }
+        if(hasSimpleWerewolf) removeWolfTurnMarker()
+
+        wolfTurnSyncing = true
+        binding.wolfTurnSwitch.visibility = if(hasSimpleWerewolf) View.GONE else View.VISIBLE
+        binding.wolfTurnSwitch.isChecked = charactersSelected.any { it.className == WOLF_TURN }
+        wolfTurnSyncing = false
     }
 
     /***
@@ -254,6 +293,9 @@ class SelectActivity : AppCompatActivity() {
      * Refresh of the in game list on selection
      */
     private fun refreshSelectedListCharacters() {
+
+        //Show the switch of the werewolf turn only if no simple werewolf is selected
+        syncWolfTurnSwitch()
 
         //Always remove to recreate
         binding.gridSelectedView.removeAllViewsInLayout()
@@ -362,7 +404,7 @@ class SelectActivity : AppCompatActivity() {
         refreshArrowSelectionSelected()
 
         //Each drawing can update the start. A game start with at least five characters
-        binding.startButton.isEnabled = charactersSelected.size >= limitStartNumber
+        binding.startButton.isEnabled = charactersSelected.count { it.className != WOLF_TURN } >= limitStartNumber
 
         //Update string
         updateSelectedCharacterString()
@@ -372,6 +414,9 @@ class SelectActivity : AppCompatActivity() {
      * Add a character to the game
      */
     private fun addCharacterToGame(characterGame: CharacterGame) {
+
+        //A simple werewolf brings the werewolf turn by itself
+        if(characterGame.className == "Werewolf") removeWolfTurnMarker()
 
         //Copy the object
         val newCharacterGame : CharacterGame = characterGame.clone()
@@ -408,26 +453,20 @@ class SelectActivity : AppCompatActivity() {
     private fun removeCharacterToSelection() {
 
         //Protection checking selected character is null
-        if (selectedCharacterGameInGame == null) {
-            setSelectionButtonEnable(false)
-            return
+        if(selectedCharacterGameInGame != null) {
+
+            //Character removed
+            charactersSelected.remove(selectedCharacterGameInGame)
+
+            //Update the chart to select again
+            cancelClicking(selectedCharacterGameInGame!!)
         }
 
-        val index = charactersSelected.indexOf(selectedCharacterGameInGame)
-        charactersSelected.remove(selectedCharacterGameInGame)
-        cancelClicking(selectedCharacterGameInGame!!)
+        //No selected characters
+        selectedCharacterGameInGame = null
 
-        if (charactersSelected.isEmpty()) {
-            // Clear selection on empty list
-            selectedCharacterGameInGame = null
-            setSelectionButtonEnable(false)
-        } else if (index >= charactersSelected.size) {
-            // Last character has been removed, select new last
-            selectedCharacterGameInGame = charactersSelected.last()
-        } else {
-            // Select the character that took its place
-            selectedCharacterGameInGame = charactersSelected[index]
-        }
+        //Disable list
+        setSelectionButtonEnable(false)
     }
 
     /***

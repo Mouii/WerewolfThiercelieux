@@ -1,12 +1,25 @@
 package main.werewolfkotlin
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.TextView
+import androidx.core.content.ContextCompat.getString
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import model.*
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Locale
 
 class WorkerEasier {
 
@@ -364,19 +377,6 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "Colossus" -> return Colossus(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode
-                )
                 "Crow" -> return Crow(character.name
                     , character.description
                     , character.action
@@ -521,30 +521,6 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
-                "PowerfulMotherOfWolves" -> return PowerfulMotherOfWolves(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Puppeteer" -> return Puppeteer(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
                 "RustyKnight" -> return RustyKnight(character.name
                     , character.description
                     , character.action
@@ -618,18 +594,6 @@ class WorkerEasier {
                     , character.maxOccurrence
                     , character.mode)
                 "Thief" -> return Thief(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "TrainedMonkey" -> return TrainedMonkey(character.name
                     , character.description
                     , character.action
                     , character.isSolo
@@ -746,44 +710,112 @@ class WorkerEasier {
         /***
          * Return the associate picture from the object itself
          */
-        fun getCharacterImage(classObject : CharacterGame) : Int = when(classObject) {
-            is Actor -> R.drawable.actor
-            is Angel -> R.drawable.angel
-            is BearTamer -> R.drawable.beartamer
-            is BigBadWolf -> R.drawable.bigbadwolf
-            is Brother -> R.drawable.threebrothers
-            is Colossus -> R.drawable.colossus
-            is Crow -> R.drawable.crow
-            is Cupid -> R.drawable.cupid
-            is Defender -> R.drawable.defender
-            is Elder -> R.drawable.elder
-            is Fireman -> R.drawable.fireman
-            is Fox -> R.drawable.fox
-            is Gypsy -> R.drawable.gypsy
-            is Hunter -> R.drawable.hunter
-            is Idiot -> R.drawable.villageidiot
-            is LittleGirl -> R.drawable.littlegirl
-            is Manipulator -> R.drawable.manipulator
-            is Piper -> R.drawable.piper
-            is PowerfulMotherOfWolves -> R.drawable.powerfulmotherofwolves
-            is Puppeteer -> R.drawable.puppeteer
-            is RustyKnight -> R.drawable.rustyknight
-            is Scapegoat -> R.drawable.scapegoat
-            is Seer -> R.drawable.seer
-            is Servant -> R.drawable.servant
-            is Sister -> R.drawable.twosister
-            is StutteringJudge -> R.drawable.stutteringjudge
-            is Thief -> R.drawable.thief
-            is TrainedMonkey -> R.drawable.trainedmonkey
-            is Villager -> R.drawable.simplevillager
-            is VillagerVillager -> R.drawable.villagervillager
-            is Werewolf -> R.drawable.werewolf
-            is WhiteWerewolf -> R.drawable.whitewerewolf
-            is WildChild -> R.drawable.wildchild
-            is Witch -> R.drawable.witch
-            is WolfFather -> R.drawable.wolffather
-            is WolfHound -> R.drawable.wolfhound
-            else -> R.drawable.helpicon
+        fun getCharacterImage(classObject : CharacterGame) : Int {
+            when(classObject) {
+                is Actor -> {
+                    return R.drawable.actor
+                }
+                is Angel -> {
+                    return R.drawable.angel
+                }
+                is BearTamer -> {
+                    return R.drawable.beartamer
+                }
+                is BigBadWolf -> {
+                    return R.drawable.bigbadwolf
+                }
+                is Brother -> {
+                    return R.drawable.threebrothers
+                }
+                is Crow -> {
+                    return R.drawable.crow
+                }
+                is Cupid -> {
+                    return R.drawable.cupid
+                }
+                is Defender -> {
+                    return R.drawable.defender
+                }
+                is Elder -> {
+                    return R.drawable.elder
+                }
+                is Fireman -> {
+                    return R.drawable.fireman
+                }
+                is Fox -> {
+                    return R.drawable.fox
+                }
+                is Gypsy -> {
+                    return R.drawable.gypsy
+                }
+                is Hunter -> {
+                    return R.drawable.hunter
+                }
+                is Idiot -> {
+                    return R.drawable.villageidiot
+                }
+                is LittleGirl -> {
+                    return R.drawable.littlegirl
+                }
+                is Manipulator -> {
+                    return R.drawable.manipulator
+                }
+                is Piper -> {
+                    return R.drawable.piper
+                }
+                is RustyKnight -> {
+                    return R.drawable.rustyknight
+                }
+                is Scapegoat -> {
+                    return R.drawable.scapegoat
+                }
+                is Seer -> {
+                    return R.drawable.seer
+                }
+                is Servant -> {
+                    return R.drawable.servant
+                }
+                is Sister -> {
+                    return R.drawable.twosister
+                }
+                is StutteringJudge -> {
+                    return R.drawable.stutteringjudge
+                }
+                is Thief -> {
+                    return R.drawable.thief
+                }
+                is Villager -> {
+                    return R.drawable.simplevillager
+                }
+                is VillagerVillager -> {
+                    return R.drawable.villagervillager
+                }
+                is Werewolf -> {
+                    return R.drawable.werewolf
+                }
+                is WhiteWerewolf -> {
+                    return R.drawable.whitewerewolf
+                }
+                is WildChild -> {
+                    return R.drawable.wildchild
+                }
+                is Witch -> {
+                    return R.drawable.witch
+                }
+                is WolfFather -> {
+                    return R.drawable.wolffather
+                }
+                is WolfHound -> {
+                    return R.drawable.wolfhound
+                }
+            }
+
+            //Marker of the werewolf turn : the picture of the werewolves
+            if(classObject.className == WOLF_TURN) {
+                return R.drawable.werewolf
+            }
+
+            return 0
         }
 
         /***

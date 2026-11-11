@@ -32,6 +32,9 @@ open class CharacterGame(
     var mode: String
 ) : Cloneable {
 
+    //Infected by the infect father of wolves : plays with the werewolves but keeps its own role
+    var infected: Boolean = false
+
     //Keep the classname for different purposes
     val className: String = this.javaClass.simpleName
 

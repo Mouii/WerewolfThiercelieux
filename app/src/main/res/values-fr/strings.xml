@@ -9,7 +9,6 @@
     <string name="BearTamer">Dresseur d\'Ours</string>
     <string name="BigBadWolf">Grand Méchant Loup</string>
     <string name="Brother">Frère</string>
-    <string name="Colossus">Colosse</string>
     <string name="Crow">Corbeau</string>
     <string name="Cupid">Cupidon</string>
     <string name="Defender">Salvateur</string>
@@ -22,8 +21,6 @@
     <string name="LittleGirl">Petite Fille</string>
     <string name="Manipulator">Abominable Sectaire</string>
     <string name="Piper">Joueur de Flûte</string>
-    <string name="PowerfulMotherOfWolves">Puissante Mère Des Loups</string>
-    <string name="Puppeteer">Marionnettiste</string>
     <string name="RustyKnight">Chevalier à l\'Epée Rouillée</string>
     <string name="Scapegoat">Bouc Emissaire</string>
     <string name="Seer">Voyante</string>
@@ -31,7 +28,6 @@
     <string name="Sister">Sœur</string>
     <string name="StutteringJudge">Juge Bègue</string>
     <string name="Thief">Voleur</string>
-    <string name="TrainedMonkey">Singe Savant</string>
     <string name="Villager">Villageois</string>
     <string name="VillagerVillager">Villageois-Villageois</string>
     <string name="Werewolf">Loup-Garou</string>
@@ -40,7 +36,6 @@
     <string name="Witch">Sorcière</string>
     <string name="WolfFather">Grand-père des Loups</string>
     <string name="WolfHound">Chien-Loup</string>
-
     <string name="Phase_SLEEPING">Endormissement</string>
     <string name="Phase_NIGHT">Nuit</string>
     <string name="Phase_DAWN">Aube</string>
@@ -115,8 +110,8 @@
     <string name="GameView_GameOver">Partie terminée</string>
     <string name="GameView_Header">Phase %1$s, tour %2$d</string>
     <string name="GameView_phaseSleeping">C\'est la nuit, le village s\'endort !</string>
-    <string name="GameView_phaseDawn">Le jour se lève, sélectionner les rôles éliminés pendant la nuit !</string>
-    <string name="GameView_phaseDay">C\'est le jour, débattez et sélectionner un ou plusieurs rôles éliminés par le vote du village !</string>
+    <string name="GameView_phaseDawn">Le jour se lève, procédons aux éliminations !</string>
+    <string name="GameView_phaseDay">C\'est le jour, débattez sur les décisions à prendre !</string>
     <string name="GameView_phaseEvening">Le dîner est servi ! Attention, ces villageois sont encore vivants, mais leurs ennemis le sont tout autant…</string>
     <string name="GameView_numberCharacters">Nombre de personnages encore en jeu : %1$d</string>
 
@@ -205,4 +200,50 @@
     <string name="FaqView_answer19">Si vous modifiez la langue de l\'application, les rôles créés dans une autre langue ne seront pas disponibles. Chaque rôle personnalisé est lié à la langue dans laquelle il a été créé. Si vous voulez utiliser un rôle dans une autre langue, il faudra le recréer de zéro. Pourquoi ? L\'architecture de l\'application ne permet pas cette fonctionnalité.</string>
     <string name="FaqView_question20">Comment contacter les développeurs ?</string>
     <string name="FaqView_answer20">Pour toute question, envoyez un email à l\'adresse : kevin.prudhomme555@gmail.com. Mentionner le nom de l\'application dans le sujet pour que cela attire mon attention !</string>
+    <string name="SeatDefaultName">Joueur %1$d</string>
+    <string name="SeatDialog_Title">Joueur</string>
+    <string name="SeatDialog_Name">Nom du joueur</string>
+    <string name="SeatDialog_NoRole">— Aucun rôle —</string>
+    <string name="SeatDialog_MarkDead">Marquer comme mort</string>
+    <string name="SeatDialog_UnmarkDead">Annuler la mort</string>
+    <string name="SeatDialog_Resurrect">Ressusciter</string>
+    <string name="Band_Title">ORDRE DE PASSAGE</string>
+    <string name="Band_OrderButton">Ordre de passage</string>
+    <string name="Band_OrderTitle">Ordre de passage</string>
+    <string name="Band_Awake">Éveillé la nuit</string>
+    <string name="Band_WakeUp">Réveiller</string>
+    <string name="Band_PutToSleep">Endormir</string>
+    <string name="Band_Pending">Effectif à la fin de la nuit</string>
+    <string name="Band_NightOnly">L\'ordre ne peut pas changer pendant la nuit</string>
+    <string name="Band_NotCalledTonight">Ce rôle dort cette nuit</string>
+    <string name="Band_CallOnlyAtNight">Les rôles ne s\'appellent que pendant la nuit</string>
+    <string name="Block_Infected">Infectés</string>
+    <string name="Pack_Infected">Joueurs infectés, éveillés aussi : %1$s</string>
+    <string name="WolfTurn_Name">Tour des loups</string>
+    <string name="WolfTurn_Description">Appelle la meute de loups-garous à ce moment de la nuit. Placez-le où vous voulez.</string>
+    <string name="WolfTurn_Switch">Tour des loups</string>
+    <string name="RoleView_Alive">%1$d/%2$d en vie</string>
+    <string name="InformationView_TabPlayers">Joueurs</string>
+    <string name="InformationView_TabRoles">Rôles</string>
+    <string name="InformationView_TabInfos">Infos</string>
+    <string name="InformationView_TabHistory">Historique</string>
+    <string name="InformationView_NotAssigned">%1$d pas encore assigné(s)</string>
+    <string name="InformationView_InfectSolo">Rôles solitaires</string>
+    <string name="InformationView_AddPlayer">+ Joueur</string>
+    <string name="InformationView_RemoveSelected">Retirer la sélection</string>
+    <string name="InformationView_NoPlayer">Aucun joueur disponible</string>
+    <string name="InformationView_NewBlock">Nom du nouveau bloc</string>
+    <string name="InformationView_HistoryEmpty">Rien ne s\'est encore passé</string>
+    <string name="History_Stamp">Tour %1$d · %2$s</string>
+    <string name="History_Dead">%1$s (%2$s) est mis(e) mort(e)</string>
+    <string name="History_Alive">%1$s (%2$s) est remis(e) en vie</string>
+    <string name="History_Target">%1$s : cible %2$s</string>
+    <string name="History_TargetRemoved">%1$s : %2$s n\'est plus une cible</string>
+    <string name="History_Infected">%1$s (%2$s) est infecté(e)</string>
+    <string name="History_Disinfected">%1$s (%2$s) n\'est plus infecté(e)</string>
+    <string name="History_Awake">%1$s se réveille désormais la nuit</string>
+    <string name="History_Asleep">%1$s dort désormais la nuit</string>
+    <string name="History_AwakePending">%1$s se réveillera la nuit dès la prochaine nuit</string>
+    <string name="History_AsleepPending">%1$s dormira la nuit dès la prochaine nuit</string>
+    <string name="History_Elder">Les pouvoirs des villageois spéciaux sont retirés</string>
 </resources>

@@ -17,44 +17,26 @@
         android:textSize="40sp"
         android:text="@string/GameButton_Roles"/>
 
+    <!-- One band per role of the game, filled by the activity -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:padding="5dp">
-        <GridLayout
-            android:id="@+id/gridLayout"
+
+        <LinearLayout
+            android:id="@+id/roleContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alignmentMode="alignBounds"
-            android:useDefaultMargins="true"
-            android:padding="5dp"
-            android:columnCount="1">
-        </GridLayout>
+            android:orientation="vertical" />
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/returnButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/ancientButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/RoleView_AncientButton"/>
-
-        <Button
-            android:id="@+id/returnButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:text="@string/Generic_Back"/>
-
-    </LinearLayout>
-
-
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
+        android:text="@string/Generic_Back"/>
 
 </LinearLayout>

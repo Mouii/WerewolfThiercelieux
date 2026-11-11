@@ -5,120 +5,117 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:clipChildren="false"
-    android:padding="16dp">
+    android:padding="12dp">
 
+    <!-- Top bar : information, phase, roles -->
     <LinearLayout
-        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/turnPhase"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:gravity="center"
+            android:padding="8dp"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <!-- The players, on a dark panel so the pictures stand out -->
+    <main.werewolfkotlin.PlayerCircleView
+        android:id="@+id/playerCircle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/circle_panel_bg" />
+
+    <!-- Line of the roles, in turn order -->
+    <main.werewolfkotlin.TurnBandView
+        android:id="@+id/turnBand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+
+    <!-- Action of the called role, under the line of roles -->
+    <ScrollView
+        android:id="@+id/scrollTextView"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/gameStatusTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:gravity="center_horizontal|center_vertical"
+            android:background="@color/black"
+            android:gravity="center_horizontal"
             android:textColor="@color/white"
-            android:background="@color/black">
-        </TextView>
+            android:textSize="16sp" />
 
+    </ScrollView>
 
-        <ScrollView
-            android:id="@+id/scrollGridLayout"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginTop="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-            <GridLayout
-                android:id="@+id/gridCharacterView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:alignmentMode="alignBounds"
-                android:useDefaultMargins="true"
-                android:columnCount="3"/>
-        </ScrollView>
+        <Button
+            android:id="@+id/InformationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/GameButton_Information" />
 
-        <ScrollView
-            android:id="@+id/scrollTextView"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="10dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/gameStatusTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:textColor="@color/white"
-                android:background="@color/black"
-
-                android:textSize="18sp" />
-
-        </ScrollView>
+        <Button
+            android:id="@+id/RoleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/GameButton_Roles" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_width="wrap_content">
-            <Button
-                android:id="@+id/RoleButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:text="@string/GameButton_Roles"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+        <Button
+            android:id="@+id/prevButton"
             android:layout_width="wrap_content"
-            android:layout_columnWeight="1">
-            <Button
-                android:id="@+id/startNightButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:text="@string/GameButton_NextTurn"/>
-
-            <Button
-                android:id="@+id/endButton"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:text="@string/GameButton_EndGame"/>
-
-        </LinearLayout>
-
-        <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_columnWeight="1">
+            android:layout_marginEnd="4dp"
+            android:text="@string/SelectButton_Previous" />
 
-            <Button
-                android:id="@+id/InformationButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:text="@string/GameButton_Information"/>
+        <Button
+            android:id="@+id/startNightButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:text="@string/GameButton_NextTurn" />
 
-        </LinearLayout>
-
+        <Button
+            android:id="@+id/endButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:text="@string/GameButton_EndGame" />
 
     </LinearLayout>
-
-
 
 </LinearLayout>
