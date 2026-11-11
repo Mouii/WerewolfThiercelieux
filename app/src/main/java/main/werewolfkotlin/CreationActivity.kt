@@ -19,6 +19,7 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.Pair
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import main.werewolfkotlin.databinding.ActivityCreationBinding
@@ -54,17 +55,18 @@ class CreationActivity : AppCompatActivity() {
      */
     private fun createSharedTextWatcher(): TextWatcher {
         return object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             }
 
             override fun afterTextChanged(editable: Editable?) {
                 // Get the current EditText using binding's focused child (or track focus manually)
                 val currentEditText = currentFocus as? EditText
 
-                addToText(currentEditText!!.id, currentEditText.text.toString())
+                if(currentEditText != null)
+                    addToText(currentEditText.id, currentEditText.text.toString())
             }
         }
     }
