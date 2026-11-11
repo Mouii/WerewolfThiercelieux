@@ -377,6 +377,18 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
+                "Colossus" -> return Colossus(character.name
+                    , character.description
+                    , character.action
+                    , character.isSolo
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.condition
+                    , character.isWerewolf
+                    , character.rolesToStick
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode)
                 "Crow" -> return Crow(character.name
                     , character.description
                     , character.action
@@ -521,6 +533,30 @@ class WorkerEasier {
                     , character.order
                     , character.maxOccurrence
                     , character.mode)
+                "PowerfulMotherOfWolves" -> return PowerfulMotherOfWolves(character.name
+                    , character.description
+                    , character.action
+                    , character.isSolo
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.condition
+                    , character.isWerewolf
+                    , character.rolesToStick
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode)
+                "Puppeteer" -> return Puppeteer(character.name
+                    , character.description
+                    , character.action
+                    , character.isSolo
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.condition
+                    , character.isWerewolf
+                    , character.rolesToStick
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode)
                 "RustyKnight" -> return RustyKnight(character.name
                     , character.description
                     , character.action
@@ -594,6 +630,18 @@ class WorkerEasier {
                     , character.maxOccurrence
                     , character.mode)
                 "Thief" -> return Thief(character.name
+                    , character.description
+                    , character.action
+                    , character.isSolo
+                    , character.isNocturnal
+                    , character.powerState
+                    , character.condition
+                    , character.isWerewolf
+                    , character.rolesToStick
+                    , character.order
+                    , character.maxOccurrence
+                    , character.mode)
+                "TrainedMonkey" -> return TrainedMonkey(character.name
                     , character.description
                     , character.action
                     , character.isSolo
@@ -727,6 +775,9 @@ class WorkerEasier {
                 is Brother -> {
                     return R.drawable.threebrothers
                 }
+                is Colossus -> {
+                    return R.drawable.colossus
+                }
                 is Crow -> {
                     return R.drawable.crow
                 }
@@ -763,6 +814,12 @@ class WorkerEasier {
                 is Piper -> {
                     return R.drawable.piper
                 }
+                is PowerfulMotherOfWolves -> {
+                    return R.drawable.powerfulmotherofwolves
+                }
+                is Puppeteer -> {
+                    return R.drawable.puppeteer
+                }
                 is RustyKnight -> {
                     return R.drawable.rustyknight
                 }
@@ -780,6 +837,9 @@ class WorkerEasier {
                 }
                 is StutteringJudge -> {
                     return R.drawable.stutteringjudge
+                }
+                is TrainedMonkey -> {
+                    return R.drawable.trainedmonkey
                 }
                 is Thief -> {
                     return R.drawable.thief
