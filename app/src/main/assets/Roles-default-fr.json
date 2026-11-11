@@ -118,6 +118,22 @@
 		}
 	},
 	{
+		"nameRole": "Colossus",
+		"roleValues": {
+			"NORMAL": {
+				"description": "Le Colosse se venge en éliminant un Loup-Garou lorsqu'il est éliminé.",
+				"action": "Le Colosse choisit un Loup-Garou à éliminer par vengeance.",
+				"isSolo": false,
+				"isNocturnal": false,
+				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
+				"isWerewolf": false,
+				"rolesToStick": [],
+				"maxOccurrence": 1
+			}
+		}
+	},
+	{
 		"nameRole":"Crow",
 		"roleValues":
 		{
@@ -355,6 +371,38 @@
 		}
 	},
 	{
+		"nameRole": "PowerfulMotherOfWolves",
+		"roleValues": {
+			"NORMAL": {
+				"description": "Les deux premières nuits d'une partie, la Puissante Mère Des Loups peut choisir un joueur qui perdra ses pouvoirs et le transformera en simple Villageois.",
+				"action": "La Puissante Mère Des Loups choisit un joueur qui se transformera en simple Villageois.",
+				"isSolo": false,
+				"isNocturnal": true,
+				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
+				"isWerewolf": true,
+				"rolesToStick": ["WEREWOLF-NORMAL", "LITTLEGIRL-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
+				"maxOccurrence": 1
+			}
+		}
+	},
+	{
+		"nameRole": "Puppeteer",
+		"roleValues": {
+			"NORMAL": {
+				"description": "Le Marionnettiste dispose d'une vie supplémentaire contre les Loups-Garous. Lorsqu'il est ciblé, sa marionnette encaisse le coup, le Marionnettiste reste vivant mais est choqué. Il ne peut plus parler pendant le reste de la partie.",
+				"action": "Pas d'action pendant la nuit.",
+				"isSolo": false,
+				"isNocturnal": false,
+				"powerState": "PERMANENT",
+				"condition": "NOCONDITION",
+				"isWerewolf": false,
+				"rolesToStick": [],
+				"maxOccurrence": 1
+			}
+		}
+	},
+	{
 		"nameRole":"RustyKnight",
 		"roleValues":
 		{
@@ -521,6 +569,22 @@
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONSUMABLE",
+				"condition": "NOCONDITION",
+				"isWerewolf": false,
+				"rolesToStick": [],
+				"maxOccurrence": 1
+			}
+		}
+	},
+	{
+		"nameRole": "TrainedMonkey",
+		"roleValues": {
+			"NORMAL": {
+				"description": "Une fois par partie, le Singe Savant peut décider d'utiliser son pouvoir. S'il le fait, il désigne des joueurs un par un. Il voit alors leur rôle, mais est éliminé s'il tombe sur un Loup-Garou.",
+				"action": "Une fois par partie, le Singe Savant peut regarder les rôles des autres joueurs, un par un. Il est éliminé si un Loup-Garou est ciblé.",
+				"isSolo": false,
+				"isNocturnal": true,
+				"powerState": "PERMANENT",
 				"condition": "NOCONDITION",
 				"isWerewolf": false,
 				"rolesToStick": [],

@@ -9,6 +9,7 @@
     <string name="BearTamer">Dresseur d\'Ours</string>
     <string name="BigBadWolf">Grand Méchant Loup</string>
     <string name="Brother">Frère</string>
+    <string name="Colossus">Colosse</string>
     <string name="Crow">Corbeau</string>
     <string name="Cupid">Cupidon</string>
     <string name="Defender">Salvateur</string>
@@ -21,6 +22,8 @@
     <string name="LittleGirl">Petite Fille</string>
     <string name="Manipulator">Abominable Sectaire</string>
     <string name="Piper">Joueur de Flûte</string>
+    <string name="PowerfulMotherOfWolves">Puissante Mère Des Loups</string>
+    <string name="Puppeteer">Marionnettiste</string>
     <string name="RustyKnight">Chevalier à l\'Epée Rouillée</string>
     <string name="Scapegoat">Bouc Emissaire</string>
     <string name="Seer">Voyante</string>
@@ -28,6 +31,7 @@
     <string name="Sister">Sœur</string>
     <string name="StutteringJudge">Juge Bègue</string>
     <string name="Thief">Voleur</string>
+    <string name="TrainedMonkey">Singe Savant</string>
     <string name="Villager">Villageois</string>
     <string name="VillagerVillager">Villageois-Villageois</string>
     <string name="Werewolf">Loup-Garou</string>
@@ -36,6 +40,7 @@
     <string name="Witch">Sorcière</string>
     <string name="WolfFather">Grand-père des Loups</string>
     <string name="WolfHound">Chien-Loup</string>
+
     <string name="Phase_SLEEPING">Endormissement</string>
     <string name="Phase_NIGHT">Nuit</string>
     <string name="Phase_DAWN">Aube</string>
@@ -110,8 +115,8 @@
     <string name="GameView_GameOver">Partie terminée</string>
     <string name="GameView_Header">Phase %1$s, tour %2$d</string>
     <string name="GameView_phaseSleeping">C\'est la nuit, le village s\'endort !</string>
-    <string name="GameView_phaseDawn">Le jour se lève, procédons aux éliminations !</string>
-    <string name="GameView_phaseDay">C\'est le jour, débattez sur les décisions à prendre !</string>
+    <string name="GameView_phaseDawn">Le jour se lève, sélectionner les rôles éliminés pendant la nuit !</string>
+    <string name="GameView_phaseDay">C\'est le jour, débattez et sélectionner un ou plusieurs rôles éliminés par le vote du village !</string>
     <string name="GameView_phaseEvening">Le dîner est servi ! Attention, ces villageois sont encore vivants, mais leurs ennemis le sont tout autant…</string>
     <string name="GameView_numberCharacters">Nombre de personnages encore en jeu : %1$d</string>
 

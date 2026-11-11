@@ -9,6 +9,7 @@
     <string name="BearTamer">Bear Tamer</string>
     <string name="BigBadWolf">Big Bad Wolf</string>
     <string name="Brother">Brother</string>
+    <string name="Colossus">Colossus</string>
     <string name="Crow">Crow</string>
     <string name="Cupid">Cupid</string>
     <string name="Defender">Defender</string>
@@ -21,6 +22,8 @@
     <string name="LittleGirl">Little Girl</string>
     <string name="Manipulator">Manipulator</string>
     <string name="Piper">Flute Player</string>
+    <string name="PowerfulMotherOfWolves">Powerful Mother Of Wolves</string>
+    <string name="Puppeteer">Puppeteer</string>
     <string name="RustyKnight">Rusty Knight</string>
     <string name="Scapegoat">Scapegoat</string>
     <string name="Seer">Seer</string>
@@ -28,6 +31,7 @@
     <string name="Sister">Sister</string>
     <string name="StutteringJudge">Stuttering Judge</string>
     <string name="Thief">Thief</string>
+    <string name="TrainedMonkey">Trained Monkey</string>
     <string name="Villager">Villager</string>
     <string name="VillagerVillager">Villager-Villager</string>
     <string name="Werewolf">Werewolf</string>
@@ -109,8 +113,8 @@
     <string name="GameView_GameOver">Game over</string>
     <string name="GameView_Header">Phase %1$s, turn %2$d</string>
     <string name="GameView_phaseSleeping">The night has come, the village goes to sleep!</string>
-    <string name="GameView_phaseDawn">Morning, proceed with the eliminations!</string>
-    <string name="GameView_phaseDay">Day time! Chat and speak about what to do!</string>
+    <string name="GameView_phaseDawn">Morning, select the roles eliminated during the night!</string>
+    <string name="GameView_phaseDay">Day time! Decide what to do and select one or more roles eliminated by the village\'s vote.</string>
     <string name="GameView_phaseEvening">Dinner is served! But watch out, these villagers are alive, so are their enemies…</string>
     <string name="GameView_numberCharacters">Number of characters in game : %1$d</string>
 
