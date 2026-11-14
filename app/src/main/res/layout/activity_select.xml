@@ -3,134 +3,58 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#343434"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
-    android:background="@drawable/main_activity_alpha"
-    android:padding="15dp">
+    android:padding="12dp">
 
-        <ScrollView
-            android:id="@+id/scrollSelectGridLayout"
-            android:layout_width="match_parent"
-            android:background="#a8c8ff"
-            android:layout_height="260dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:text="@string/Select_Title"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
-            <GridLayout
-                android:id="@+id/gridSelectView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:alignmentMode="alignMargins"
-                android:columnCount="4"/>
-
-        </ScrollView>
-
-        <ScrollView
-            android:id="@+id/scrollSelectedGridLayout"
-            android:layout_width="match_parent"
-
-            android:background="#fbfcb6"
-            android:layout_marginTop="20dp"
-            android:layout_height="260dp">
-
-            <GridLayout
-                android:id="@+id/gridSelectedView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:alignmentMode="alignMargins"
-                android:columnCount="4" />
-
-        </ScrollView>
+    <!-- Extensions card, players card : filled by the activity -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1">
 
         <LinearLayout
-            android:id="@+id/textMenuLayout"
+            android:id="@+id/setupContainer"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 
-            <TextView
-                android:id="@+id/textMenu"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textColor="@color/white">
-            </TextView>
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/wolfTurnSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/WolfTurn_Switch"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:visibility="gone" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/clearButton"
-            android:layout_width="wrap_content"
+            android:id="@+id/backButton"
+            style="@style/PanelButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/SelectView_clearButton"/>
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:text="@string/Generic_Back" />
 
-            <LinearLayout
-                style="?android:attr/buttonBarStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="end"
-                android:layout_marginEnd="1dp">
-
-                <Button
-                    android:id="@+id/leftArrowButton"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/SelectButton_Previous" />
-
-                <Button
-                    android:id="@+id/rightArrowButton"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/SelectButton_Next" />
-
-                <Button
-                    android:id="@+id/cancelButton"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/SelectButton_Cancel" />
-
-                <Button
-                    android:id="@+id/removeButton"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/SelectButton_Delete" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/startButton"
+            style="@style/PanelButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal">
+            android:layout_marginStart="6dp"
+            android:layout_weight="2"
+            android:text="@string/Select_Start" />
 
-            <Button
-                android:id="@+id/startButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/SelectButton_StartGame"/>
-
-            <Button
-                android:id="@+id/closeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:text="@string/Generic_Back"/>
-        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

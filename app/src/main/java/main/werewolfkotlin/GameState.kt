@@ -3,6 +3,8 @@ package main.werewolfkotlin
 import android.content.Context
 import androidx.annotation.StringRes
 import model.CharacterGame
+import model.PowerState
+import model.WolfFather
 
 /***
  * One line of the historic
@@ -12,11 +14,21 @@ data class HistoryEntry(val turn: Int, val phase: EnumPhase, val text: String)
 /***
  * Block of the "Roles" tab : a named list of players linked to the effect of a role.
  * The players can only be added by selecting them.
+ * - TARGETS : the players chosen by the role
+ * - INFECTION : the players infected by the infect father of wolves
+ * - DEATHS : the dead players, with a button to clear them quickly
  */
-class EffectBlock(var title: String, val kind: Kind = Kind.TARGETS) {
-    enum class Kind { TARGETS, INFECTION }
+class EffectBlock(
+    var title: String,
+    val kind: Kind = Kind.TARGETS,
+    val roleKey: Triple<String, String, String>? = null   //Role who owns the block, see kindOf()
+) {
+    enum class Kind { TARGETS, INFECTION, DEATHS }
 
     val players: MutableList<Seat> = mutableListOf()
+
+    /** Red light on the targets during the turn of the role, green light on the role during their turn */
+    var lights: Boolean = kind == Kind.TARGETS && roleKey != null
 }
 
 /***
@@ -31,8 +43,14 @@ object GameState {
     var phase: EnumPhase = EnumPhase.SUNSET
     var turn: Int = 0
 
-    /** Every role of the game, alive or dead (characterGames only keeps the alive ones) */
+    /** Every role given to a player, alive or dead (characterGames only keeps the alive ones) */
     val allCharacters: MutableList<CharacterGame> = mutableListOf()
+
+    /** The roles of the activated extensions : what can be given to a player */
+    var catalog: List<CharacterGame> = emptyList()
+
+    /** The pack of werewolves is called even without simple werewolf (set in the turn order window) */
+    var wolfTurnForced: Boolean = false
 
     val history: MutableList<HistoryEntry> = mutableListOf()
     val effectBlocks: MutableList<EffectBlock> = mutableListOf()
@@ -53,6 +71,8 @@ object GameState {
         phase = EnumPhase.SUNSET
         turn = 0
         allCharacters.clear()
+        catalog = emptyList()
+        wolfTurnForced = false
         history.clear()
         effectBlocks.clear()
         pendingNocturnal.clear()
@@ -104,6 +124,45 @@ object GameState {
         log(context, res, label)
     }
 
+    /***
+     * Blocks of the "Roles" tab follow the roles given to the players : a block appears
+     * with the first player having a role that chooses players, and disappears with the last one.
+     */
+    fun syncBlocks(context: Context) {
+        val kinds = allCharacters.filter { it.doTargeting }.distinctBy { kindOf(it) }.sortedBy { it.order }
+        val wanted = kinds.map { kindOf(it) }.toSet()
+
+        effectBlocks.removeAll { it.roleKey != null && it.roleKey !in wanted }
+
+        for (character in kinds) {
+            if (effectBlocks.none { it.roleKey == kindOf(character) }) {
+                effectBlocks.add(
+                    if (character is WolfFather)
+                        EffectBlock(context.getString(R.string.Block_Infected), EffectBlock.Kind.INFECTION, kindOf(character))
+                    else
+                        EffectBlock(character.name, EffectBlock.Kind.TARGETS, kindOf(character))
+                )
+            }
+        }
+
+        if (effectBlocks.none { it.kind == EffectBlock.Kind.DEATHS }) {
+            effectBlocks.add(0, EffectBlock(context.getString(R.string.Block_Deaths), EffectBlock.Kind.DEATHS))
+        }
+    }
+
+    /***
+     * A new night starts : the roles with a permanent power forget their targets.
+     * The roles with a unique power (used once in the game) keep them.
+     */
+    fun resetPermanentTargets() {
+        for (block in effectBlocks) {
+            if (block.kind != EffectBlock.Kind.TARGETS) continue
+            val key = block.roleKey ?: continue
+            val role = allCharacters.firstOrNull { kindOf(it) == key } ?: continue
+            if (role.powerState == PowerState.PERMANENT) block.players.clear()
+        }
+    }
+
     fun applyPending() {
         pendingNocturnal.forEach { (character, awake) -> character.isNocturnal = awake }
         pendingNocturnal.clear()
@@ -115,14 +174,14 @@ object GameState {
     fun infect(context: Context, seat: Seat) {
         val c = seat.character ?: return
         c.isWerewolf = true
-        c.infected = true
+        c.isInfected = true
         log(context, R.string.History_Infected, seat.name, c.name)
     }
 
     fun disinfect(context: Context, seat: Seat) {
         val c = seat.character ?: return
         c.isWerewolf = false
-        c.infected = false
+        c.isInfected = false
         log(context, R.string.History_Disinfected, seat.name, c.name)
     }
 }

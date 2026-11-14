@@ -12,7 +12,7 @@ class PowerfulMotherOfWolves(
     rolesToStick: Array<String>,
     order: Int,
     maxOccurrence: Int,
-    mode: String
+    characterMode: String
 ) : CharacterGame(
     name,
     description,
@@ -25,7 +25,7 @@ class PowerfulMotherOfWolves(
     rolesToStick,
     order,
     maxOccurrence,
-    mode
+    characterMode
 ) {
-    override fun clone() = PowerfulMotherOfWolves(name, description, action, isSolo, isNocturnal, powerState, condition, isWerewolf, rolesToStick, order, maxOccurrence, mode)
+    override fun clone() = PowerfulMotherOfWolves(this.name, this.description, this.action, this.isSolo, this.isNocturnal, this.powerState, this.condition, this.isWerewolf, this.rolesToStick, this.order, this.maxOccurrence, this.mode)
 }

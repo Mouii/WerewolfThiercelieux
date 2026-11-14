@@ -78,6 +78,14 @@ class TurnOrderAdapter(
     override fun getItemCount() = rows.size
 
     /***
+     * Read again the entries (the pack of werewolves may have appeared or disappeared)
+     */
+    fun refresh() {
+        rows = reload().toMutableList()
+        notifyDataSetChanged()
+    }
+
+    /***
      * Move a row to another position, one neighbour at a time
      */
     fun swap(from: Int, to: Int): Boolean {

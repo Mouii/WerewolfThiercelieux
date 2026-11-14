@@ -71,6 +71,7 @@
             </ScrollView>
 
             <Button
+            style="@style/PanelButton.Info"
                 android:id="@+id/btnAddBlock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -94,6 +95,7 @@
                 android:layout_weight="1"/>
 
             <Button
+            style="@style/PanelButton.Info"
                 android:id="@+id/btnAjouter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -119,6 +121,7 @@
     </FrameLayout>
 
     <Button
+            style="@style/PanelButton.Info"
         android:id="@+id/returnButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

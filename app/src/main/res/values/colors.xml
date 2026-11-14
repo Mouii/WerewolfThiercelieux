@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="panel_cyan">#FF00E5FF</color>
+    <color name="panel_cyan_fill">#3300E5FF</color>
+    <color name="panel_info">#FF03DAC5</color>
+    <color name="panel_info_fill">#3303DAC5</color>
+    <color name="panel_role">#FFB388FF</color>
+    <color name="panel_role_fill">#33B388FF</color>
 </resources>

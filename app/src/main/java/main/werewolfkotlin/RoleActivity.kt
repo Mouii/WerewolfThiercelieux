@@ -66,7 +66,7 @@ class RoleActivity : AppCompatActivity() {
         }
 
         //Header, always visible
-        val title = if (members.size > 1) "${first.name} ×${members.size}" else first.name
+        val title = first.name
         val aliveText = getString(R.string.RoleView_Alive, alive.size, members.size)
         val header = TextView(this).apply {
             text = "▸  $title  ·  $aliveText"

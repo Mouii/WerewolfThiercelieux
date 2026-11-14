@@ -8,13 +8,15 @@ enum class PowerState {
 }
 
 enum class ConditionalActivation {
-    NOCONDITION,
-    ONEWEREWOLF,
-    ONEVILLAGER,
-    ALLWEREWOLVES,
-    ALLVILLAGERS,
-    LINKEDROLES,
-    ISALONE
+    NO_CONDITION,
+    ONE_WEREWOLF,
+    ONE_VILLAGER,
+    ALL_WEREWOLVES,
+    ALL_VILLAGERS,
+    LINKED_PLAYERS,
+    IS_ALONE,
+    ON_MORNING,
+
 }
 
 open class CharacterGame(
@@ -32,23 +34,26 @@ open class CharacterGame(
     var mode: String
 ) : Cloneable {
 
-    //Infected by the infect father of wolves : plays with the werewolves but keeps its own role
-    var infected: Boolean = false
+    //Does the role allow its player to target for non-killing purpose?
+    var doTargeting: Boolean = false
+
+    //Does the role allow to kill another player?
+    var doKilling: Boolean = false
+
+    //Infected by the grandfather of wolves : plays with the werewolves but keeps its own role
+    var isInfected: Boolean = false
 
     //Keep the classname for different purposes
     val className: String = this.javaClass.simpleName
 
-    //Useful to trigger chance of status from the original night state
-    val originalNightState = if(powerState != PowerState.CONDITIONAL)
-        null
-    else
-        isNocturnal
+    //Memorize the
+    val originalNightState : Boolean = isNocturnal
 
     open fun action(): String {
         //In unique statement, call one time then over
         //In conditional, call one time then over, then handled in the game activity to start again
         if(powerState == PowerState.UNIQUE || (!isWerewolf && powerState == PowerState.CONDITIONAL
-                                                && condition != ConditionalActivation.ISALONE))
+                                                && condition != ConditionalActivation.IS_ALONE))
             isNocturnal = false
 
         return action

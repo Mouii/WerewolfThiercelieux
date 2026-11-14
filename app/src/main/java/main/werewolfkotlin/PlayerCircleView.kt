@@ -8,24 +8,32 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
+import android.graphics.drawable.Drawable
 import android.text.TextPaint
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.MotionEvent
+import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.animation.LinearInterpolator
+import androidx.core.content.ContextCompat
 import model.CharacterGame
 import kotlin.math.PI
 import kotlin.math.cos
-import kotlin.math.floor
 import kotlin.math.hypot
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sin
 
 /***
- * Draws every player as a stickman bust (head + shoulders) on a circle.
- * The players whose role is currently called get a neon "HUD" look, the others are dimmed.
+ * Draws every player as a stickman bust (head + shoulders), all on one ellipse that uses the whole panel.
+ * Pinch to zoom, drag to move when zoomed : useful when there are many players.
+ *
+ * The colour is on the drawing itself (no circle around it) :
+ * - Cyan : the role is called now.
+ * - Red : target of the called role. Green : player who selected the called role.
+ * - Purple : player of the block of the deaths. Yellow : player without role.
  */
 class PlayerCircleView @JvmOverloads constructor(
     context: Context,
@@ -35,15 +43,26 @@ class PlayerCircleView @JvmOverloads constructor(
     /** Called with the index of the tapped seat */
     var onSeatTapped: ((Int) -> Unit)? = null
 
+    /** Called with the index of the seat held with the finger */
+    var onSeatLongPressed: ((Int) -> Unit)? = null
+
     private var seatList: List<Seat> = emptyList()
     private var active: Set<CharacterGame> = emptySet()
-    private var marked: Set<CharacterGame> = emptySet()
+    private var purpleSeats: Set<Seat> = emptySet()
+    private var redSeats: Set<Seat> = emptySet()
+    private var greenSeats: Set<Seat> = emptySet()
+    private var badges: Map<Seat, Int> = emptyMap()
 
     private val density = resources.displayMetrics.density
     private val cyan = Color.parseColor("#00E5FF")
     private val idle = Color.parseColor("#9FB3C8")
     private val deadGrey = Color.parseColor("#5B6470")
-    private val red = Color.parseColor("#FF5252")
+    private val deadCross = Color.parseColor("#FF5252")
+    private val infectedColor = Color.parseColor("#FF80AB")
+    private val deathPurple = Color.parseColor("#B388FF")
+    private val noRole = Color.parseColor("#FFC107")       //Nobody uses it : player without role
+    private val lightRed = Color.parseColor("#FF1744")
+    private val lightGreen = Color.parseColor("#00E676")
 
     private val stroke = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
@@ -57,14 +76,19 @@ class PlayerCircleView @JvmOverloads constructor(
     private val text = TextPaint(Paint.ANTI_ALIAS_FLAG).apply { textAlign = Paint.Align.CENTER }
     private val shoulders = Path()
     private val arcBounds = RectF()
+    private val drawables = mutableMapOf<Int, Drawable?>()
 
+    //Positions in the panel (before zoom)
     private var xs = FloatArray(0)
     private var ys = FloatArray(0)
     private var avatarW = 0f
-    private var dense = false
-    private val purple = Color.parseColor("#B388FF")
     private var glowFilter: BlurMaskFilter? = null
     private var glowFilterSize = -1f
+
+    //Zoom : a point of the panel goes to centre + (point - centre) * zoom + pan
+    private var zoom = 1f
+    private var panX = 0f
+    private var panY = 0f
 
     private var phase = 0f
     private val animator = ValueAnimator.ofFloat(0f, 1f).apply {
@@ -77,6 +101,46 @@ class PlayerCircleView @JvmOverloads constructor(
         }
     }
 
+    private val scaleDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+        override fun onScale(detector: ScaleGestureDetector): Boolean {
+            val newZoom = (zoom * detector.scaleFactor).coerceIn(1f, maxZoom())
+            val cx = width / 2f
+            val cy = height / 2f
+            val ratio = newZoom / zoom
+
+            //The point under the fingers stays under the fingers
+            panX = detector.focusX - cx - (detector.focusX - cx - panX) * ratio
+            panY = detector.focusY - cy - (detector.focusY - cy - panY) * ratio
+            zoom = newZoom
+            clampPan()
+            invalidate()
+            return true
+        }
+    })
+
+    private val gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
+        override fun onDown(e: MotionEvent): Boolean = true
+
+        override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+            if (zoom > 1f && !scaleDetector.isInProgress) {
+                panX -= distanceX
+                panY -= distanceY
+                clampPan()
+                invalidate()
+            }
+            return true
+        }
+
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
+            seatAt(e.x, e.y)?.let { performClick(); onSeatTapped?.invoke(it) }
+            return true
+        }
+
+        override fun onLongPress(e: MotionEvent) {
+            seatAt(e.x, e.y)?.let { onSeatLongPressed?.invoke(it) }
+        }
+    })
+
     init {
         //BlurMaskFilter (the neon glow) needs the software renderer
         setLayerType(LAYER_TYPE_SOFTWARE, null)
@@ -85,15 +149,29 @@ class PlayerCircleView @JvmOverloads constructor(
     /***
      * Give the new state to draw
      */
-    fun update(seats: List<Seat>, activeCharacters: Collection<CharacterGame>, markedDead: Collection<CharacterGame>) {
+    fun update(
+        seats: List<Seat>,
+        activeCharacters: Collection<CharacterGame>,
+        redLights: Set<Seat>,
+        greenLights: Set<Seat>,
+        purpleLights: Set<Seat>,
+        roleBadges: Map<Seat, Int>
+    ) {
         seatList = seats.toList()
         active = activeCharacters.toHashSet()
-        marked = markedDead.toHashSet()
+        redSeats = redLights
+        greenSeats = greenLights
+        purpleSeats = purpleLights
+        badges = roleBadges
 
-        if (active.isEmpty()) animator.cancel()
-        else if (!animator.isStarted) animator.start()
-
+        updateAnimation()
         invalidate()
+    }
+
+    private fun updateAnimation() {
+        val needed = active.isNotEmpty() || redSeats.isNotEmpty() || greenSeats.isNotEmpty() || purpleSeats.isNotEmpty()
+        if (!needed) animator.cancel()
+        else if (!animator.isStarted) animator.start()
     }
 
     override fun onDetachedFromWindow() {
@@ -103,12 +181,15 @@ class PlayerCircleView @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        if (active.isNotEmpty() && !animator.isStarted) animator.start()
+        updateAnimation()
     }
 
+    // ──────────────────────────────────────────────────────────────
+    //  Layout : one ellipse
+    // ──────────────────────────────────────────────────────────────
+
     /***
-     * Place the players on one circle, or on several concentric circles when there are many of them
-     * (up to 46 cards). Player 1 is at the top, then clockwise, from the outside to the inside.
+     * Put the players on one ellipse, evenly spaced. Player 1 is at the top, then clockwise.
      */
     private fun computeLayout() {
         val n = seatList.size
@@ -120,59 +201,54 @@ class PlayerCircleView @JvmOverloads constructor(
 
         val centerX = width / 2f
         val centerY = height / 2f
-        val base = min(width, height) / 2f
+        val maxW = min(width, height) * 0.21f
+        val minW = 12f * density
 
         if (n == 1) {
-            avatarW = base * 0.5f
-            dense = false
+            avatarW = maxW
             xs[0] = centerX
             ys[0] = centerY
             return
         }
 
-        //Find the biggest avatar size for which all the players fit on the rings
-        val minW = 20f * density
-        var w = base * 0.42f
-        var rings = ringsFor(base, w)
-        while (rings.sumOf { it.second } < n && w > minW) {
-            w = max(w * 0.93f, minW)
-            rings = ringsFor(base, w)
+        //The size of the avatars and the size of the ellipse depend on each other
+        var w = maxW
+        var rx = 0f
+        var ry = 0f
+        var length = 0f
+        repeat(4) {
+            rx = max(width / 2f - w * 0.75f, 1f)
+            ry = max(height / 2f - w * 0.95f, 1f)
+            length = ellipseLength(rx, ry)
+            w = (length / n * 0.9f).coerceIn(minW, maxW)
         }
         avatarW = w
-        dense = w < 44f * density
 
-        //Use as few rings as needed, and share the players between them according to their length
-        var used = 0
-        var capacity = 0
-        while (used < rings.size && capacity < n) {
-            capacity += rings[used].second
-            used++
-        }
-        used = max(used, 1)
-        val usedRings = rings.take(used)
-        val totalCap = usedRings.sumOf { it.second }
-        val counts = IntArray(used) { (n.toFloat() * usedRings[it].second / totalCap).toInt() }
-        var missing = n - counts.sum()
-        var k = 0
-        while (missing > 0) {
-            counts[k % used]++
-            missing--
-            k++
+        //Points at the same distance from each other along the ellipse
+        val steps = 1440
+        val cumulative = FloatArray(steps + 1)
+        val top = (-PI / 2).toFloat()
+        var previousX = rx * cos(top)
+        var previousY = ry * sin(top)
+        for (i in 1..steps) {
+            val t = (-PI / 2 + 2.0 * PI * i / steps).toFloat()
+            val px = rx * cos(t)
+            val py = ry * sin(t)
+            cumulative[i] = cumulative[i - 1] + hypot(px - previousX, py - previousY)
+            previousX = px
+            previousY = py
         }
 
-        var index = 0
-        for (ring in 0 until used) {
-            val radius = usedRings[ring].first
-            val count = counts[ring]
-            //Every other ring is shifted, so the players are not aligned
-            val shift = if (ring % 2 == 1) 0.5 else 0.0
-            for (j in 0 until count) {
-                if (index >= n) break
-                val angle = 2.0 * PI * (j + shift) / max(count, 1) - PI / 2
-                xs[index] = centerX + (radius * cos(angle)).toFloat()
-                ys[index] = centerY + (radius * sin(angle)).toFloat()
-                index++
-            }
+        val total = cumulative[steps]
+        var cursor = 0
+        for (i in 0 until n) {
+            val wanted = total * i / n
+            while (cursor < steps && cumulative[cursor + 1] < wanted) cursor++
+            val span = cumulative[min(cursor + 1, steps)] - cumulative[cursor]
+            val part = if (span > 0f) (wanted - cumulative[cursor]) / span else 0f
+            val t = (-PI / 2 + 2.0 * PI * (cursor + part) / steps).toFloat()
+            xs[i] = centerX + rx * cos(t)
+            ys[i] = centerY + ry * sin(t)
         }
 
         if (glowFilterSize != w) {
@@ -181,147 +257,194 @@ class PlayerCircleView @JvmOverloads constructor(
         }
     }
 
-    /***
-     * Radius and capacity of the rings, from the outside to the inside, for an avatar width
-     */
-    private fun ringsFor(base: Float, w: Float): List<Pair<Float, Int>> {
-        val result = mutableListOf<Pair<Float, Int>>()
-        var r = base - w * 0.85f
-        val gap = w * 1.7f
-        while (r > w * 0.5f) {
-            val capacity = floor(2f * PI.toFloat() * r / (w * 1.25f)).toInt()
-            result.add(Pair(r, max(capacity, 1)))
-            r -= gap
-        }
-        if (result.isEmpty()) result.add(Pair(0f, 1))
-        return result
+    /** Length of an ellipse (Ramanujan) */
+    private fun ellipseLength(rx: Float, ry: Float): Float {
+        val h = ((rx - ry) * (rx - ry)) / ((rx + ry) * (rx + ry))
+        return (PI * (rx + ry) * (1 + 3 * h / (10 + kotlin.math.sqrt(4 - 3 * h)))).toFloat()
     }
+
+    // ──────────────────────────────────────────────────────────────
+    //  Zoom
+    // ──────────────────────────────────────────────────────────────
+
+    /** Zoom for which the avatars are comfortable to touch */
+    private fun maxZoom(): Float {
+        if (avatarW <= 0f) return 3f
+        return (64f * density / avatarW).coerceIn(3f, 8f)
+    }
+
+    private fun clampPan() {
+        if (zoom <= 1.01f) {
+            zoom = 1f
+            panX = 0f
+            panY = 0f
+            return
+        }
+        val limitX = (zoom - 1f) * width / 2f
+        val limitY = (zoom - 1f) * height / 2f
+        panX = panX.coerceIn(-limitX, limitX)
+        panY = panY.coerceIn(-limitY, limitY)
+    }
+
+    /***
+     * Seat under a finger, null if there is none
+     */
+    private fun seatAt(touchX: Float, touchY: Float): Int? {
+        if (seatList.isEmpty()) return null
+        computeLayout()
+
+        //Back to the panel, before the zoom
+        val cx = width / 2f
+        val cy = height / 2f
+        val x = (touchX - cx - panX) / zoom + cx
+        val y = (touchY - cy - panY) / zoom + cy
+
+        val nearest = seatList.indices.minByOrNull { hypot(x - xs[it], y - ys[it]) } ?: return null
+        val reach = max(avatarW * 0.75f, 18f * density / zoom)
+        return if (hypot(x - xs[nearest], y - ys[nearest]) <= reach) nearest else null
+    }
+
+    // ──────────────────────────────────────────────────────────────
+    //  Drawing
+    // ──────────────────────────────────────────────────────────────
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         computeLayout()
+        clampPan()
+
+        canvas.save()
+        canvas.translate(panX, panY)
+        canvas.scale(zoom, zoom, width / 2f, height / 2f)
+
         val anyActive = active.isNotEmpty()
         for ((i, seat) in seatList.withIndex()) {
             drawSeat(canvas, seat, xs[i], ys[i], anyActive)
         }
+        canvas.restore()
     }
 
     private fun drawSeat(c: Canvas, seat: Seat, x: Float, y: Float, anyActive: Boolean) {
         val w = avatarW
         val character = seat.character
-        val isActive = character != null && character in active
-        val isMarked = character != null && character in marked
+        val isActive = seat.alive && character != null && character in active
+        val isRed = seat.alive && seat in redSeats
+        val isGreen = seat.alive && seat in greenSeats
+        val isPurple = seat.alive && seat in purpleSeats
+        val lit = isActive || isRed || isGreen || isPurple
 
-        val color = when {
+        //The drawing itself takes the colour. Several states : a glow for each one
+        val primary = when {
             !seat.alive -> deadGrey
+            isRed -> lightRed
+            isGreen -> lightGreen
+            isPurple -> deathPurple
             isActive -> cyan
+            character == null -> noRole
             else -> idle
         }
         val alpha = when {
             !seat.alive -> 100
-            anyActive && !isActive -> 100
-            character == null -> 150
+            lit || character == null -> 255
+            anyActive -> 100
             else -> 255
         }
 
-        val strokeWidth = max(w * 0.06f, 2f)
+        val strokeWidth = max(w * 0.06f, 1.5f) * (if (lit) 1.5f else 1f)
         val headR = w * 0.2f
         val headY = y - w * 0.18f
+        val pulse = 0.6f + 0.4f * sin(phase * 2f * PI.toFloat())
 
         shoulders.reset()
         shoulders.moveTo(x - w * 0.42f, y + w * 0.32f)
         shoulders.cubicTo(x - w * 0.42f, y + w * 0.02f, x + w * 0.42f, y + w * 0.02f, x + w * 0.42f, y + w * 0.32f)
 
-        if (isActive) {
-            val pulse = 0.6f + 0.4f * sin(phase * 2f * PI.toFloat())
-
-            //Neon glow behind the bust
-            glow.color = cyan
-            glow.alpha = (220 * pulse).toInt()
-            glow.strokeWidth = strokeWidth * 2.4f
+        //Glow along the drawing, one pass for each state
+        val glows = mutableListOf<Int>()
+        if (isActive) glows.add(cyan)
+        if (isRed) glows.add(lightRed)
+        if (isGreen) glows.add(lightGreen)
+        if (isPurple) glows.add(deathPurple)
+        for (color in glows) {
+            glow.color = color
+            glow.alpha = (230 * pulse).toInt()
+            glow.strokeWidth = strokeWidth * 2.2f
             glow.maskFilter = glowFilter
             c.drawCircle(x, headY, headR, glow)
             c.drawPath(shoulders, glow)
+        }
 
-            //Translucent head
-            fill.color = cyan
-            fill.alpha = 70
+        //Head filled with the colour
+        if (lit) {
+            fill.color = primary
+            fill.alpha = 110
             c.drawCircle(x, headY, headR, fill)
-
-            //HUD ring : thin circle and two scanning arcs
-            val ring = w * 0.62f
-            stroke.color = cyan
-            stroke.strokeWidth = max(strokeWidth * 0.5f, 1.5f)
-            stroke.alpha = 70
-            c.drawCircle(x, y, ring, stroke)
-            stroke.alpha = 255
-            arcBounds.set(x - ring, y - ring, x + ring, y + ring)
-            c.drawArc(arcBounds, phase * 360f, 60f, false, stroke)
-            c.drawArc(arcBounds, phase * 360f + 180f, 60f, false, stroke)
         }
 
         //Stickman bust
-        stroke.color = color
+        stroke.color = primary
         stroke.alpha = alpha
         stroke.strokeWidth = strokeWidth
         c.drawCircle(x, headY, headR, stroke)
         c.drawPath(shoulders, stroke)
 
-        //Marked as dead (waiting for the confirmation at the end of the day)
-        if (isMarked) {
-            stroke.color = red
-            stroke.alpha = 255
-            stroke.strokeWidth = max(strokeWidth * 0.7f, 2f)
-            c.drawCircle(x, y, w * 0.62f, stroke)
-        }
-
-        //Definitely dead
+        //Dead : a cross on the drawing
         if (!seat.alive) {
-            stroke.color = red
-            stroke.alpha = 180
+            stroke.color = deadCross
+            stroke.alpha = 200
             stroke.strokeWidth = strokeWidth
-            c.drawLine(x - w * 0.38f, y - w * 0.38f, x + w * 0.38f, y + w * 0.38f, stroke)
+            c.drawLine(x - w * 0.34f, y - w * 0.40f, x + w * 0.34f, y + w * 0.32f, stroke)
+            c.drawLine(x + w * 0.34f, y - w * 0.40f, x - w * 0.34f, y + w * 0.32f, stroke)
         }
 
         //Infected by the werewolves
-        if (character != null && character.infected) {
-            fill.color = purple
+        if (character != null && character.isInfected) {
+            fill.color = infectedColor
             fill.alpha = 255
-            c.drawCircle(x + w * 0.4f, y - w * 0.4f, max(w * 0.11f, 3f), fill)
+            c.drawCircle(x + w * 0.4f, y - w * 0.4f, max(w * 0.11f, 2f), fill)
         }
 
-        //Name and role
-        text.isFakeBoldText = isActive
-        text.color = Color.WHITE
-        text.alpha = alpha
-        text.textSize = max(w * 0.2f, 9f * density)
-        val name = TextUtils.ellipsize(seat.name, text, w * 1.3f, TextUtils.TruncateAt.END).toString()
-        c.drawText(name, x, y + w * 0.58f, text)
+        //Small picture of the role (wolf turn : many roles are awake)
+        val badge = badges[seat]
+        if (badge != null && badge != 0) drawBadge(c, badge, x + w * 0.36f, y + w * 0.14f, w * 0.52f)
 
-        //With many players there is no room for the role, the neon glow shows who is called
-        if (!dense) {
-            text.color = if (isActive) cyan else idle
+        //Names and roles are only readable when the avatars are big enough on screen
+        val onScreen = w * zoom
+        if (onScreen >= 30f * density) {
+            text.isFakeBoldText = lit
+            text.color = if (character == null) noRole else Color.WHITE
             text.alpha = alpha
-            text.textSize = w * 0.16f
-            val role = TextUtils.ellipsize(character?.name ?: "—", text, w * 1.4f, TextUtils.TruncateAt.END).toString()
-            c.drawText(role, x, y + w * 0.78f, text)
+            text.textSize = max(w * 0.2f, 9f * density / zoom)
+            val name = TextUtils.ellipsize(seat.name, text, w * 1.3f, TextUtils.TruncateAt.END).toString()
+            c.drawText(name, x, y + w * 0.58f, text)
+
+            if (onScreen >= 56f * density) {
+                text.isFakeBoldText = false
+                text.color = if (lit) primary else idle
+                text.alpha = alpha
+                text.textSize = max(w * 0.16f, 8f * density / zoom)
+                val role = TextUtils.ellipsize(character?.name ?: "—", text, w * 1.4f, TextUtils.TruncateAt.END).toString()
+                c.drawText(role, x, y + w * 0.78f, text)
+            }
         }
     }
 
+    private fun drawBadge(c: Canvas, res: Int, x: Float, y: Float, size: Float) {
+        val drawable = drawables.getOrPut(res) { ContextCompat.getDrawable(context, res) } ?: return
+        val half = (size / 2f).toInt()
+        drawable.setBounds(x.toInt() - half, y.toInt() - half, x.toInt() + half, y.toInt() + half)
+        drawable.draw(c)
+
+        stroke.color = Color.WHITE
+        stroke.alpha = 220
+        stroke.strokeWidth = max(size * 0.05f, 1f)
+        c.drawRect(x - half, y - half, x + half, y + half, stroke)
+    }
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        when (event.actionMasked) {
-            MotionEvent.ACTION_DOWN -> return true
-            MotionEvent.ACTION_UP -> {
-                computeLayout()
-                val nearest = seatList.indices.minByOrNull { hypot(event.x - xs[it], event.y - ys[it]) }
-                if (nearest != null && hypot(event.x - xs[nearest], event.y - ys[nearest]) <= avatarW * 0.75f) {
-                    performClick()
-                    onSeatTapped?.invoke(nearest)
-                }
-                return true
-            }
-        }
-        return super.onTouchEvent(event)
+        scaleDetector.onTouchEvent(event)
+        gestureDetector.onTouchEvent(event)
+        return true
     }
 
     override fun performClick(): Boolean {

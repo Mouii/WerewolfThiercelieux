@@ -132,10 +132,8 @@ class InformationActivity : AppCompatActivity() {
                     description = obj.getString("description")
                 ))
             }
-        } else {
-            //First launch : value by default
-            informations.add(Information("Morts", ""))
         }
+        //The block of the deaths now lives in the "Roles" tab, the free blocks start empty
     }
 
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
@@ -167,6 +165,8 @@ class InformationAdapter(
         val descriptionField: EditText  = view.findViewById(R.id.descriptionField)
         val deleteButton: ImageButton = view.findViewById(R.id.btnDelete)
         val holdForDrag: View = view.findViewById(R.id.dragHold)
+        val addPlayerButton: View = view.findViewById(R.id.btnAddPlayer)
+        val clearButton: View = view.findViewById(R.id.btnClearText)
 
         // Create only one time the listeners
         init {
@@ -200,7 +200,7 @@ class InformationAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val information = informations[position]
-        val estLePremier = position == 0 //First block doesn't move
+        val estLePremier = false //No block is mandatory anymore : the deaths moved to the roles
 
         // ── Display
         holder.nameLabel.text = information.name
@@ -225,6 +225,28 @@ class InformationAdapter(
         }
         holder.descriptionField.tag = watcher
         holder.descriptionField.addTextChangedListener(watcher)
+
+        // Add the name of a player in the text, in plain text. The watcher above saves it
+        holder.addPlayerButton.setOnClickListener {
+            val activity = holder.itemView.context as AppCompatActivity
+            if (seats.isEmpty()) return@setOnClickListener
+
+            val panel = PanelDialog(activity, activity.getString(R.string.InformationView_AddPlayer))
+            for (seat in seats) {
+                panel.body.addView(panel.choiceRow(0, if (seat.alive) seat.name else seat.name + " ✝", false) {
+                    val current = holder.descriptionField.text.toString()
+                    holder.descriptionField.setText(if (current.isBlank()) seat.name else current.trimEnd() + ", " + seat.name)
+                    panel.dismiss()
+                })
+            }
+            panel.addButton(activity.getString(R.string.Generic_Cancel))
+            panel.show()
+        }
+
+        // Empty the text in one tap
+        holder.clearButton.setOnClickListener {
+            holder.descriptionField.setText("")
+        }
 
         // Allow deletion except the first
         if (estLePremier) {
@@ -261,7 +283,6 @@ class InformationAdapter(
         override fun onMove(rv: RecyclerView, vh: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
             val startPosition  = vh.bindingAdapterPosition
             val endPosition = target.bindingAdapterPosition
-            if (endPosition == 0) return false  // don't go on the first bloc
             val item = informations.removeAt(startPosition)
             informations.add(endPosition, item)
             notifyItemMoved(startPosition, endPosition)

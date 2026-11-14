@@ -18,7 +18,7 @@ class WerewolfTurn(
     false,
     true,
     PowerState.PERMANENT,
-    ConditionalActivation.NOCONDITION,
+    ConditionalActivation.NO_CONDITION,
     false,
     arrayOf(),
     order,

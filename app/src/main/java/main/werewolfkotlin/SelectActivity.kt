@@ -1,52 +1,47 @@
 package main.werewolfkotlin
 
-import model.*
-import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.text.InputType
 import android.view.Gravity
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.GridLayout
 import android.widget.ImageView
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.DrawableRes
-import androidx.core.content.ContextCompat
-import androidx.core.view.iterator
-import com.google.gson.Gson
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import main.werewolfkotlin.databinding.ActivitySelectBinding
-import java.util.Locale
+import model.CharacterGame
 
+/***
+ * Game setup : the extensions that are used, the number of players and their names.
+ * The roles are not chosen here : they are given to the players on the game screen.
+ */
 class SelectActivity : AppCompatActivity() {
 
     //Object from the xml view to get all the elements
     private lateinit var binding: ActivitySelectBinding
 
-    //List of Characters from the selection
-    private val charactersMenus : MutableList<CharacterGame> = mutableListOf()
+    private val minPlayers = 4
+    private val maxPlayers = 46
 
-    //List of selected characters for the game
-    private val charactersSelected : MutableList<CharacterGame> = mutableListOf()
+    private var count = 8
+    private val nameFields = mutableListOf<EditText>()
 
-    //Dimensions for image
-    private val imageDimension : Int = 240
-    private val imageMargin : Int = 10
+    //Extensions whose bar is open
+    private val openExtensions = mutableSetOf<Extension>()
 
-    //Selection for actions in list
-    private var selectedCharacterGameInGame: CharacterGame? = null
+    private lateinit var extensionsBox: LinearLayout
+    private lateinit var resumeButton: View
+    private lateinit var countText: TextView
+    private lateinit var namesBox: LinearLayout
 
-    //Chart used to enable/disable addition of some characters
-    private var characterChart : MutableList<CharacterChart> = mutableListOf()
-
-    //Limit of characters to start playing.(See if can be configured)
-    private val limitStartNumber : Int = 8
-
-    //Avoid reacting to the switch of the werewolf turn when we are the ones changing it
-    private var wolfTurnSyncing : Boolean = false
+    private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
 
     /***
      * Execution on creation of the activity
@@ -56,559 +51,300 @@ class SelectActivity : AppCompatActivity() {
         binding = ActivitySelectBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Getting the list from the json
-        WorkerEasier.characterListType.forEach { pair ->
+        count = PlayerNames.readCount(this).coerceIn(minPlayers, maxPlayers)
 
-            //Getting the first character as a base, we don't care
-            val characterBase = pair.second.values.first()
-            characterBase.order = charactersMenus.size + 1
-
-            charactersMenus.add(characterBase)
-        }
-
-        //Set a picture with an action listener on it
-        for ((index, character) in charactersMenus.withIndex()) {
-
-            //Set the imageView
-            val imageView : ImageView = setImagePicture(character)
-
-            //Update the chart
-            characterChart.add(CharacterChart(character.className,
-                0, character.maxOccurrence, imageView))
-
-            //Set the listener. Not active if image is disabled
-            imageView.setOnClickListener {
-
-                showListDialog(character)
-
-                //Update view
-                val charChart = characterChart.first{ x -> x.name == character.className}
-                charChart.occurrence += 1
-
-                //Change image and disable when reach maximal
-                if(charChart.occurrence == charChart.maxOccurrence) {
-                    imageView.isEnabled = false
-                    imageView.alpha = 0.5f
-                }
-
-            }
-
-            imageView.setOnLongClickListener {
-
-                // Create the dialog
-                AlertDialog.Builder(this)
-                    .setTitle(getString(R.string.InformationView_title))
-                    .setMessage(character.description)
-                    .setNegativeButton(R.string.Generic_Okay, null)
-                    .show()
-                true // Return true to indicate the long-click event is consumed
-            }
-
-
-            //Adding to the menu list
-            binding.gridSelectView.addView(imageView, index)
-
-        }
-
-        //Adding listeners to the buttons for game
-        setButtonListenersOfSelected()
-
-        //Werewolf turn, for the games without simple werewolf
-        binding.wolfTurnSwitch.setOnCheckedChangeListener { _, checked ->
-            if (!wolfTurnSyncing) {
-                if (checked) addWolfTurnMarker() else removeWolfTurnMarker()
-                refreshSelectedListCharacters()
+        //A game that was left can be resumed
+        resumeButton = panelButton(this, getString(R.string.Select_Resume), Color.parseColor("#00E676")).apply {
+            setOnClickListener {
+                startActivity(Intent(this@SelectActivity, GameActivity::class.java).putExtra("Resume", true))
             }
         }
+        binding.setupContainer.addView(resumeButton, LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply { setMargins(0, 0, 0, dp(12)) })
 
-        //Disable by default buttons for list selection
-        setSelectionButtonEnable(false)
+        buildExtensionsCard()
+        buildPlayersCard()
 
-        //Update string
-        updateSelectedCharacterString()
-
-        //Need an amount of characters to start
-        binding.startButton.isEnabled = false
-
+        binding.backButton.setOnClickListener { finish() }
+        binding.startButton.setOnClickListener { startGame() }
     }
 
     /***
-     * Show a small dialog where user can select type of character
+     * The roles of the extensions may have been moved on the configuration screen
      */
-    private fun showListDialog(characterGame: CharacterGame) {
+    override fun onPause() {
+        super.onPause()
+        saveVisibleNames()
+    }
 
-        //This can't be null and fail
-        val characterMap = WorkerEasier.characterListType
-            .firstOrNull { x -> x.first == characterGame.className }!!.second
+    /***
+     * Keep what is written, the names are shared with the game
+     */
+    private fun saveVisibleNames() {
+        if (nameFields.isEmpty()) return
+        val saved = PlayerNames.readAll(this).toMutableList()
+        nameFields.forEachIndexed { i, field ->
+            while (saved.size <= i) saved.add("")
+            saved[i] = field.text.toString().trim()
+        }
+        PlayerNames.saveAll(this, saved)
+    }
 
-        // List of items
-        val items = characterMap.keys.toMutableList()
+    override fun onResume() {
+        super.onResume()
 
-        //Unique version => direct add
-        if(items.size == 1) {
+        //A name changed during the game shows here
+        val saved = PlayerNames.readAll(this)
+        nameFields.forEachIndexed { i, field ->
+            val name = saved.getOrNull(i) ?: ""
+            if (field.text.toString() != name) field.setText(name)
+        }
+        if (::extensionsBox.isInitialized) fillExtensions()
+        if (::resumeButton.isInitialized) resumeButton.visibility = if (GameSave.exists(this)) View.VISIBLE else View.GONE
+    }
 
-            //Getting the character at its unique version
-            val characterSelected = WorkerEasier.characterListType
-                .firstOrNull { x -> x.first == characterGame.className }!!
-                .second[items[0]]!!
+    // ──────────────────────────────────────────────────────────────
+    //  Extensions
+    // ──────────────────────────────────────────────────────────────
 
-            //Add character to selection
-            addCharacterToGame(characterSelected)
+    private fun card(title: String): LinearLayout {
+        val card = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            background = PanelDialog.panelBackground(this@SelectActivity)
+            setPadding(dp(14), dp(12), dp(14), dp(14))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { setMargins(0, 0, 0, dp(12)) }
+        }
+        card.addView(TextView(this).apply {
+            text = title
+            setTextColor(PanelDialog.CYAN)
+            textSize = 13f
+            letterSpacing = 0.1f
+            setTypeface(typeface, android.graphics.Typeface.BOLD)
+        })
+        binding.setupContainer.addView(card)
+        return card
+    }
 
-            //Always refresh the game list
-            refreshSelectedListCharacters()
+    private fun buildExtensionsCard() {
+        val card = card(getString(R.string.Select_Extensions))
 
-        } else {
+        extensionsBox = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        card.addView(extensionsBox)
 
-            // Create the dialog
-            val dialog = AlertDialog.Builder(this)
-                .setTitle(getString(R.string.SelectView_selectionTitle))
-                .setItems(items.toTypedArray()) { _, which ->
-                    // Handle item selection
-                    val selectedItem = items[which]
-                    Toast.makeText(this, String.format(getString(R.string.SelectView_selectionMessage), characterGame.name, selectedItem), Toast.LENGTH_SHORT).show()
+        fillExtensions()
+    }
 
-                    //Get the character at the selected version
-                    val characterSelected = WorkerEasier.characterListType
-                        .firstOrNull { x -> x.first == characterGame.className }!!
-                        .second[selectedItem]!!
+    private fun fillExtensions() {
+        extensionsBox.removeAllViews()
 
-                    //Add character to selection
-                    addCharacterToGame(characterSelected)
+        for (extension in Extension.values()) {
+            //Roles of this extension
+            val roles = WorkerEasier.characterListType.filter { Extensions.extensionOf(this, it.first) == extension }
+            val enabled = Extensions.isEnabled(this, extension)
 
-                    //Always refresh the game list
-                    refreshSelectedListCharacters()
-
-                }
-                .setNegativeButton("Cancel") { _, _ -> cancelClicking(characterGame) } //Some users prefer a cancel button
-                .show()
-
-            //Listener on cancel by taping outside of the dialog
-            dialog.setOnCancelListener {
-                cancelClicking(characterGame)
+            //Cards of the roles, 4 per line
+            val body = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                visibility = if (extension in openExtensions) View.VISIBLE else View.GONE
+                alpha = if (enabled) 1f else 0.4f
+                setPadding(0, dp(6), 0, dp(4))
             }
-        }
-
-    }
-
-    /***
-     * Action on canceling the dialog. Refresh the occurrence of the character in the Chart
-     */
-    private fun cancelClicking(characterGame : CharacterGame) {
-        if(characterGame.className == WOLF_TURN) return
-
-        //Update the chart to select again
-        val charChart = characterChart.first{ x -> x.name == characterGame.className}
-        charChart.occurrence -= 1
-
-        //enable the chart and so the listener
-        if(charChart.occurrence < charChart.maxOccurrence) {
-            charChart.image.isEnabled = true
-            charChart.image.alpha = 1f
-        }
-    }
-
-    /***
-     * Dynamic update of the string info on number of characters
-     */
-    private fun updateSelectedCharacterString() {
-        val stringResource = getString(R.string.SelectView_NumberOfCharacters)
-
-        //Set message
-        binding.textMenu.text = String.format(stringResource, charactersSelected.count { it.className != WOLF_TURN })
-    }
-
-    /***
-     * This function apply a picture with an image view
-     */
-    private fun setImagePicture(characterGame : CharacterGame): ImageView {
-        //Set the resource and image
-        val imageView = ImageView(this).apply {
-            @DrawableRes val img = WorkerEasier.getCharacterImage(characterGame)
-            setImageResource(img)
-            adjustViewBounds = true
-        }
-
-        //Set some parameters like the borders
-        val layoutParams = LinearLayout.LayoutParams(imageDimension,imageDimension)
-        layoutParams.setMargins(0, 0, imageMargin, imageMargin)
-        imageView.layoutParams = layoutParams
-
-        return imageView
-    }
-
-    /***
-     * Put the werewolf turn at the end of the order. It can then be moved like the other cards
-     */
-    private fun addWolfTurnMarker() {
-        if(charactersSelected.any { it.className == WOLF_TURN }) return
-
-        val order = if(charactersSelected.isEmpty()) 0 else charactersSelected.maxOf { x -> x.order } + 1
-        charactersSelected.add(WerewolfTurn(getString(R.string.WolfTurn_Name), getString(R.string.WolfTurn_Description), order))
-    }
-
-    private fun removeWolfTurnMarker() {
-        if(selectedCharacterGameInGame?.className == WOLF_TURN) selectedCharacterGameInGame = null
-        charactersSelected.removeAll { it.className == WOLF_TURN }
-    }
-
-    private fun syncWolfTurnSwitch() {
-        val hasSimpleWerewolf = charactersSelected.any { it.className == "Werewolf" }
-        if(hasSimpleWerewolf) removeWolfTurnMarker()
-
-        wolfTurnSyncing = true
-        binding.wolfTurnSwitch.visibility = if(hasSimpleWerewolf) View.GONE else View.VISIBLE
-        binding.wolfTurnSwitch.isChecked = charactersSelected.any { it.className == WOLF_TURN }
-        wolfTurnSyncing = false
-    }
-
-    /***
-     * Enable or disable all the buttons handling the selected characters
-     */
-    private fun setSelectionButtonEnable(enable : Boolean) {
-        binding.leftArrowButton.isEnabled = enable
-        binding.rightArrowButton.isEnabled = enable
-        binding.cancelButton.isEnabled = enable
-        binding.removeButton.isEnabled = enable
-    }
-
-    /***
-     * Drawing function. Apply some scare selection
-     */
-    private fun drawSelection(characterGame : CharacterGame) {
-
-        for(layout in binding.gridSelectedView) {
-            if(layout.tag == characterGame.className) {
-                layout.setPadding(5, 5, 0, 0)
-                layout.setBackgroundColor(Color.GREEN)
-            } else {
-                layout.setPadding(0, 0, 0, 0)
-                layout.setBackgroundColor(Color.TRANSPARENT)
-            }
-        }
-
-    }
-
-    /***
-     * Refresh of the in game list on selection
-     */
-    private fun refreshSelectedListCharacters() {
-
-        //Show the switch of the werewolf turn only if no simple werewolf is selected
-        syncWolfTurnSwitch()
-
-        //Always remove to recreate
-        binding.gridSelectedView.removeAllViewsInLayout()
-
-        //In case, sort by order
-        charactersSelected.sortBy{ x -> x.order }
-
-        for ((index, character) in charactersSelected.distinctBy{ x -> x.className}.withIndex()) {
-
-            // Create a FrameLayout to hold ImageView and TextView
-            val frameLayout = FrameLayout(this).apply {
-                layoutParams = GridLayout.LayoutParams().apply {
-                    width = GridLayout.LayoutParams.WRAP_CONTENT
-                    height = GridLayout.LayoutParams.WRAP_CONTENT
-                }
-                //Apply a tag for targeting in selection
-                tag = character.className
-            }
-
-            //Create imageView
-            val imageView : ImageView = setImagePicture(character)
-
-            //Add imageView to the layout
-            frameLayout.addView(imageView)
-
-            //Adding a badge which has the count of characters of same kind
-            val countTextView = TextView(this).apply {
-
-                //Parameters like wrapping, gravity, margins
-                layoutParams = FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.WRAP_CONTENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    gravity = Gravity.BOTTOM or Gravity.END
-                    setMargins(0, 0, 4, 4) // Position in bottom-right corner
-                }
-
-                //Name of the text
-                text = String.format("x%s",
-                    charactersSelected.count { x -> x.className == character.className}.toString()
-                )
-
-                //Size of the text
-                textSize = 14f
-
-                //Color of the text
-                setTextColor(ContextCompat.getColor(this@SelectActivity, android.R.color.black))
-
-                //Background of the badge
-                background = ContextCompat.getDrawable(this@SelectActivity, R.color.white)
-
-                // Add padding
-                setPadding(4, 4, 4, 4)
-            }
-
-            //Add badge to the layout
-            frameLayout.addView(countTextView)
-
-            //Listener of the picture
-            imageView.setOnClickListener {
-                //Instead of playing on the object itself, we use the name
-                if(selectedCharacterGameInGame?.className != character.className) {
-
-                    //Active character in selection
-                    selectedCharacterGameInGame = character
-
-                    //Activate all the button to handle the in game list
-                    setSelectionButtonEnable(true)
-
-                    //Put selection in evidence
-                    drawSelection(character)
-                } else { //Already selected = not selected anymore
-
-                    //No selection, disable all handling buttons
-                    setSelectionButtonEnable(false)
-
-                    //Remove from selection
-                    removeSelectedCharacterInGame()
-                }
-
-                //Always refresh arrow selection (to see if misplaced)
-                refreshArrowSelectionSelected()
-            }
-
-            imageView.setOnLongClickListener {
-
-                // Create the dialog
-                AlertDialog.Builder(this)
-                    .setTitle(getString(R.string.InformationView_title))
-                    .setMessage(character.description)
-                    .setNegativeButton(getString(R.string.Generic_Okay), null)
-                    .show()
-                true // Return true to indicate the long-click event is consumed
-            }
-
-            //Adding layout to the gridlayout
-            binding.gridSelectedView.addView(frameLayout, index)
-
-            //Keep selection on draw
-            if(selectedCharacterGameInGame?.className == character.className) {
-                drawSelection(character)
-            }
-        }
-
-        //Refresh again (to see if useless)
-        refreshArrowSelectionSelected()
-
-        //Each drawing can update the start. A game start with at least five characters
-        binding.startButton.isEnabled = charactersSelected.count { it.className != WOLF_TURN } >= limitStartNumber
-
-        //Update string
-        updateSelectedCharacterString()
-    }
-
-    /***
-     * Add a character to the game
-     */
-    private fun addCharacterToGame(characterGame: CharacterGame) {
-
-        //A simple werewolf brings the werewolf turn by itself
-        if(characterGame.className == "Werewolf") removeWolfTurnMarker()
-
-        //Copy the object
-        val newCharacterGame : CharacterGame = characterGame.clone()
-
-        //Check if there is a special case of existing characters
-        val existingCharacterGame : CharacterGame?
-            = if(!charactersSelected.any { it.className == characterGame.className }
-                    && characterGame.rolesToStick.isNotEmpty()) {
-                //Each character has a link order configured
-                charactersSelected.firstOrNull{ x -> characterGame.rolesToStick.contains(
-                    x.className.plus("-").plus(x.mode).uppercase(Locale.ROOT))}
-        } else {
-            //Case same kind of character exist
-            charactersSelected.firstOrNull{ x -> x.className == characterGame.className }
-        }
-
-        //Special case
-        if(existingCharacterGame != null)
-            newCharacterGame.order = existingCharacterGame.order //Same order
-        else {
-            newCharacterGame.order = if(charactersSelected.isEmpty())  0
-                                else charactersSelected.maxOf { x -> x.order } + 1 //At the end
-        }
-
-
-        //Add the character to the list correctly
-        charactersSelected.add(newCharacterGame)
-    }
-
-    /***
-     * Remove the selected characters from the in game list
-     * A kind of character with multiple occurrence will just reduce the occurrence by one
-     */
-    private fun removeCharacterToSelection() {
-
-        //Protection checking selected character is null
-        if(selectedCharacterGameInGame != null) {
-
-            //Character removed
-            charactersSelected.remove(selectedCharacterGameInGame)
-
-            //Update the chart to select again
-            cancelClicking(selectedCharacterGameInGame!!)
-        }
-
-        //No selected characters
-        selectedCharacterGameInGame = null
-
-        //Disable list
-        setSelectionButtonEnable(false)
-    }
-
-    /***
-     * Put all the characters at the same order of the selected one
-     * to one previous position
-     */
-    private fun previousOrder() {
-        //Getting the order of the actual character
-        val index : Int = selectedCharacterGameInGame!!.order
-
-        //Getting all previous characters (case some are in the same moment)
-        val previousCharacters = charactersSelected.filter{ x -> x.order == index - 1 }
-
-        //Getting all characters with the order (case some are in the same moment)
-        val actualCharacters = charactersSelected.filter{ x -> x.order == index }
-
-        //Upgrade the previous ones
-        previousCharacters.forEach {  x -> x.order += 1 }
-
-        //Downgrade the actual ones
-        actualCharacters.forEach {  x -> x.order -= 1 }
-
-    }
-
-    /***
-     * Put all the characters at the same order of the selected one
-     * to one next position
-     */
-    private fun nextOrder() {
-        //Getting the order of the actual character
-        val index : Int = selectedCharacterGameInGame!!.order
-
-        //Getting all previous characters (case some are in the same moment)
-        val nextCharacters = charactersSelected.filter{ x -> x.order == index + 1 }
-
-        //Getting all characters with the order (case some are in the same moment)
-        val actualCharacters = charactersSelected.filter{ x -> x.order == index }
-
-        //Downgrade the previous ones
-        nextCharacters.forEach { x -> x.order -= 1 }
-
-        //Upgrade the actual ones
-        actualCharacters.forEach {  x -> x.order += 1 }
-
-    }
-
-    /***
-     * Disable selection of a character in the in game list
-     */
-    private fun removeSelectedCharacterInGame() {
-
-        selectedCharacterGameInGame = null
-
-        //We only refresh view when canceling
-        refreshSelectedListCharacters()
-
-        setSelectionButtonEnable(false)
-    }
-
-    /***
-     * Refresh the availability of the arrows handling the position of in game characters
-     */
-    private fun refreshArrowSelectionSelected() {
-        if(selectedCharacterGameInGame != null) {
-            binding.leftArrowButton.isEnabled = selectedCharacterGameInGame!!.order != 0
-            binding.rightArrowButton.isEnabled = selectedCharacterGameInGame!!.order != charactersSelected.maxOf { x -> x.order }
-        }
-
-    }
-
-    /***
-     * Init all the buttons of the activity with their listeners
-     */
-    private fun setButtonListenersOfSelected() {
-
-        binding.clearButton.setOnClickListener {
-            // Create the dialog
-            AlertDialog.Builder(this)
-                .setTitle(getString(R.string.SelectView_clearDialogTitle))
-                .setMessage(getString(R.string.SelectView_clearDialogMessage))
-                .setPositiveButton(getString(R.string.Generic_Yes)) { _, _ ->
-                    while(charactersSelected.isNotEmpty()) {
-                        selectedCharacterGameInGame = charactersSelected.last()
-                        removeCharacterToSelection()
+            for (line in roles.chunked(4)) {
+                val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+                for (i in 0 until 4) {
+                    val cell : View = if (i < line.size) {
+                        val character = line[i].second.values.first()
+                        val picture = WorkerEasier.getCharacterImage(character)
+                        if (picture != 0) {
+                            ImageView(this).apply {
+                                setImageResource(picture)
+                                adjustViewBounds = true
+                                contentDescription = character.name
+                            }
+                        } else {
+                            TextView(this).apply {
+                                text = character.name
+                                setTextColor(Color.WHITE)
+                                gravity = Gravity.CENTER
+                                textSize = 11f
+                            }
+                        }
+                    } else {
+                        View(this)
                     }
-                    refreshSelectedListCharacters()
+                    row.addView(cell, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
+                        setMargins(dp(3), dp(3), dp(3), dp(3))
+                    })
                 }
-                .setNegativeButton(getString(R.string.Generic_No), null)
-                .show()
-        }
-
-        //Left arrow button listener
-        binding.leftArrowButton.setOnClickListener {
-            previousOrder()
-            refreshSelectedListCharacters()
-        }
-
-        //Right arrow button listener
-        binding.rightArrowButton.setOnClickListener {
-            nextOrder()
-            refreshSelectedListCharacters()
-        }
-
-        //Cancel button listener
-        binding.cancelButton.setOnClickListener {
-            removeSelectedCharacterInGame()
-        }
-
-        //Remove button listener
-        binding.removeButton.setOnClickListener {
-            removeCharacterToSelection()
-            refreshSelectedListCharacters()
-        }
-
-        //Starting button
-        binding.startButton.setOnClickListener {
-
-            //In order to transfer the list to the other activity, we create an intent
-            //in direction of the game activity
-            val intent = Intent(this, GameActivity::class.java)
-
-            //Create the gson
-            val gson = Gson()
-
-            try {
-                //Json the list
-                val strList = gson.toJson(charactersSelected)
-
-                //Insert it in a kind of "cache"
-                intent.putExtra("GameList", strList)
-
-                //Start the other activity
-                startActivity(intent)
-
-            } catch(ex : Exception) {
-                println(ex)
+                body.addView(row)
             }
 
+            //Bar : arrow, name of the extension, button to activate it
+            val arrow = TextView(this).apply {
+                text = if (extension in openExtensions) "▾" else "▸"
+                setTextColor(PanelDialog.CYAN)
+                textSize = 16f
+            }
+            val bar = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                setPadding(dp(10), dp(6), dp(10), dp(6))
+                background = GradientDrawable().apply {
+                    setColor(Color.argb(60, 0, 229, 255))
+                    setStroke(dp(1), PanelDialog.CYAN)
+                    cornerRadius = dp(10).toFloat()
+                }
+                isClickable = true
+                setOnClickListener {
+                    val open = body.visibility != View.VISIBLE
+                    body.visibility = if (open) View.VISIBLE else View.GONE
+                    arrow.text = if (open) "▾" else "▸"
+                    if (open) openExtensions.add(extension) else openExtensions.remove(extension)
+                }
+            }
+            bar.addView(arrow, LinearLayout.LayoutParams(dp(24), LinearLayout.LayoutParams.WRAP_CONTENT))
+            bar.addView(TextView(this).apply {
+                text = getString(extension.nameRes) + "  (" + roles.size + ")"
+                setTextColor(Color.WHITE)
+                textSize = 16f
+            }, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+            bar.addView(SwitchCompat(this).apply {
+                isChecked = enabled
+                setOnCheckedChangeListener { _, checked ->
+                    Extensions.setEnabled(this@SelectActivity, extension, checked)
+                    body.alpha = if (checked) 1f else 0.4f
+                }
+            })
+
+            extensionsBox.addView(bar, LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { topMargin = dp(8) })
+            extensionsBox.addView(body)
+        }
+    }
+
+    // ──────────────────────────────────────────────────────────────
+    //  Players
+    // ──────────────────────────────────────────────────────────────
+
+    private fun roundButton(label: String, onClick: () -> Unit) = panelButton(this, label).apply {
+        minWidth = 0
+        minimumWidth = dp(48)
+        setOnClickListener { onClick() }
+    }
+
+    private fun buildPlayersCard() {
+        val card = card(getString(R.string.Select_Players))
+
+        //Number of players
+        val countRow = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
+        countRow.addView(roundButton("−") { changeCount(count - 1) })
+        countText = TextView(this).apply {
+            text = count.toString()
+            setTextColor(Color.WHITE)
+            textSize = 24f
+            gravity = Gravity.CENTER
+            setTypeface(typeface, android.graphics.Typeface.BOLD)
+        }
+        countRow.addView(countText, LinearLayout.LayoutParams(dp(70), LinearLayout.LayoutParams.WRAP_CONTENT))
+        countRow.addView(roundButton("+") { changeCount(count + 1) })
+        card.addView(countRow, LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            topMargin = dp(6)
+            gravity = Gravity.CENTER_HORIZONTAL
+        })
+
+        //Forget the names
+        card.addView(panelButton(this, getString(R.string.Select_ClearNames)).apply {
+            setOnClickListener {
+                nameFields.forEach { it.setText("") }
+                PlayerNames.saveAll(this@SelectActivity, emptyList())
+            }
+        }, LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply { topMargin = dp(8) })
+
+        //Names, one line per player
+        namesBox = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        card.addView(namesBox)
+
+        val saved = PlayerNames.readAll(this)
+        for (i in 0 until count) addNameRow(i, saved.getOrNull(i) ?: "")
+    }
+
+    private fun addNameRow(index: Int, value: String) {
+        val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
+
+        row.addView(TextView(this).apply {
+            text = (index + 1).toString() + "."
+            setTextColor(Color.parseColor("#8FA3B8"))
+            textSize = 15f
+        }, LinearLayout.LayoutParams(dp(34), LinearLayout.LayoutParams.WRAP_CONTENT))
+
+        val field = EditText(this).apply {
+            setText(value)
+            hint = getString(R.string.SeatDefaultName, index + 1)
+            setSingleLine()
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_WORDS
+            setTextColor(Color.WHITE)
+            setHintTextColor(Color.parseColor("#667788"))
+        }
+        row.addView(field, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+
+        nameFields.add(field)
+        namesBox.addView(row)
+    }
+
+    private fun changeCount(newCount: Int) {
+        val wanted = newCount.coerceIn(minPlayers, maxPlayers)
+        if (wanted == count) return
+
+        //The names already written stay
+        val saved = PlayerNames.readAll(this)
+        while (nameFields.size < wanted) addNameRow(nameFields.size, saved.getOrNull(nameFields.size) ?: "")
+        while (nameFields.size > wanted) {
+            nameFields.removeAt(nameFields.size - 1)
+            namesBox.removeViewAt(namesBox.childCount - 1)
         }
 
-        binding.closeButton.setOnClickListener {
-            finish()
+        count = wanted
+        countText.text = count.toString()
+    }
+
+    // ──────────────────────────────────────────────────────────────
+    //  Start
+    // ──────────────────────────────────────────────────────────────
+
+    private fun startGame() {
+        if (Extension.values().none { Extensions.isEnabled(this, it) }) {
+            Toast.makeText(this, R.string.Select_NoExtension, Toast.LENGTH_SHORT).show()
+            return
         }
+
+        //The names are kept for the next games (the names of the players that don't exist now are kept too)
+        val names = nameFields.map { it.text.toString().trim() }
+        val saved = PlayerNames.readAll(this).toMutableList()
+        names.forEachIndexed { i, name ->
+            while (saved.size <= i) saved.add("")
+            saved[i] = name
+        }
+        PlayerNames.saveAll(this, saved)
+        PlayerNames.saveCount(this, count)
+
+        //A new game replaces the one that was left
+        GameSave.clear(this)
+
+        val intent = Intent(this, GameActivity::class.java)
+        intent.putStringArrayListExtra("PlayerNames", ArrayList(names))
+        startActivity(intent)
     }
 }

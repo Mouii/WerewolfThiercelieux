@@ -54,7 +54,7 @@ class InfoTabs(private val activity: AppCompatActivity) {
 
             val block = card()
             block.addView(text(
-                if (members.size > 1) "${first.name} ×${members.size}" else first.name,
+                if (members.size > 1) "${first.name} (${members.size})" else first.name,
                 18f, Color.WHITE, true
             ))
 
@@ -62,9 +62,16 @@ class InfoTabs(private val activity: AppCompatActivity) {
                 block.addView(text(playerName(seat), 16f, Color.parseColor("#00E5FF")))
             }
 
-            val missing = members.size - holders.size
-            if (missing > 0) {
-                block.addView(text(activity.getString(R.string.InformationView_NotAssigned, missing), 14f, Color.parseColor("#999999")))
+            container.addView(block)
+        }
+
+        //Players who have no role yet
+        val withoutRole = seats.filter { it.character == null }
+        if (withoutRole.isNotEmpty()) {
+            val block = card()
+            block.addView(text(activity.getString(R.string.InformationView_NoRole), 18f, Color.parseColor("#FFC107"), true))
+            for (seat in withoutRole) {
+                block.addView(text(playerName(seat), 16f, Color.parseColor("#FFC107")))
             }
             container.addView(block)
         }
@@ -84,7 +91,7 @@ class InfoTabs(private val activity: AppCompatActivity) {
      * Players of a block. The infected block is directly made from the status of the players
      */
     private fun playersOf(block: EffectBlock): List<Seat> =
-        if (block.kind == EffectBlock.Kind.INFECTION) seats.filter { it.character?.infected == true }
+        if (block.kind == EffectBlock.Kind.INFECTION) seats.filter { it.character?.isInfected == true }
         else block.players
 
     private fun buildEffectBlock(block: EffectBlock, container: LinearLayout): View {
@@ -94,26 +101,42 @@ class InfoTabs(private val activity: AppCompatActivity) {
         val header = LinearLayout(activity).apply { orientation = LinearLayout.HORIZONTAL; gravity = android.view.Gravity.CENTER_VERTICAL }
         header.addView(text(block.title, 18f, Color.WHITE, true), LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
 
-        if (block.kind == EffectBlock.Kind.INFECTION) {
-            val soloSwitch = SwitchCompat(activity).apply {
-                text = activity.getString(R.string.InformationView_InfectSolo)
-                setTextColor(Color.WHITE)
-                textSize = 12f
-                isChecked = GameState.fatherCanInfectSolo
-                setOnCheckedChangeListener { _, checked -> GameState.fatherCanInfectSolo = checked }
-            }
-            header.addView(soloSwitch)
-        } else {
-            val delete = text("✕", 18f, Color.parseColor("#FF6B6B"), true).apply {
-                setPadding(dp(12), dp(4), dp(4), dp(4))
-                setOnClickListener {
-                    GameState.effectBlocks.remove(block)
-                    fillRoles(container)
+        when (block.kind) {
+            EffectBlock.Kind.INFECTION -> {
+                val soloSwitch = SwitchCompat(activity).apply {
+                    text = activity.getString(R.string.InformationView_InfectSolo)
+                    setTextColor(Color.WHITE)
+                    textSize = 12f
+                    isChecked = GameState.fatherCanInfectSolo
+                    setOnCheckedChangeListener { _, checked -> GameState.fatherCanInfectSolo = checked }
                 }
+                header.addView(soloSwitch)
             }
-            header.addView(delete)
+            EffectBlock.Kind.TARGETS -> {
+                val delete = text("✕", 18f, Color.parseColor("#FF6B6B"), true).apply {
+                    setPadding(dp(12), dp(4), dp(4), dp(4))
+                    setOnClickListener {
+                        GameState.effectBlocks.remove(block)
+                        fillRoles(container)
+                    }
+                }
+                header.addView(delete)
+            }
+            EffectBlock.Kind.DEATHS -> {}
         }
         view.addView(header)
+
+        //Option of the role : red light on its targets during its turn, green light on it during their turn
+        if (block.kind == EffectBlock.Kind.TARGETS && block.roleKey != null) {
+            val lightSwitch = SwitchCompat(activity).apply {
+                text = activity.getString(R.string.Block_Lights)
+                setTextColor(Color.parseColor("#8FA3B8"))
+                textSize = 12f
+                isChecked = block.lights
+                setOnCheckedChangeListener { _, checked -> block.lights = checked }
+            }
+            view.addView(lightSwitch)
+        }
 
         //Players, a tap selects them
         val chips = ChipGroup(activity)
@@ -142,7 +165,8 @@ class InfoTabs(private val activity: AppCompatActivity) {
                         GameState.disinfect(activity, seat)
                     } else {
                         block.players.remove(seat)
-                        GameState.log(activity, R.string.History_TargetRemoved, block.title, seat.name)
+                        if (block.kind == EffectBlock.Kind.TARGETS)
+                            GameState.log(activity, R.string.History_TargetRemoved, block.title, seat.name)
                     }
                 }
                 fillRoles(container)
@@ -153,6 +177,21 @@ class InfoTabs(private val activity: AppCompatActivity) {
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         ).apply { marginStart = dp(8) })
+
+        //The block of the deaths is used a lot : one button empties it
+        if (block.kind == EffectBlock.Kind.DEATHS) {
+            val clear = MaterialButton(activity).apply {
+                setText(R.string.Block_Clear)
+                setOnClickListener {
+                    block.players.clear()
+                    fillRoles(container)
+                }
+            }
+            buttons.addView(clear, LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { marginStart = dp(8) })
+        }
         view.addView(buttons)
 
         return view
@@ -166,7 +205,7 @@ class InfoTabs(private val activity: AppCompatActivity) {
             //All the players who are not werewolves yet. Solo roles only if the option allows it
             seats.filter { s ->
                 val c = s.character
-                s.alive && c != null && !c.isWerewolf && !c.infected && (GameState.fatherCanInfectSolo || !c.isSolo)
+                s.alive && c != null && !c.isWerewolf && !c.isInfected && (GameState.fatherCanInfectSolo || !c.isSolo)
             }
         } else {
             seats.filter { s -> block.players.none { it === s } }
@@ -190,7 +229,8 @@ class InfoTabs(private val activity: AppCompatActivity) {
                     GameState.infect(activity, seat)
                 } else {
                     block.players.add(seat)
-                    GameState.log(activity, R.string.History_Target, block.title, seat.name)
+                    if (block.kind == EffectBlock.Kind.TARGETS)
+                        GameState.log(activity, R.string.History_Target, block.title, seat.name)
                 }
                 fillRoles(container)
             }

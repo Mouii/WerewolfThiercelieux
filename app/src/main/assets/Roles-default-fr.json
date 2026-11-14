@@ -6,6 +6,7 @@
 			"NORMAL": {
 				"description" : "Le Comédien peut jouer trois rôles différents pendant la nuit. Ces rôles ne sont pas en jeu, et sont visibles par tous les joueurs. Une fois que tous les rôles ont été joués, le Comédien devient un simple Villageois.",
 				"action" : "Le Comédien peut choisir de jouer l'un des rôles proposés pour un tour. Une fois que le rôle choisi est joué, il n'est plus disponible.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONSUMABLE",
@@ -34,6 +35,7 @@
 			"NORMAL": {
 				"description" : "L'Ange est un rôle solitaire. Pour gagner, il doit mourir durant le premier tour (jour ou nuit). Si ce n'est pas le cas, il devient un simple Villageois. Inclure un Ange dans la partie modifie la structure du jeu, qui commence par un jour au lieu d'une nuit.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -45,6 +47,7 @@
 			"AUTHOR": {
 				"description" : "L'Ange est un divinateur. Une fois par partie, il peut choisir un joueur qui révèle son rôle au grand jour. Le joueur choisi n'est pas éliminé.",
 				"action" : "L'Ange peut choisir de révéler le rôle d'un joueur.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONSUMABLE",
@@ -62,6 +65,7 @@
 			"NORMAL": {
 				"description" : "Le Dresseur d'Ours peut détecter les Loups-Garous parmi ses voisins. Le maître du jeu signale au Dresseur d'Ours que l'un de ses deux voisins vivants est un Loup-Garou, au moyen d'un grognement. Lorsque le Desseur d'Ours est infecté, le grognement se produit à chaque fois.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -79,6 +83,8 @@
 			"NORMAL": {
 				"description" : "Le Grand Méchant Loup peut dévorer une seconde victime pendant la nuit. Il dévore une première fois en concertation avec les autres Loups-Garous pendant leur tour, puis est réveillé de nouveau afin qu'il choisisse une seconde victime. Ce pouvoir est perdu lorsqu'un Loup-Garou, Enfant Sauvage, ou Chien-Loup est éliminé.",
 				"action" : "Le Grand Méchant Loup choisit une seconde victime à dévorer pendant son tour.",
+				"hasTarget": false,
+				"kills": true,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONDITIONAL",
@@ -90,6 +96,8 @@
 			"AUTHOR": {
 				"description" : "Le Grand Méchant Loup peut dévorer une seconde victime pendant la nuit. Il dévore une première fois en concertation avec les autres Loups-Garous pendant leur tour, puis est réveillé de nouveau afin qu'il choisisse une seconde victime.",
 				"action" : "Le Grand Méchant Loup choisit une seconde victime à dévorer pendant son tour.",
+				"hasTarget": false,
+				"kills": true,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -107,6 +115,7 @@
 			"NORMAL": {
 				"description" : "Les Frères se réveillent ensemble et se reconnaissent pendant la nuit. Ils peuvent communiquer avec des signes pendant un court instant.",
 				"action" : "Les Frères se réveillent et se reconnaissent. Ils peuvent communiquer pendant un court instant.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONDITIONAL",
@@ -202,6 +211,7 @@
 			"NORMAL": {
 				"description" : "L'ancien dispose d'une vie supplémentaire contre l'attaque des Loups-Garous. Si le village élimine l'Ancien, tous les villageois spéciaux perdent leur pouvoir, rôles solitaires exclus. Cet effet ne fonctionne pas par mort de chagrin de Cupidon. L'Ancien ne peut pas être infecté. Si l'Ancien est la cible d'une potion de vie de la Sorcière, il dispose d'une vie supplémentaire.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -219,6 +229,7 @@
 			"NORMAL": {
 				"description" : "Le Pyromane élimine ses deux voisins vivants lorsqu'il meurt.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -270,6 +281,7 @@
 			"NORMAL": {
 				"description" : "Le Chasseur tue le joueur de son choix lorsqu'il meurt.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -287,6 +299,7 @@
 			"NORMAL": {
 				"description" : "L'Idiot du Village dispose d'une seconde chance lorsqu'il est victime du vote de la journée. Trop idiot pour être considéré comme dangereux, il reste en vie avec son rôle dévoilé et ne peut plus participer au vote. Si l'Ancien est en jeu et que les Villageois spéciaux perdent leur pouvoirs, l'Idiot du Village meurt.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -304,6 +317,7 @@
 			"NORMAL": {
 				"description" : "La Petite Fille peut espionner les Loups-Garous pendant leur tour. Si elle est repérée, elle est sélectionnée comme la victime des Loups-Garous pour cette nuit.",
 				"action" : "La Petite Fille espionne les Loups-Garous pendant leur tour.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -332,6 +346,7 @@
 			"NORMAL": {
 				"description" : "L'Abominable Sectaire est un rôle solitaire. Son objectif est de gagner avec une partie du village. Pour cela, il doit s'arranger pour faire éliminer l'autre partie.",
 				"action" : "L'Abominable Sectaire se réveille et voit les joueurs faisant partie de son groupe. Pour gagner, il doit faire éliminer tous les autres.",
+				"hasTarget": false,
 				"isSolo": true,
 				"isNocturnal" : true,
 				"powerState": "UNIQUE",
@@ -392,6 +407,7 @@
 			"NORMAL": {
 				"description": "Le Marionnettiste dispose d'une vie supplémentaire contre les Loups-Garous. Lorsqu'il est ciblé, sa marionnette encaisse le coup, le Marionnettiste reste vivant mais est choqué. Il ne peut plus parler pendant le reste de la partie.",
 				"action": "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal": false,
 				"powerState": "PERMANENT",
@@ -409,6 +425,7 @@
 			"NORMAL": {
 				"description" : "Le Chevalier à l'Epée Rouillée donne la maladie du tétanos à un Loup-Garou lorsqu'il est éliminé par ceux-ci. Le matin suivant, le Loup-Garou vivant le plus à sa gauche meurt des suites du tétanos. Cette action permet d'innocenter les joueurs situés entre le Chevalier et le Loup-Garou qu'il a éliminé.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -420,6 +437,7 @@
 			"AUTHOR": {
 				"description" : "Le Chevalier à l'Epée Rouillée donne la maladie du tétanos à un Loup-Garou lorsqu'il est éliminé par ceux-ci. Le matin suivant, le Loup-Garou vivant le plus à sa gauche meurt des suites du tétanos. Cette action permet d'innocenter les joueurs situés entre le Chevalier et le Loup-Garou qu'il a éliminé. S'il est éliminé le jour ou la nuit par un Villageois, le Villageois le plus à sa droite est éliminé.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -437,6 +455,7 @@
 			"NORMAL": {
 				"description" : "Le Bouc Emissaire est éliminé si une égalité se produit lors du vote de la journée. De cette manière, il peut choisir les joueurs qui seront autorisés à voter le jour suivant. Cela est dangereux si les joueurs désignés sont tous des Loups-Garous, ou s'il n'y a qu'un seul joueur autorisé à voter, et que celui-ci meurt avant le vote.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -448,6 +467,7 @@
 			"AUTHOR": {
 				"description" : "Le Bouc Emissaire est une victime des misères de la vie. Il est éliminé si une égalité se produit lors du vote de la journée. De cette manière, il peut choisir les joueurs qui ne seront pas autorisés à voter le jour suivant. Si le Bouc Emissaire est dévoré par les Loups-Garous, ceux-ci tombent malades et ne dévoreront pas la nuit suivante.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -482,6 +502,7 @@
 			"NORMAL": {
 				"description" : "La Servante Dévouée peut entraver le vote de la journée et prendre la place du joueur éliminé. Pour effectuer cette action, la Servante se révèle. Elle obtient alors le rôle du joueur éliminé.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -510,6 +531,7 @@
 			"NORMAL": {
 				"description" : "Les Sœurs se réveillent ensemble et se reconnaissent pendant la nuit. Elles peuvent communiquer avec des signes pendant un court instant.",
 				"action" : "Les Sœurs se réveillent et se reconnaissent. Elles peuvent communiquer pendant un court instant.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONDITIONAL",
@@ -527,6 +549,7 @@
 			"NORMAL": {
 				"description" : "Le Juge Bègue peut lancer un second vote de la journée juste après le premier. Pour cela, il fait signe au maître du jeu afin que le second vote soit lancé.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -538,6 +561,7 @@
 			"AUTHOR": {
 				"description" : "Le Juge Bègue est un dictateur. Une fois par partie durant la journée, il peut révéler son rôle et choisir un joueur à éliminer. Si ce joueur était un Loup-Garou, le village se réjouit et le Juge est élu capitaine (maire). Sinon, le Juge est éliminé.",
 				"action" : "Pas d'actions pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -555,6 +579,7 @@
 			"NORMAL": {
 				"description" : "Le Voleur est le premier rôle à se réveiller la nuit. Il choisit parmi les deux rôles proposés par le maître du jeu, ceux-ci n'étant pas dans la partie. Si l'un des rôles est un Loup-Garou, le Voleur est obligé de le prendre.",
 				"action" : "Le Voleur choisit parmi les deux rôles proposés par le maître du jeu. Si un Loup-Garou est présent, il doit le sélectionner.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "UNIQUE",
@@ -599,6 +624,7 @@
 			"NORMAL": {
 				"description" : "Le simple Villageois doit utiliser sa force de déduction pour trouver et éliminer les Loups-Garous.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -616,6 +642,7 @@
 			"NORMAL": {
 				"description" : "Le Villageois-Villageois est un rôle connu de tous les joueurs, grâce à sa carte arborant l'icône du Villageois sur ses deux faces.",
 				"action" : "Pas d'action pendant la nuit.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -633,6 +660,8 @@
 			"NORMAL": {
 				"description" : "Les Loups-Garous choisissent une victime à dévorer pendant la nuit.",
 				"action" : "Les Loups-Garous choisissent un joueur à dévorer.",
+				"hasTarget": false,
+				"kills": true,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -650,6 +679,8 @@
 			"NORMAL": {
 				"description" : "Le Loup Blanc est un rôle solitaire. Il gagne lorsqu'il est le dernier Loup-Garou vivant. Toutes les deux nuits, en plus de son tour standard avec les autres Loups-Garous, le Loup Blanc se réveille une seconde fois pour dévorer un autre Loup-Garou.",
 				"action" : "Le Loup Blanc dévore une victime avec les autres Loups-Garous, puis se réveille une seconde fois pour dévorer l'un de ses congénaires.",
+				"hasTarget": false,
+				"kills": true,
 				"isSolo": true,
 				"isNocturnal" : true,
 				"powerState": "CONDITIONAL",
@@ -718,6 +749,7 @@
 			"NORMAL": {
 				"description" : "Le Chien-Loup peut choisir d'être un simple Villageois ou un Loup-Garou au début de la partie.",
 				"action" : "Le Chien-Loup peut choisir de se réveiller pour devenir Loup-Garou, ou de rester endormi pour être un simple Villageois.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "CONSUMABLE",
@@ -729,6 +761,7 @@
 			"AUTHOR": {
 				"description" : "Le Chien-Loup est un bébé Loup-Garou. S'il meurt, les Loups-Garous sont pris de rage et dévoreront une deuxième victime la nuit suivante.",
 				"action" : "Le Chien-Loup déclenche la rage des Loups-Garous s'il meurt. Ces derniers dévoreront une deuxième victime la nuit suivante.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",

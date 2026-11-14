@@ -6,6 +6,7 @@
 			"NORMAL": {
 				"description" : "The Actor can play three different roles during the game at night. These roles must be chosen outside of the game and are visible to everybody. Once all three have been played, the Actor becomes a simple Villager.",
 				"action" : "The Actor may choose one of the roles visible to play for a complete turn. Once the role has been played, it is discarded.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONSUMABLE",
@@ -34,6 +35,7 @@
 			"NORMAL": {
 				"description" : "The Angel is a solitary role at first. They must die on the first turn (night or day) in order to win. If they survive, then they are a simple Villager. Having an Angel in play makes the game start with the day and not the night (or night with scouting and no actions).",
 				"action" : "No action for the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -45,6 +47,7 @@
 			"AUTHOR": {
 				"description" : "The Angel is a divinator. Once per game, they can choose to reveal a role to everybody. The character revealed stays alive.",
 				"action" : "The Angel can choose to reveal the role of a character.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONSUMABLE",
@@ -62,6 +65,7 @@
 			"NORMAL": {
 				"description" : "The Bear Tamer can signal if one of his neighbours is a Werewolf. If the game master makes a sound like a bear growl, that means one of the alive neighbours of the Bear Tamer is a Werewolf. The Bear also growls if the Bear Tamer is infected.",
 				"action" : "No action for the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -79,6 +83,8 @@
 			"NORMAL": {
 				"description" : "The Big Bad Wolf can eat a second victim during the night. They eat with the others Werewolves on their turn, then has a unique turn for themselves. This power is lost when a Werewolf, Wild Child, or Wolfhound is dead.",
 				"action" : "The Big Bad Wolf chooses a victim to eat. On its only turn, they can eat another victim.",
+				"hasTarget": false,
+				"kills": true,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONDITIONAL",
@@ -90,6 +96,8 @@
 			"AUTHOR": {
 				"description" : "The Big Bad Wolf can eat a second victim during the night. They eat with the others Werewolves on their turn, then has a unique turn for themselves.",
 				"action" : "The Big Bad Wolf chooses a victim to eat. On its only turn, they can eat another victim.",
+				"hasTarget": false,
+				"kills": true,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -107,6 +115,7 @@
 			"NORMAL": {
 				"description" : "The Brothers wake up at night and know each other. They can communicate at night with signs.",
 				"action" : "The Brothers recognize each other and can communicate through signs.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONDITIONAL",
@@ -202,6 +211,7 @@
 			"NORMAL": {
 				"description" : "The Elder can survive a second attack from the Werewolves. If the village eliminates them, all special Villagers lose their powers, except the solitary roles. The second life does not prevent from being killed by love. The Elder cannot be infected. If they get a heal potion from the Witch, they gain another life.",
 				"action" : "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -219,6 +229,7 @@
 			"NORMAL": {
 				"description" : "The Arsonist kills their two closest alive neighbours when they die.",
 				"action" : "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -270,6 +281,7 @@
 			"NORMAL": {
 				"description" : "The Hunter kills someone else when they die.",
 				"action" : "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -287,6 +299,7 @@
 			"NORMAL": {
 				"description" : "The Idiot of the Village has a second chance if they are voted to be killed during the day. Considered as too idiotic to be dangerous, they stay alive with their role revealed. However, they lose their voting ability. If there is an Elder in play, and the Elder removes the special Villager's powers, the Idiot dies.",
 				"action" : "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -304,6 +317,7 @@
 			"NORMAL": {
 				"description" : "The Little Girl can try to spy on the Werewolves, but if she gets spotted, she is the selected victim at their turn.",
 				"action" : "The Little Girl spies on the Werewolves turn.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -332,6 +346,7 @@
 			"NORMAL": {
 				"description" : "The Manipulator is a solitary role. Their objective is to to win with a part of the village. Once the other part is eliminated, they win.",
 				"action" : "The Manipulator wakes up and sees the players part of their group. The Manipulator wins when all the players that are not part of their group are dead.",
+				"hasTarget": false,
 				"isSolo": true,
 				"isNocturnal" : true,
 				"powerState": "UNIQUE",
@@ -392,6 +407,7 @@
 			"NORMAL": {
 				"description": "The Puppeteer is protected once against attacks from the Werewolves, the first hit breaks its puppet and leaves the Puppeteer alive but shocked, they can only communicate without talking afterwards.",
 				"action": "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal": false,
 				"powerState": "PERMANENT",
@@ -409,6 +425,7 @@
 			"NORMAL": {
 				"description" : "The Rusty Knight, if killed during the night, can kill a Werewolf from tetanus. The next morning, the closest Werewolf on their left dies. This action helps a lot to see innocents between the Knight and the killed Werewolf.",
 				"action" : "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -420,6 +437,7 @@
 			"AUTHOR": {
 				"description" : "The Rusty Knight, if killed during the night, can kill a Werewolf from tetanus. The next morning, the closest Werewolf on their left dies. This action helps a lot to see innocents between the Knight and the killed Werewolf. If they die by the the village, or a Villager during the night, the closest Villager to the right of the Rusty Knight dies.",
 				"action" : "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -437,6 +455,7 @@
 			"NORMAL": {
 				"description" : "The Scapegoat is eliminated if there is a tie in the votes during the day. If they are eliminated this way, they may choose who can vote on the next day. This can be dangerous if the remaining voters are Werewolves. It is also dangerous if there is only one player allowed to vote, and that player is killed during the night; leading to no vote.",
 				"action" : "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -448,6 +467,7 @@
 			"AUTHOR": {
 				"description" : "The Scapegoat is a victim of life. When there is a tie during the vote of the day from the Village, they die instead, and choose who is not allowed to vote the next day. If they are eaten by the Werewolves during the night, the Werewolves get sick and will not kill the following night.",
 				"action" : "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -482,6 +502,7 @@
 			"NORMAL": {
 				"description" : "The Servant can stop the execution of the selected victim during the day and take their place. To perform this action, the Servant has to reveal themselves. They then acquire the role of the selected player, which is still eliminated.",
 				"action" : "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -510,6 +531,7 @@
 			"NORMAL": {
 				"description" : "The Sisters wake up at night and know each other. They can communicate at night with signs.",
 				"action" : "The Sisters recognize each other and can communicate through signs.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "CONDITIONAL",
@@ -527,6 +549,7 @@
 			"NORMAL": {
 				"description" : "The Stuttering Judge can run a second vote during a day immediately after the first one. They must give a sign to the Game Master so the second vote is initiated.",
 				"action" : "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -538,6 +561,7 @@
 			"AUTHOR": {
 				"description" : "The Stuttering Judge is a dictator. Once per game during daytime, they can reveal themselves select a player to kill. If the victim is a Werewolf, the Village rejoices and they become the Captain (mayor). Otherwise, they die.",
 				"action" : "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -555,6 +579,7 @@
 			"NORMAL": {
 				"description" : "The Thief is the first role to wake up at night. They select one out of two roles proposed by the Game Master that are not in play. If one of the two roles is a Werewolf, the Thief must select it.",
 				"action" : "The Thief chooses one of the two roles proposed by the Game Master. If there is a Werewolf among them, the Thief has to select it.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "UNIQUE",
@@ -599,6 +624,7 @@
 			"NORMAL": {
 				"description" : "The simple Villager has no power other than its own deduction skills to find out who the Werewolves are.",
 				"action" : "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -616,6 +642,7 @@
 			"NORMAL": {
 				"description" : "The Villager-Villager is a role known to everyone. They cannot hide their own role, as their card is double-sided with the Villager icon.",
 				"action" : "No action during the night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "PERMANENT",
@@ -633,6 +660,8 @@
 			"NORMAL": {
 				"description" : "The Werewolves can select a victim to eat during the night. The victim is eliminated from the game.",
 				"action" : "The Werewolves choose a player to eat.",
+				"hasTarget": false,
+				"kills": true,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",
@@ -650,6 +679,8 @@
 			"NORMAL": {
 				"description" : "The White Werewolf is a solitary role. They win when they are the last one alive. Every two nights, they wake up alone and eat one of their Werewolves companions. They still eat Villagers like the other Werewolves.",
 				"action" : "The White Werewolf chooses a victim to eat with the pack. On their own turn, they can eat a Werewolf.",
+				"hasTarget": false,
+				"kills": true,
 				"isSolo": true,
 				"isNocturnal" : true,
 				"powerState": "CONDITIONAL",
@@ -718,6 +749,7 @@
 			"NORMAL": {
 				"description" : "The Wolf Hound is a role that can choose whether they want to be a Werewolf at the beginning of the game.",
 				"action" : "The Wolf Hound chooses to wake up and be a Werewolf for the game or stay asleep and be a simple Villager.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : false,
 				"powerState": "CONSUMABLE",
@@ -729,6 +761,7 @@
 			"AUTHOR": {
 				"description" : "The Wolf Hound is a cub Wolf. If they die, the Werewolves become angry and will kill an additional player the next night.",
 				"action" : "The Wolf Hound provokes the anger the pack of Werewolves on death. They will kill an additional player the next night.",
+				"hasTarget": false,
 				"isSolo": false,
 				"isNocturnal" : true,
 				"powerState": "PERMANENT",

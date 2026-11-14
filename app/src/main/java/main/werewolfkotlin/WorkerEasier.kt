@@ -1,25 +1,11 @@
 package main.werewolfkotlin
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.content.res.Configuration
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
-import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.TextView
-import androidx.core.content.ContextCompat.getString
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import model.*
 import java.io.File
 import java.io.FileOutputStream
-import java.util.Locale
 
 class WorkerEasier {
 
@@ -45,7 +31,11 @@ class WorkerEasier {
             val condition: String,
             val isWerewolf: Boolean,
             val rolesToStick: Array<String>,
-            val maxOccurrence: Int
+            val maxOccurrence: Int,
+            //Does the role choose players ? null when the file is older : the usual value of the role is used
+            val hasTarget: Boolean? = null,
+            //Does the target of the role die ? null when the file is older : the usual value of the role is used
+            val kills: Boolean? = null
         ) {
             //Rewriting of the equals function
             override fun equals(other: Any?): Boolean {
@@ -188,7 +178,10 @@ class WorkerEasier {
                         key
                     )
 
-                    mappedCharacter[key] = getGoodCharacterCast(characterGame, roleObject.nameRole)
+                    mappedCharacter[key] = getGoodCharacterCast(characterGame, roleObject.nameRole).also {
+                        it.doKilling = value.kills ?: defaultKills(roleObject.nameRole)
+                        it.doTargeting = value.hasTarget ?: defaultHasTarget(roleObject.nameRole, key)
+                    }
 
                 }
 
@@ -268,7 +261,9 @@ class WorkerEasier {
                 character.condition.toString(),
                 character.isWerewolf,
                 character.rolesToStick,
-                character.maxOccurrence
+                character.maxOccurrence,
+                character.doTargeting,
+                character.doKilling
             )
 
             val updateJSON = File(completeJSONPath)
@@ -758,6 +753,30 @@ class WorkerEasier {
         /***
          * Return the associate picture from the object itself
          */
+        /***
+         * Roles whose target dies. Used when the roles file of the phone does not say it yet
+         */
+        fun defaultKills(className : String) : Boolean =
+            className == "Werewolf" || className == "BigBadWolf" || className == "WhiteWerewolf"
+
+        /***
+         * Roles that do not choose players. Used when the roles file of the phone does not say it yet
+         */
+        fun defaultHasTarget(className : String, mode : String) : Boolean {
+            //The target of the werewolves is a death : it goes in the block of the deaths
+            if (defaultKills(className)) return false
+
+            val noTarget = className in setOf(
+                "Actor", "Angel", "BearTamer", "Brother", "Elder", "Fireman", "Hunter", "Idiot",
+                "LittleGirl", "Manipulator", "Puppeteer", "RustyKnight", "Scapegoat", "Servant",
+                "Sister", "StutteringJudge", "Thief", "Villager", "VillagerVillager", "WolfHound"
+            )
+            if (!noTarget) return true
+
+            //The author edition of these roles does choose players
+            return mode == "AUTHOR" && className in setOf("Actor", "LittleGirl", "Manipulator", "Servant", "Thief")
+        }
+
         fun getCharacterImage(classObject : CharacterGame) : Int {
             when(classObject) {
                 is Actor -> {

@@ -4,7 +4,9 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.widget.HorizontalScrollView
 import android.widget.ImageView
@@ -25,8 +27,9 @@ data class BandEntry(
 
 /***
  * Band showing the turn order as a line of cards.
- * - Tap a card to call (or call again) the role.
- * - Long press a card to wake it up / put it to sleep.
+ * - Tap a card : call the role at night, show its lights otherwise.
+ * - Double tap a card : its picture and its description.
+ * - Long press a card : wake it up / put it to sleep.
  * - The "Turn order" button opens the window where the order can be changed.
  */
 class TurnBandView @JvmOverloads constructor(
@@ -35,6 +38,7 @@ class TurnBandView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs) {
 
     var onSelect: ((Int) -> Unit)? = null
+    var onDescribe: ((Int) -> Unit)? = null
     var onToggleAwake: ((Int) -> Unit)? = null
     var onOpenOrder: (() -> Unit)? = null
 
@@ -42,7 +46,7 @@ class TurnBandView @JvmOverloads constructor(
     private val orange = Color.parseColor("#FFB300")
 
     private var entries: List<BandEntry> = emptyList()
-    private var currentOrder: Int? = null
+    private var highlightOrder: Int? = null
 
     private val chipRow = LinearLayout(context).apply {
         orientation = HORIZONTAL
@@ -59,22 +63,15 @@ class TurnBandView @JvmOverloads constructor(
         setPadding(dp(8), dp(6), dp(8), dp(8))
         background = roundBg(Color.parseColor("#CC0B1220"), Color.parseColor("#6600E5FF"), dp(1), dp(16))
 
-        //Header : title and button of the turn order
-        val header = LinearLayout(context).apply { orientation = HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
-        val title = TextView(context).apply {
-            setText(R.string.Band_Title)
-            setTextColor(cyan)
-            setTextSize(12f)
-            letterSpacing = 0.1f
-        }
-        header.addView(title, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
-
+        //The button of the turn order is also the title of the band, in the centre
+        val header = LinearLayout(context).apply { orientation = HORIZONTAL; gravity = Gravity.CENTER }
         val orderButton = TextView(context).apply {
             setText(R.string.Band_OrderButton)
             gravity = Gravity.CENTER
             setTextColor(Color.WHITE)
-            setTextSize(13f)
-            setPadding(dp(12), dp(6), dp(12), dp(6))
+            setTextSize(14f)
+            letterSpacing = 0.08f
+            setPadding(dp(24), dp(7), dp(24), dp(7))
             isClickable = true
             background = roundBg(Color.argb(60, 0, 229, 255), cyan, dp(1), dp(10))
             setOnClickListener { onOpenOrder?.invoke() }
@@ -83,14 +80,22 @@ class TurnBandView @JvmOverloads constructor(
 
         addView(header)
         addView(scroll, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT))
+
+        //Small hint under the roles
+        addView(TextView(context).apply {
+            setText(R.string.Band_Hint)
+            setTextColor(Color.parseColor("#8FA3B8"))
+            setTextSize(10f)
+            setPadding(dp(4), dp(2), dp(4), 0)
+        })
     }
 
     /***
      * Give the new state to display
      */
-    fun setEntries(list: List<BandEntry>, currentOrder: Int?) {
+    fun setEntries(list: List<BandEntry>, highlightOrder: Int?) {
         this.entries = list
-        this.currentOrder = currentOrder
+        this.highlightOrder = highlightOrder
         buildChips()
     }
 
@@ -99,7 +104,7 @@ class TurnBandView @JvmOverloads constructor(
         var currentChip: View? = null
 
         for (entry in entries) {
-            val isCurrent = entry.order == currentOrder
+            val isCurrent = entry.order == highlightOrder
             val chip = LinearLayout(context).apply {
                 orientation = VERTICAL
                 gravity = Gravity.CENTER_HORIZONTAL
@@ -111,8 +116,29 @@ class TurnBandView @JvmOverloads constructor(
                     dp(12)
                 )
                 alpha = if (entry.awake) 1f else 0.45f
-                setOnClickListener { onSelect?.invoke(entry.order) }
-                setOnLongClickListener { showMenu(this, entry); true }
+            }
+
+            //Tap, double tap and long press are told apart by the detector
+            val detector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
+                override fun onDown(e: MotionEvent): Boolean = true
+
+                override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+                    onSelect?.invoke(entry.order)
+                    return true
+                }
+
+                override fun onDoubleTap(e: MotionEvent): Boolean {
+                    onDescribe?.invoke(entry.order)
+                    return true
+                }
+
+                override fun onLongPress(e: MotionEvent) {
+                    showMenu(chip, entry)
+                }
+            })
+            chip.setOnTouchListener { _, event ->
+                detector.onTouchEvent(event)
+                true
             }
 
             val icon = ImageView(context)
