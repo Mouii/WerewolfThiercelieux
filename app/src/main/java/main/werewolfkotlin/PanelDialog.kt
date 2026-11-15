@@ -42,6 +42,13 @@ class PanelDialog(
         gravity = Gravity.END
     }
 
+    /** Small text between the content and the buttons */
+    private val hintView = TextView(activity).apply {
+        textSize = 12f
+        visibility = View.GONE
+        setPadding(0, dp(8), 0, 0)
+    }
+
     /** Called when the window closes, whatever the way */
     var onDismiss: (() -> Unit)? = null
 
@@ -72,6 +79,8 @@ class PanelDialog(
             LinearLayout.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = dp(10) })
 
+        root.addView(hintView)
+
         root.addView(footer, LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -90,6 +99,19 @@ class PanelDialog(
     }
 
     fun dismiss() = dialog.dismiss()
+
+    /***
+     * Show a small hint between the content and the buttons. null hides it
+     */
+    fun setHint(value: String?, color: Int = Color.parseColor("#8FA3B8")) {
+        if (value == null) {
+            hintView.visibility = View.GONE
+        } else {
+            hintView.text = value
+            hintView.setTextColor(color)
+            hintView.visibility = View.VISIBLE
+        }
+    }
 
     // ── Content helpers
 

@@ -15,39 +15,39 @@ enum class ConditionalActivation {
     ALL_VILLAGERS,
     LINKED_PLAYERS,
     IS_ALONE,
-    ON_MORNING,
-
+    ON_MORNING
 }
 
 open class CharacterGame(
     var name : String,
     var description: String,
     var action: String,
-    val isSolo: Boolean,
-    var isNocturnal: Boolean,
     var powerState: PowerState,
-    var condition: ConditionalActivation,
+    var isNocturnal: Boolean,
     var isWerewolf: Boolean,
-    var rolesToStick: Array<String>,
-    var order: Int,
+    val isSolo: Boolean,
     var maxOccurrence: Int,
+    var condition: ConditionalActivation,
+    var rolesToStick: Array<String>,
+    //Does the role choose players ? If not, it has no block of targets and no lights
+    var doTargeting: Boolean,
+    //Does the target of the role die ? If it does, the target is a death. If not, it is a simple targeting
+    var doKilling: Boolean,
     var mode: String
 ) : Cloneable {
 
-    //Does the role allow its player to target for non-killing purpose?
-    var doTargeting: Boolean = false
+    //Moment of the role in the night. It is not a characteristic of the role : the game gives it to each role
+    //given to a player, from the usual order of the roles (see RoleOrder) and the links with the other roles
+    var order: Int = 0
 
-    //Does the role allow to kill another player?
-    var doKilling: Boolean = false
-
-    //Infected by the grandfather of wolves : plays with the werewolves but keeps its own role
+    //Infected by the infect father of wolves : plays with the werewolves but keeps its own role
     var isInfected: Boolean = false
 
     //Keep the classname for different purposes
     val className: String = this.javaClass.simpleName
 
-    //Memorize the
-    val originalNightState : Boolean = isNocturnal
+    //Night state of the role when it was created. Useful to trigger a change of status from this state
+    val originalNightState: Boolean = isNocturnal
 
     open fun action(): String {
         //In unique statement, call one time then over
@@ -59,16 +59,10 @@ open class CharacterGame(
         return action
     }
 
-    public override fun clone() = CharacterGame(this.name
-        , this.description
-        , this.action
-        , this.isNocturnal
-        , this.isSolo
-        , this.powerState
-        , this.condition
-        , this.isWerewolf
-        , this.rolesToStick
-        , this.order
-        , this.maxOccurrence
-        , this.mode)
+    public override fun clone(): CharacterGame {
+        val copy = CharacterGame(name, description, action, powerState, isNocturnal, isWerewolf, isSolo,
+            maxOccurrence, condition, rolesToStick, doTargeting, doKilling, mode)
+        copy.order = order
+        return copy
+    }
 }

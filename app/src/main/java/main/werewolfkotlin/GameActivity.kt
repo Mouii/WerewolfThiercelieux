@@ -5,6 +5,9 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Layout
 import android.view.View
+import android.widget.CheckBox
+import android.widget.FrameLayout
+import android.content.res.ColorStateList
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.widget.ImageView
@@ -631,49 +634,222 @@ class GameActivity : AppCompatActivity() {
     }
 
     /***
-     * Give a role at random to the players who have none
+     * Random roles, in steps :
+     * 1. the moderator chooses the roles to give (and the variant of each one)
+     * 2. a question reminds what will happen
+     * 3. if players who already have a role have to be replaced, the moderator chooses them
      */
     private fun confirmRandomRoles() {
-        val withoutRole = seats.filter { it.alive && it.character == null }
-
-        if (withoutRole.isEmpty() || GameState.catalog.isEmpty()) {
+        if (seats.none { it.alive } || GameState.catalog.isEmpty()) {
             Toast.makeText(this, R.string.RandomRoles_None, Toast.LENGTH_SHORT).show()
             return
         }
+        showRandomSelection()
+    }
 
+    private fun roleless() : List<Seat> = seats.filter { it.alive && it.character == null }
+
+    /***
+     * Step 1 : the roles to give. Tap a card to add one (a window asks the variant if there are some),
+     * long press to remove one. At the limit of the role, a tap removes them all.
+     */
+    private fun showRandomSelection() {
+        val density = resources.displayMetrics.density
         val panel = PanelDialog(this, getString(R.string.RandomRoles_Title))
-        panel.body.addView(panel.text(getString(R.string.RandomRoles_Confirm, withoutRole.size)))
+        val chosen = mutableListOf<CharacterGame>()
+        val groups = GameState.catalog.groupBy { it.className }.values.sortedBy { it.first().name }
+
+        panel.body.addView(panel.text(getString(R.string.RandomPick_Help), 12f, Color.parseColor("#8FA3B8")))
+        val gridHolder = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        panel.body.addView(gridHolder)
+
+        //Copies of a role that can still be added (the roles already given count)
+        fun remaining(variants : List<CharacterGame>) : Int {
+            val className = variants.first().className
+            return variants.first().maxOccurrence - countOfClass(className) - chosen.count { it.className == className }
+        }
+
         panel.addButton(getString(R.string.Generic_Cancel))
-        panel.addButton(getString(R.string.Generic_Yes), accent = true) { randomizeRoles(withoutRole) }
+        val validate = panel.addButton(getString(R.string.Generic_Okay), accent = true, closes = false) {
+            showRandomConfirm(chosen.toList(), panel)
+        }
+
+        fun render() {
+            gridHolder.removeAllViews()
+
+            val tiles = groups.map { variants ->
+                val first = variants.first()
+                val count = chosen.count { it.className == first.className }
+
+                val tile = panel.cardTile(WorkerEasier.getCharacterImage(first), first.name, count > 0) {
+                    if (remaining(variants) > 0) {
+                        if (variants.size > 1) {
+                            showVariantDialog(variants, 0) { variant -> chosen.add(variant); render() }
+                        } else {
+                            chosen.add(first)
+                            render()
+                        }
+                    } else if (count > 0) {
+                        chosen.removeAll { it.className == first.className }
+                        render()
+                    }
+                }
+                tile.setOnLongClickListener {
+                    val last = chosen.lastOrNull { it.className == first.className }
+                    if (last != null) {
+                        chosen.remove(last)
+                        render()
+                    }
+                    true
+                }
+                if (count == 0 && remaining(variants) <= 0) tile.alpha = 0.35f
+
+                //Number of copies chosen, on the card
+                val frame = FrameLayout(this)
+                frame.addView(tile, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT))
+                if (count > 0) {
+                    frame.addView(TextView(this).apply {
+                        text = "×$count"
+                        textSize = 13f
+                        setTextColor(Color.BLACK)
+                        setTypeface(typeface, android.graphics.Typeface.BOLD)
+                        setBackgroundColor(PanelDialog.CYAN)
+                        setPadding((5 * density).toInt(), 0, (5 * density).toInt(), 0)
+                    }, FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,
+                        android.view.Gravity.TOP or android.view.Gravity.END))
+                }
+                frame
+            }
+            gridHolder.addView(panel.cardGrid(tiles))
+
+            //Hint between the roles and the buttons
+            val selected = chosen.size
+            val players = seats.count { it.alive }
+            val withoutRole = roleless().size
+            when {
+                selected > players ->
+                    panel.setHint(getString(R.string.RandomPick_TooMany, players), Color.parseColor("#FF6B6B"))
+                selected > withoutRole ->
+                    panel.setHint(getString(R.string.RandomPick_Replace, selected - withoutRole), Color.parseColor("#FFB300"))
+                else ->
+                    panel.setHint(getString(R.string.RandomPick_Selected, selected, withoutRole))
+            }
+
+            val valid = selected in 1..players
+            validate.isEnabled = valid
+            validate.alpha = if (valid) 1f else 0.4f
+        }
+
+        render()
         panel.show()
     }
 
     /***
-     * About one werewolf for four players, the other roles are drawn among the ones that can still be given
+     * Step 2 : the question. It reminds if there are less roles than players without role,
+     * or if players who already have a role will have to be replaced.
      */
-    private fun randomizeRoles(players : List<Seat>) {
-        val queue = players.shuffled().toMutableList()
+    private fun showRandomConfirm(chosen : List<CharacterGame>, selection : PanelDialog) {
+        val selected = chosen.size
+        val withoutRole = roleless().size
 
-        fun remaining(prototype : CharacterGame) = prototype.maxOccurrence - countOfClass(prototype.className)
-
-        val werewolf = GameState.catalog.firstOrNull { it.className == "Werewolf" }
-        if (werewolf != null) {
-            val wolves = minOf(maxOf(1, players.size / 4), remaining(werewolf))
-            repeat(wolves) { if (queue.isNotEmpty()) setRole(queue.removeAt(0), werewolf) }
+        val panel = PanelDialog(this, getString(R.string.RandomRoles_Title))
+        panel.body.addView(panel.text(getString(R.string.RandomConfirm_Text, selected)))
+        if (selected < withoutRole) {
+            panel.body.addView(panel.text(
+                getString(R.string.RandomConfirm_Fewer, selected, withoutRole, withoutRole - selected),
+                14f, Color.parseColor("#FFB300")))
+        }
+        if (selected > withoutRole) {
+            panel.body.addView(panel.text(
+                getString(R.string.RandomConfirm_Replace, selected - withoutRole),
+                14f, Color.parseColor("#FFB300")))
         }
 
-        //Each role is put as many times as it can still be given
-        val bag = mutableListOf<CharacterGame>()
-        GameState.catalog.filter { it.className != "Werewolf" }.forEach { prototype ->
-            repeat(maxOf(0, remaining(prototype))) { bag.add(prototype) }
+        panel.addButton(getString(R.string.Generic_Cancel))
+        panel.addButton(getString(R.string.Generic_Yes), accent = true) {
+            if (selected > withoutRole) {
+                showReplacePicker(chosen, selected - withoutRole, selection)
+            } else {
+                applyRandomRoles(chosen, emptyList())
+                selection.dismiss()
+            }
         }
-        bag.shuffle()
+        panel.show()
+    }
 
-        for (prototype in bag) {
-            if (queue.isEmpty()) break
-            if (remaining(prototype) > 0) setRole(queue.removeAt(0), prototype)
+    /***
+     * Step 3 : the players who already have a role, the moderator checks the ones that are randomized.
+     * As many as needed, so every chosen role finds a player.
+     */
+    private fun showReplacePicker(chosen : List<CharacterGame>, needed : Int, selection : PanelDialog) {
+        val density = resources.displayMetrics.density
+        val candidates = seats.filter { it.alive && it.character != null }
+
+        val panel = PanelDialog(this, getString(R.string.RandomReplace_Title))
+        val help = panel.text("", 13f, Color.parseColor("#FFB300"))
+        panel.body.addView(help)
+
+        val boxes = mutableListOf<Pair<CheckBox, Seat>>()
+        lateinit var validate : TextView
+
+        fun update() {
+            val checked = boxes.count { it.first.isChecked }
+            help.text = getString(R.string.RandomReplace_Help, needed, checked)
+            val valid = checked == needed
+            validate.isEnabled = valid
+            validate.alpha = if (valid) 1f else 0.4f
         }
 
+        for (seat in candidates) {
+            val character = seat.character ?: continue
+            val box = CheckBox(this).apply {
+                buttonTintList = ColorStateList.valueOf(PanelDialog.CYAN)
+                setOnCheckedChangeListener { _, _ -> update() }
+            }
+            boxes.add(Pair(box, seat))
+
+            val row = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = android.view.Gravity.CENTER_VERTICAL
+                setPadding((6 * density).toInt(), (4 * density).toInt(), (6 * density).toInt(), (4 * density).toInt())
+                isClickable = true
+                setOnClickListener { box.isChecked = !box.isChecked }
+            }
+            row.addView(box)
+            val picture = WorkerEasier.getCharacterImage(character)
+            if (picture != 0) {
+                row.addView(ImageView(this).apply { setImageResource(picture) },
+                    LinearLayout.LayoutParams((32 * density).toInt(), (32 * density).toInt()))
+            }
+            row.addView(TextView(this).apply {
+                text = seat.name + " — " + character.name
+                textSize = 15f
+                setTextColor(Color.WHITE)
+            }, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply { marginStart = (8 * density).toInt() })
+            panel.body.addView(row)
+        }
+
+        panel.addButton(getString(R.string.Generic_Cancel))
+        validate = panel.addButton(getString(R.string.Generic_Okay), accent = true) {
+            applyRandomRoles(chosen, boxes.filter { it.first.isChecked }.map { it.second })
+            selection.dismiss()
+        }
+        update()
+        panel.show()
+    }
+
+    /***
+     * The chosen roles are given at random to the players without role (and to the replaced ones).
+     * If there are less roles than players, the players left have no role.
+     */
+    private fun applyRandomRoles(chosen : List<CharacterGame>, replaced : List<Seat>) {
+        replaced.forEach { setRole(it, null) }
+
+        val players = roleless().shuffled()
+        val roles = chosen.shuffled()
+        for (i in 0 until minOf(players.size, roles.size)) {
+            setRole(players[i], roles[i])
+        }
         refreshUi()
     }
 
@@ -1495,14 +1671,24 @@ class GameActivity : AppCompatActivity() {
                     }
                 }
                 ConditionalActivation.NO_CONDITION -> {}
+                //Activated when the morning comes, not when somebody dies (see activateMorningPowers)
                 ConditionalActivation.ON_MORNING -> {}
             }
         }
 
     }
 
+    /***
+     * Morning : the roles with the condition ON_MORNING activate their power
+     */
+    private fun activateMorningPowers() {
+        characterGames
+            .filter { it.powerState == PowerState.CONDITIONAL && it.condition == ConditionalActivation.ON_MORNING }
+            .forEach { changeNocturnePower(it) }
+    }
+
     private fun changeNocturnePower(characterGame: CharacterGame) {
-        characterGame.isNocturnal = characterGame.originalNightState!! //Always the reverse
+        characterGame.isNocturnal = characterGame.originalNightState //Back to the night state it had at its creation
         characterGame.powerState = PowerState.PERMANENT //Become permanent
     }
 
@@ -1565,6 +1751,7 @@ class GameActivity : AppCompatActivity() {
      */
     private fun wakingPhase() {
         GameState.applyPending() // Changes of status asked during the night are now effective
+        activateMorningPowers() // The powers that wait for the morning
         phase = EnumPhase.DAWN // Waking phase
         setBackground(phase)
         setStatusText(getString(R.string.GameView_phaseDawn)) // Morning message

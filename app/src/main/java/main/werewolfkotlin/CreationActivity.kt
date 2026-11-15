@@ -437,20 +437,19 @@ class CreationActivity : AppCompatActivity() {
             WorkerEasier.getStringByKey(baseRole, this),
             descriptionRole,
             actionRole,
-            isSoloRole,
-            nocturneRole,
             powerRole,
-            conditionRole,
+            nocturneRole,
             isWerewolfRole,
-            stickRole,
-            0,
+            isSoloRole,
             maxOccurrenceRole,
+            conditionRole,
+            stickRole,
+            characterEdit?.doTargeting ?: true,
+            characterEdit?.doKilling ?: false,
             keyTypeRole
         )
 
         val newCharacter = WorkerEasier.getGoodCharacterCast(newCharacterGame, baseRole)
-        newCharacter.doTargeting = characterEdit?.doTargeting ?: true
-        newCharacter.doKilling = characterEdit?.doKilling ?: false
 
         WorkerEasier.addOrUpdateNewCharacter(newCharacter, baseRole, keyTypeRole)
 

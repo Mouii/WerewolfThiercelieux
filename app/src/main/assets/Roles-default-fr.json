@@ -1,128 +1,130 @@
 [
 	{
-		"nameRole":"Actor",
-		"roleValues":
-		{
+		"nameRole": "Actor",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Comédien peut jouer trois rôles différents pendant la nuit. Ces rôles ne sont pas en jeu, et sont visibles par tous les joueurs. Une fois que tous les rôles ont été joués, le Comédien devient un simple Villageois.",
-				"action" : "Le Comédien peut choisir de jouer l'un des rôles proposés pour un tour. Une fois que le rôle choisi est joué, il n'est plus disponible.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "Le Comédien peut jouer trois rôles différents pendant la nuit. Ces rôles ne sont pas en jeu, et sont visibles par tous les joueurs. Une fois que tous les rôles ont été joués, le Comédien devient un simple Villageois.",
+				"action": "Le Comédien peut choisir de jouer l'un des rôles proposés pour un tour. Une fois que le rôle choisi est joué, il n'est plus disponible.",
 				"powerState": "CONSUMABLE",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			},
 			"AUTHOR": {
-				"description" : "Le Comédien est un sosie (doppelganger). Pendant la première nuit, il choisit un joueur et le rôle de ce dernier est révélé au Comédien. Il copie alors ce rôle pour le restant de la partie. Il peut donc y avoir deux Voyantes, deux Sorcières, etc. Si le Comédien copie un rôle solitaire, les deux joueurs se retrouvent en équipe et doivent satisfaire leur condition de victoire ensemble.",
-				"action" : "Le Comédien choisit un joueur et copie son rôle. Il joue ce rôle et respecte ses règles avec l'autre joueur. Si le rôle copié est un rôle solitaire, les deux joueurs doivent gagner ensemble.",
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "Le Comédien est un sosie (doppelganger). Pendant la première nuit, il choisit un joueur et le rôle de ce dernier est révélé au Comédien. Il copie alors ce rôle pour le restant de la partie. Il peut donc y avoir deux Voyantes, deux Sorcières, etc. Si le Comédien copie un rôle solitaire, les deux joueurs se retrouvent en équipe et doivent satisfaire leur condition de victoire ensemble.",
+				"action": "Le Comédien choisit un joueur et copie son rôle. Il joue ce rôle et respecte ses règles avec l'autre joueur. Si le rôle copié est un rôle solitaire, les deux joueurs doivent gagner ensemble.",
 				"powerState": "UNIQUE",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Angel",
-		"roleValues":	
-		{
+		"nameRole": "Angel",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "L'Ange est un rôle solitaire. Pour gagner, il doit mourir durant le premier tour (jour ou nuit). Si ce n'est pas le cas, il devient un simple Villageois. Inclure un Ange dans la partie modifie la structure du jeu, qui commence par un jour au lieu d'une nuit.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "L'Ange est un rôle solitaire. Pour gagner, il doit mourir durant le premier tour (jour ou nuit). Si ce n'est pas le cas, il devient un simple Villageois. Inclure un Ange dans la partie modifie la structure du jeu, qui commence par un jour au lieu d'une nuit.",
+				"action": "Pas d'action pendant la nuit.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": false,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			},
 			"AUTHOR": {
-				"description" : "L'Ange est un divinateur. Une fois par partie, il peut choisir un joueur qui révèle son rôle au grand jour. Le joueur choisi n'est pas éliminé.",
-				"action" : "L'Ange peut choisir de révéler le rôle d'un joueur.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "L'Ange est un divinateur. Une fois par partie, il peut choisir un joueur qui révèle son rôle au grand jour. Le joueur choisi n'est pas éliminé.",
+				"action": "L'Ange peut choisir de révéler le rôle d'un joueur.",
 				"powerState": "CONSUMABLE",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
-				"rolesToStick": [],
-				"maxOccurrence": 1
-			}
-		}	
-	},
-	{
-		"nameRole":"BearTamer",
-		"roleValues":
-		{
-			"NORMAL": {
-				"description" : "Le Dresseur d'Ours peut détecter les Loups-Garous parmi ses voisins. Le maître du jeu signale au Dresseur d'Ours que l'un de ses deux voisins vivants est un Loup-Garou, au moyen d'un grognement. Lorsque le Desseur d'Ours est infecté, le grognement se produit à chaque fois.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
 				"isSolo": false,
-				"isNocturnal" : false,
-				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
-				"isWerewolf": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"BigBadWolf",
-		"roleValues":
-		{
+		"nameRole": "BearTamer",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Grand Méchant Loup peut dévorer une seconde victime pendant la nuit. Il dévore une première fois en concertation avec les autres Loups-Garous pendant leur tour, puis est réveillé de nouveau afin qu'il choisisse une seconde victime. Ce pouvoir est perdu lorsqu'un Loup-Garou, Enfant Sauvage, ou Chien-Loup est éliminé.",
-				"action" : "Le Grand Méchant Loup choisit une seconde victime à dévorer pendant son tour.",
-				"hasTarget": false,
-				"kills": true,
-				"isSolo": false,
-				"isNocturnal" : true,
-				"powerState": "CONDITIONAL",
-				"condition": "ONEWEREWOLF",
-				"isWerewolf": true,
-				"rolesToStick": [],
-				"maxOccurrence": 1
-			}, 
-			"AUTHOR": {
-				"description" : "Le Grand Méchant Loup peut dévorer une seconde victime pendant la nuit. Il dévore une première fois en concertation avec les autres Loups-Garous pendant leur tour, puis est réveillé de nouveau afin qu'il choisisse une seconde victime.",
-				"action" : "Le Grand Méchant Loup choisit une seconde victime à dévorer pendant son tour.",
-				"hasTarget": false,
-				"kills": true,
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "Le Dresseur d'Ours peut détecter les Loups-Garous parmi ses voisins. Le maître du jeu signale au Dresseur d'Ours que l'un de ses deux voisins vivants est un Loup-Garou, au moyen d'un grognement. Lorsque le Desseur d'Ours est infecté, le grognement se produit à chaque fois.",
+				"action": "Pas d'action pendant la nuit.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
-				"isWerewolf": true,
+				"isNocturnal": false,
+				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			}
-		}		
+		}
 	},
 	{
-		"nameRole":"Brother",
-		"roleValues":
-		{
+		"nameRole": "BigBadWolf",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Les Frères se réveillent ensemble et se reconnaissent pendant la nuit. Ils peuvent communiquer avec des signes pendant un court instant.",
-				"action" : "Les Frères se réveillent et se reconnaissent. Ils peuvent communiquer pendant un court instant.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "Le Grand Méchant Loup peut dévorer une seconde victime pendant la nuit. Il dévore une première fois en concertation avec les autres Loups-Garous pendant leur tour, puis est réveillé de nouveau afin qu'il choisisse une seconde victime. Ce pouvoir est perdu lorsqu'un Loup-Garou, Enfant Sauvage, ou Chien-Loup est éliminé.",
+				"action": "Le Grand Méchant Loup choisit une seconde victime à dévorer pendant son tour.",
 				"powerState": "CONDITIONAL",
-				"condition": "ISALONE",
-				"isWerewolf": false,
+				"isNocturnal": true,
+				"isWerewolf": true,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "ONE_WEREWOLF",
 				"rolesToStick": [],
-				"maxOccurrence": 3
+				"doTargeting": false,
+				"doKilling": true
+			},
+			"AUTHOR": {
+				"description": "Le Grand Méchant Loup peut dévorer une seconde victime pendant la nuit. Il dévore une première fois en concertation avec les autres Loups-Garous pendant leur tour, puis est réveillé de nouveau afin qu'il choisisse une seconde victime.",
+				"action": "Le Grand Méchant Loup choisit une seconde victime à dévorer pendant son tour.",
+				"powerState": "PERMANENT",
+				"isNocturnal": true,
+				"isWerewolf": true,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
+				"rolesToStick": [],
+				"doTargeting": false,
+				"doKilling": true
+			}
+		}
+	},
+	{
+		"nameRole": "Brother",
+		"roleValues": {
+			"NORMAL": {
+				"description": "Les Frères se réveillent ensemble et se reconnaissent pendant la nuit. Ils peuvent communiquer avec des signes pendant un court instant.",
+				"action": "Les Frères se réveillent et se reconnaissent. Ils peuvent communiquer pendant un court instant.",
+				"powerState": "CONDITIONAL",
+				"isNocturnal": true,
+				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 3,
+				"condition": "IS_ALONE",
+				"rolesToStick": [],
+				"doTargeting": false,
+				"doKilling": false
 			}
 		}
 	},
@@ -132,256 +134,270 @@
 			"NORMAL": {
 				"description": "Le Colosse se venge en éliminant un Loup-Garou lorsqu'il est éliminé.",
 				"action": "Le Colosse choisit un Loup-Garou à éliminer par vengeance.",
-				"isSolo": false,
+				"powerState": "PERMANENT",
 				"isNocturnal": false,
-				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Crow",
-		"roleValues":
-		{
+		"nameRole": "Crow",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Corbeau peut choisir un joueur qui aura deux voix contre lui le prochain jour.",
-				"action" : "Le Corbeau peut choisir un joueur qui aura deux voix contre lui le prochain jour.",
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "Le Corbeau peut choisir un joueur qui aura deux voix contre lui le prochain jour.",
+				"action": "Le Corbeau peut choisir un joueur qui aura deux voix contre lui le prochain jour.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Cupid",
-		"roleValues":
-		{
+		"nameRole": "Cupid",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "La première nuit, Cupidon choisit deux joueurs qui se mettent en couple. Ils doivent gagner ensemble. Si l'un des deux meurt, l'autre meurt de chagrin.",
-				"action" : "Cupidon choisit deux joueurs à mettre en couple. Si l'un des deux meurt, l'autre meurt de chagrin.",
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "La première nuit, Cupidon choisit deux joueurs qui se mettent en couple. Ils doivent gagner ensemble. Si l'un des deux meurt, l'autre meurt de chagrin.",
+				"action": "Cupidon choisit deux joueurs à mettre en couple. Si l'un des deux meurt, l'autre meurt de chagrin.",
 				"powerState": "UNIQUE",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			},
 			"AUTHOR": {
-				"description" : "Cupidon forme un triangle amoureux. Dans un premier temps, il choisit deux joueurs à mettre en couple puis sélectionne parmi ces deux joueurs qui est le trompeur. Il choisit ensuite un troisième joueur qui est l'amant. Si l'amant ou le trompeur meurt, les trois joueurs du triangle meurent. Si le trompé meurt, les deux autres joueurs ne sont pas affectés.",
-				"action" : "Cupidon choisit trois joueurs à mettre dans un triangle amoureux. Il sélectionne d'abord le couple, puis le trompeur parmi eux, et un troisième joueur (le trompé). Si l'amant ou le trompeur meurt, les trois joueurs meurent. Si le trompé meurt, rien d'autre ne se passe.",
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "Cupidon forme un triangle amoureux. Dans un premier temps, il choisit deux joueurs à mettre en couple puis sélectionne parmi ces deux joueurs qui est le trompeur. Il choisit ensuite un troisième joueur qui est l'amant. Si l'amant ou le trompeur meurt, les trois joueurs du triangle meurent. Si le trompé meurt, les deux autres joueurs ne sont pas affectés.",
+				"action": "Cupidon choisit trois joueurs à mettre dans un triangle amoureux. Il sélectionne d'abord le couple, puis le trompeur parmi eux, et un troisième joueur (le trompé). Si l'amant ou le trompeur meurt, les trois joueurs meurent. Si le trompé meurt, rien d'autre ne se passe.",
 				"powerState": "UNIQUE",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
-				"rolesToStick": [],
-				"maxOccurrence": 1
-			}
-		}	
-	},
-	{
-		"nameRole":"Defender",
-		"roleValues":
-		{
-			"NORMAL": {
-				"description" : "Le Salvateur peut protéger un joueur de l'attaque des Loups-Garous pendant la nuit. Il peut se choisir lui-même, mais ne peut pas choisir le même joueur deux nuits de suite. La protection n'agit pas contre l'infection, ni contre la potion de mort de la Sorcière, par exemple.",
-				"action" : "Le Salvateur choisit un joueur à protéger de l'attaque des Loups-Garous. Il peut se désigner lui-même, mais ne peut pas protéger le même joueur deux nuits de suite.",
 				"isSolo": false,
-				"isNocturnal" : true,
-				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
-				"isWerewolf": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
-			}
-		}	
-	},
-	{
-		"nameRole":"Elder",
-		"roleValues":
-		{
-			"NORMAL": {
-				"description" : "L'ancien dispose d'une vie supplémentaire contre l'attaque des Loups-Garous. Si le village élimine l'Ancien, tous les villageois spéciaux perdent leur pouvoir, rôles solitaires exclus. Cet effet ne fonctionne pas par mort de chagrin de Cupidon. L'Ancien ne peut pas être infecté. Si l'Ancien est la cible d'une potion de vie de la Sorcière, il dispose d'une vie supplémentaire.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
-				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
-				"isWerewolf": false,
-				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Fireman",
-		"roleValues":
-		{
+		"nameRole": "Defender",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Pyromane élimine ses deux voisins vivants lorsqu'il meurt.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "Le Salvateur peut protéger un joueur de l'attaque des Loups-Garous pendant la nuit. Il peut se choisir lui-même, mais ne peut pas choisir le même joueur deux nuits de suite. La protection n'agit pas contre l'infection, ni contre la potion de mort de la Sorcière, par exemple.",
+				"action": "Le Salvateur choisit un joueur à protéger de l'attaque des Loups-Garous. Il peut se désigner lui-même, mais ne peut pas protéger le même joueur deux nuits de suite.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Fox",
-		"roleValues":
-		{
+		"nameRole": "Elder",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Renard peut scanner un joueur et ses deux voisins, et voir s'il y a des Loups-Garous parmi eux. S'il y a au moins un Loup-Garou, le Renard garde son pouvoir, sinon il est perdu.",
-				"action" : "Le Renard peut scanner un joueur et ses deux voisins, et voir s'il y a des Loups-Garous parmi eux. S'il n'y en a pas, le Renard perd son pouvoir.",
+				"description": "L'ancien dispose d'une vie supplémentaire contre l'attaque des Loups-Garous. Si le village élimine l'Ancien, tous les villageois spéciaux perdent leur pouvoir, rôles solitaires exclus. Cet effet ne fonctionne pas par mort de chagrin de Cupidon. L'Ancien ne peut pas être infecté. Si l'Ancien est la cible d'une potion de vie de la Sorcière, il dispose d'une vie supplémentaire.",
+				"action": "Pas d'action pendant la nuit.",
+				"powerState": "PERMANENT",
+				"isNocturnal": false,
+				"isWerewolf": false,
 				"isSolo": false,
-				"isNocturnal" : true,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
+				"rolesToStick": [],
+				"doTargeting": false,
+				"doKilling": false
+			}
+		}
+	},
+	{
+		"nameRole": "Fireman",
+		"roleValues": {
+			"NORMAL": {
+				"description": "Le Pyromane élimine ses deux voisins vivants lorsqu'il meurt.",
+				"action": "Pas d'action pendant la nuit.",
+				"powerState": "PERMANENT",
+				"isNocturnal": false,
+				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
+				"rolesToStick": [],
+				"doTargeting": false,
+				"doKilling": false
+			}
+		}
+	},
+	{
+		"nameRole": "Fox",
+		"roleValues": {
+			"NORMAL": {
+				"description": "Le Renard peut scanner un joueur et ses deux voisins, et voir s'il y a des Loups-Garous parmi eux. S'il y a au moins un Loup-Garou, le Renard garde son pouvoir, sinon il est perdu.",
+				"action": "Le Renard peut scanner un joueur et ses deux voisins, et voir s'il y a des Loups-Garous parmi eux. S'il n'y en a pas, le Renard perd son pouvoir.",
 				"powerState": "CONSUMABLE",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Gypsy",
-		"roleValues":
-		{
+		"nameRole": "Gypsy",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "La Bohémienne peut donner des cartes Spiritisme à lire, pour que les joueurs aient des informations supplémentaires sur la partie en cours. Pendant son tour, la Bohémienne choisit une carte et un joueur qui la lira le matin venu. Si le joueur choisi meurt, la carte n'est pas lue.",
-				"action" : "La Bohémienne choisit une carte Spiritisme et un joueur qui la lira.",
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "La Bohémienne peut donner des cartes Spiritisme à lire, pour que les joueurs aient des informations supplémentaires sur la partie en cours. Pendant son tour, la Bohémienne choisit une carte et un joueur qui la lira le matin venu. Si le joueur choisi meurt, la carte n'est pas lue.",
+				"action": "La Bohémienne choisit une carte Spiritisme et un joueur qui la lira.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Hunter",
-		"roleValues":
-		{
+		"nameRole": "Hunter",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Chasseur tue le joueur de son choix lorsqu'il meurt.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "Le Chasseur tue le joueur de son choix lorsqu'il meurt.",
+				"action": "Pas d'action pendant la nuit.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": false,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Idiot",
-		"roleValues":
-		{
+		"nameRole": "Idiot",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "L'Idiot du Village dispose d'une seconde chance lorsqu'il est victime du vote de la journée. Trop idiot pour être considéré comme dangereux, il reste en vie avec son rôle dévoilé et ne peut plus participer au vote. Si l'Ancien est en jeu et que les Villageois spéciaux perdent leur pouvoirs, l'Idiot du Village meurt.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "L'Idiot du Village dispose d'une seconde chance lorsqu'il est victime du vote de la journée. Trop idiot pour être considéré comme dangereux, il reste en vie avec son rôle dévoilé et ne peut plus participer au vote. Si l'Ancien est en jeu et que les Villageois spéciaux perdent leur pouvoirs, l'Idiot du Village meurt.",
+				"action": "Pas d'action pendant la nuit.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": false,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"LittleGirl",
-		"roleValues" :
-		{
+		"nameRole": "LittleGirl",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "La Petite Fille peut espionner les Loups-Garous pendant leur tour. Si elle est repérée, elle est sélectionnée comme la victime des Loups-Garous pour cette nuit.",
-				"action" : "La Petite Fille espionne les Loups-Garous pendant leur tour.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "La Petite Fille peut espionner les Loups-Garous pendant leur tour. Si elle est repérée, elle est sélectionnée comme la victime des Loups-Garous pour cette nuit.",
+				"action": "La Petite Fille espionne les Loups-Garous pendant leur tour.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": true,
-				"rolesToStick": ["WEREWOLF-NORMAL", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "WOLFFATHER-NORMAL", "WHITEWOLF-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
-				"maxOccurrence": 1
-			},
-			"AUTHOR": {
-				"description" : "La Petite Fille est un enfant fragile. Trop apeurée à l'idée de dormir seule, elle se réveille et choisit un joueur chez lequel elle dormira. Celui-ci se réveille, et son rôle est révélé à la Petite Fille. Si le joueur choisi est un Loup-Garou, la Petite Fille est éliminée. Ceci compte pour une élimination supplémentaire de la nuit. La Petite Fille ne peut pas être éliminée par les Loups-Garous, mais si son hôte meurt, la Petite Fille meurt aussi. La Petite Fille ne peut re-sélectionner un joueur qu'elle a déjà visité.",
-				"action" : "La Petite Fille choisit un joueur chez lequel elle va dormir qu'elle n'a pas déjà sélectionné une fois. Le rôle de ce dernier est révélé à la Petite Fille. Si le joueur choisi est un Loup-Garou, la Petite Fille est éliminée. Si le joueur choisi est éliminé, la Petite Fille meurt aussi.",
 				"isSolo": false,
-				"isNocturnal" : true,
-				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
-				"isWerewolf": false,
-				"rolesToStick": [],
-				"maxOccurrence": 1
-			}
-		}
-	},
-	{
-		"nameRole":"Manipulator",
-		"roleValues":
-		{
-			"NORMAL": {
-				"description" : "L'Abominable Sectaire est un rôle solitaire. Son objectif est de gagner avec une partie du village. Pour cela, il doit s'arranger pour faire éliminer l'autre partie.",
-				"action" : "L'Abominable Sectaire se réveille et voit les joueurs faisant partie de son groupe. Pour gagner, il doit faire éliminer tous les autres.",
-				"hasTarget": false,
-				"isSolo": true,
-				"isNocturnal" : true,
-				"powerState": "UNIQUE",
-				"condition": "NOCONDITION",
-				"isWerewolf": false,
-				"rolesToStick": [],
-				"maxOccurrence": 1
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
+				"rolesToStick": ["WEREWOLF-NORMAL", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "WOLFFATHER-NORMAL", "WHITEWOLF-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
+				"doTargeting": false,
+				"doKilling": false
 			},
 			"AUTHOR": {
-				"description" : "L'Abominable Sectaire est raciste. Il se réveille la première nuit et choisit un nombre de joueurs égal au nombre de Loups-Garous en jeu (information donnée par le maître du jeu). Si ces joueurs sont éliminés au cours de la partie, l'Abominable Sectaire gagne. S'il n'y a plus aucun Loup-Garou en vie, l'Abominable Sectaire prend leur place et se réveille chaque nuit pour éliminer un joueur. S'il n'y a pas de Loups-Garous au début d'une partie, le maître du jeu choisit le nombre de joueurs à éliminer.",
-				"action" : "L'Abominable Sectaire choisit les joueurs qui doivent être éliminés afin de gagner. Le nombre de joueurs à sélectionner est donné par le maître du jeu. Si tous les Loups-Garous sont morts, l'Abominable Sectaire prend leur place et élimine un joueur par nuit.",
-				"isSolo": true,
-				"isNocturnal" : true,
-				"powerState": "CONDITIONAL",
-				"condition": "ALLWEREWOLVES",
+				"description": "La Petite Fille est un enfant fragile. Trop apeurée à l'idée de dormir seule, elle se réveille et choisit un joueur chez lequel elle dormira. Celui-ci se réveille, et son rôle est révélé à la Petite Fille. Si le joueur choisi est un Loup-Garou, la Petite Fille est éliminée. Ceci compte pour une élimination supplémentaire de la nuit. La Petite Fille ne peut pas être éliminée par les Loups-Garous, mais si son hôte meurt, la Petite Fille meurt aussi. La Petite Fille ne peut re-sélectionner un joueur qu'elle a déjà visité.",
+				"action": "La Petite Fille choisit un joueur chez lequel elle va dormir qu'elle n'a pas déjà sélectionné une fois. Le rôle de ce dernier est révélé à la Petite Fille. Si le joueur choisi est un Loup-Garou, la Petite Fille est éliminée. Si le joueur choisi est éliminé, la Petite Fille meurt aussi.",
+				"powerState": "PERMANENT",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Piper",
-		"roleValues":
-		{
+		"nameRole": "Manipulator",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Joueur de Flûte est un rôle solitaire. Il doit envoûter tous les joueurs du village. Chaque nuit, il se réveille et désigne deux nouveaux joueurs à envouter. Les anciens et nouveaux envoûtés se réveillent et se reconnaissent. Au fur et à mesure que le nombre de joueurs envoûtés augmente, il est de plus en plus difficile pour le Joueur de Flûte de rester caché. Il gagne lorsque tous les joueurs vivants (excepté lui-même) sont envoûtés, à n'importe quel moment de la partie.",
-				"action" : "Le Joueur de Flûte choisit deux nouveaux joueurs à envoûter. Ensuite, les anciens et nouveaux envoûtés se réveillent.",
-				"isSolo": true,
-				"isNocturnal" : true,
-				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"description": "L'Abominable Sectaire est un rôle solitaire. Son objectif est de gagner avec une partie du village. Pour cela, il doit s'arranger pour faire éliminer l'autre partie.",
+				"action": "L'Abominable Sectaire se réveille et voit les joueurs faisant partie de son groupe. Pour gagner, il doit faire éliminer tous les autres.",
+				"powerState": "UNIQUE",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": true,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
+			},
+			"AUTHOR": {
+				"description": "L'Abominable Sectaire est raciste. Il se réveille la première nuit et choisit un nombre de joueurs égal au nombre de Loups-Garous en jeu (information donnée par le maître du jeu). Si ces joueurs sont éliminés au cours de la partie, l'Abominable Sectaire gagne. S'il n'y a plus aucun Loup-Garou en vie, l'Abominable Sectaire prend leur place et se réveille chaque nuit pour éliminer un joueur. S'il n'y a pas de Loups-Garous au début d'une partie, le maître du jeu choisit le nombre de joueurs à éliminer.",
+				"action": "L'Abominable Sectaire choisit les joueurs qui doivent être éliminés afin de gagner. Le nombre de joueurs à sélectionner est donné par le maître du jeu. Si tous les Loups-Garous sont morts, l'Abominable Sectaire prend leur place et élimine un joueur par nuit.",
+				"powerState": "CONDITIONAL",
+				"isNocturnal": true,
+				"isWerewolf": false,
+				"isSolo": true,
+				"maxOccurrence": 1,
+				"condition": "ALL_WEREWOLVES",
+				"rolesToStick": [],
+				"doTargeting": true,
+				"doKilling": false
+			}
+		}
+	},
+	{
+		"nameRole": "Piper",
+		"roleValues": {
+			"NORMAL": {
+				"description": "Le Joueur de Flûte est un rôle solitaire. Il doit envoûter tous les joueurs du village. Chaque nuit, il se réveille et désigne deux nouveaux joueurs à envouter. Les anciens et nouveaux envoûtés se réveillent et se reconnaissent. Au fur et à mesure que le nombre de joueurs envoûtés augmente, il est de plus en plus difficile pour le Joueur de Flûte de rester caché. Il gagne lorsque tous les joueurs vivants (excepté lui-même) sont envoûtés, à n'importe quel moment de la partie.",
+				"action": "Le Joueur de Flûte choisit deux nouveaux joueurs à envoûter. Ensuite, les anciens et nouveaux envoûtés se réveillent.",
+				"powerState": "PERMANENT",
+				"isNocturnal": true,
+				"isWerewolf": false,
+				"isSolo": true,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
+				"rolesToStick": [],
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
@@ -391,13 +407,15 @@
 			"NORMAL": {
 				"description": "Les deux premières nuits d'une partie, la Puissante Mère Des Loups peut choisir un joueur qui perdra ses pouvoirs et le transformera en simple Villageois.",
 				"action": "La Puissante Mère Des Loups choisit un joueur qui se transformera en simple Villageois.",
-				"isSolo": false,
-				"isNocturnal": true,
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": true,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": ["WEREWOLF-NORMAL", "LITTLEGIRL-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
@@ -407,197 +425,206 @@
 			"NORMAL": {
 				"description": "Le Marionnettiste dispose d'une vie supplémentaire contre les Loups-Garous. Lorsqu'il est ciblé, sa marionnette encaisse le coup, le Marionnettiste reste vivant mais est choqué. Il ne peut plus parler pendant le reste de la partie.",
 				"action": "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
+				"powerState": "PERMANENT",
 				"isNocturnal": false,
-				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"RustyKnight",
-		"roleValues":
-		{
+		"nameRole": "RustyKnight",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Chevalier à l'Epée Rouillée donne la maladie du tétanos à un Loup-Garou lorsqu'il est éliminé par ceux-ci. Le matin suivant, le Loup-Garou vivant le plus à sa gauche meurt des suites du tétanos. Cette action permet d'innocenter les joueurs situés entre le Chevalier et le Loup-Garou qu'il a éliminé.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "Le Chevalier à l'Epée Rouillée donne la maladie du tétanos à un Loup-Garou lorsqu'il est éliminé par ceux-ci. Le matin suivant, le Loup-Garou vivant le plus à sa gauche meurt des suites du tétanos. Cette action permet d'innocenter les joueurs situés entre le Chevalier et le Loup-Garou qu'il a éliminé.",
+				"action": "Pas d'action pendant la nuit.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": false,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			},
 			"AUTHOR": {
-				"description" : "Le Chevalier à l'Epée Rouillée donne la maladie du tétanos à un Loup-Garou lorsqu'il est éliminé par ceux-ci. Le matin suivant, le Loup-Garou vivant le plus à sa gauche meurt des suites du tétanos. Cette action permet d'innocenter les joueurs situés entre le Chevalier et le Loup-Garou qu'il a éliminé. S'il est éliminé le jour ou la nuit par un Villageois, le Villageois le plus à sa droite est éliminé.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "Le Chevalier à l'Epée Rouillée donne la maladie du tétanos à un Loup-Garou lorsqu'il est éliminé par ceux-ci. Le matin suivant, le Loup-Garou vivant le plus à sa gauche meurt des suites du tétanos. Cette action permet d'innocenter les joueurs situés entre le Chevalier et le Loup-Garou qu'il a éliminé. S'il est éliminé le jour ou la nuit par un Villageois, le Villageois le plus à sa droite est éliminé.",
+				"action": "Pas d'action pendant la nuit.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": false,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Scapegoat",
-		"roleValues": 
-		{
+		"nameRole": "Scapegoat",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Bouc Emissaire est éliminé si une égalité se produit lors du vote de la journée. De cette manière, il peut choisir les joueurs qui seront autorisés à voter le jour suivant. Cela est dangereux si les joueurs désignés sont tous des Loups-Garous, ou s'il n'y a qu'un seul joueur autorisé à voter, et que celui-ci meurt avant le vote.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "Le Bouc Emissaire est éliminé si une égalité se produit lors du vote de la journée. De cette manière, il peut choisir les joueurs qui seront autorisés à voter le jour suivant. Cela est dangereux si les joueurs désignés sont tous des Loups-Garous, ou s'il n'y a qu'un seul joueur autorisé à voter, et que celui-ci meurt avant le vote.",
+				"action": "Pas d'action pendant la nuit.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": false,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			},
 			"AUTHOR": {
-				"description" : "Le Bouc Emissaire est une victime des misères de la vie. Il est éliminé si une égalité se produit lors du vote de la journée. De cette manière, il peut choisir les joueurs qui ne seront pas autorisés à voter le jour suivant. Si le Bouc Emissaire est dévoré par les Loups-Garous, ceux-ci tombent malades et ne dévoreront pas la nuit suivante.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "Le Bouc Emissaire est une victime des misères de la vie. Il est éliminé si une égalité se produit lors du vote de la journée. De cette manière, il peut choisir les joueurs qui ne seront pas autorisés à voter le jour suivant. Si le Bouc Emissaire est dévoré par les Loups-Garous, ceux-ci tombent malades et ne dévoreront pas la nuit suivante.",
+				"action": "Pas d'action pendant la nuit.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": false,
 				"isWerewolf": false,
-				"rolesToStick": [],
-				"maxOccurrence": 1
-			}
-		}	
-	},
-	{
-		"nameRole":"Seer",
-		"roleValues":
-		{
-			"NORMAL": {
-				"description" : "La Voyante peut voir le rôle d'un joueur une fois par nuit.",
-				"action" : "La Voyante désigne un joueur. Le rôle de ce joueur est révélé à la Voyante.",
 				"isSolo": false,
-				"isNocturnal" : true,
-				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
-				"isWerewolf": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Servant",
-		"roleValues":
-		{
+		"nameRole": "Seer",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "La Servante Dévouée peut entraver le vote de la journée et prendre la place du joueur éliminé. Pour effectuer cette action, la Servante se révèle. Elle obtient alors le rôle du joueur éliminé.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "La Voyante peut voir le rôle d'un joueur une fois par nuit.",
+				"action": "La Voyante désigne un joueur. Le rôle de ce joueur est révélé à la Voyante.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
+			}
+		}
+	},
+	{
+		"nameRole": "Servant",
+		"roleValues": {
+			"NORMAL": {
+				"description": "La Servante Dévouée peut entraver le vote de la journée et prendre la place du joueur éliminé. Pour effectuer cette action, la Servante se révèle. Elle obtient alors le rôle du joueur éliminé.",
+				"action": "Pas d'action pendant la nuit.",
+				"powerState": "PERMANENT",
+				"isNocturnal": false,
+				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
+				"rolesToStick": [],
+				"doTargeting": false,
+				"doKilling": false
 			},
 			"AUTHOR": {
-				"description" : "La Servante Dévouée essaie de trouver des simples Villageois, dans le but de les promouvoir avec les rôles spéciaux précédemment éliminés. Le simple Villageois choisi reçoit alors le rôle, qui est de nouveau inclus dans la partie. Les pouvoirs consommables des rôles promus sont réinitialisés, comme la Sorcière qui dispose de nouveau de ses deux potions. Lorsque la Servante sélectionne le rôle d'un joueur infecté, l'infection ne se transmet pas au joueur promu.",
-				"action" : "La Servante Dévouée désigne un joueur. S'il est un simple Villageois, la Servante peut le promouvoir avec un rôle spécial précédemment éliminé.",
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "La Servante Dévouée essaie de trouver des simples Villageois, dans le but de les promouvoir avec les rôles spéciaux précédemment éliminés. Le simple Villageois choisi reçoit alors le rôle, qui est de nouveau inclus dans la partie. Les pouvoirs consommables des rôles promus sont réinitialisés, comme la Sorcière qui dispose de nouveau de ses deux potions. Lorsque la Servante sélectionne le rôle d'un joueur infecté, l'infection ne se transmet pas au joueur promu.",
+				"action": "La Servante Dévouée désigne un joueur. S'il est un simple Villageois, la Servante peut le promouvoir avec un rôle spécial précédemment éliminé.",
 				"powerState": "CONSUMABLE",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Sister",
-		"roleValues":
-		{
+		"nameRole": "Sister",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Les Sœurs se réveillent ensemble et se reconnaissent pendant la nuit. Elles peuvent communiquer avec des signes pendant un court instant.",
-				"action" : "Les Sœurs se réveillent et se reconnaissent. Elles peuvent communiquer pendant un court instant.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "Les Sœurs se réveillent ensemble et se reconnaissent pendant la nuit. Elles peuvent communiquer avec des signes pendant un court instant.",
+				"action": "Les Sœurs se réveillent et se reconnaissent. Elles peuvent communiquer pendant un court instant.",
 				"powerState": "CONDITIONAL",
-				"condition": "ISALONE",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 2,
+				"condition": "IS_ALONE",
 				"rolesToStick": [],
-				"maxOccurrence": 2
+				"doTargeting": false,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"StutteringJudge",
-		"roleValues":
-		{
+		"nameRole": "StutteringJudge",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Juge Bègue peut lancer un second vote de la journée juste après le premier. Pour cela, il fait signe au maître du jeu afin que le second vote soit lancé.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "Le Juge Bègue peut lancer un second vote de la journée juste après le premier. Pour cela, il fait signe au maître du jeu afin que le second vote soit lancé.",
+				"action": "Pas d'action pendant la nuit.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": false,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			},
 			"AUTHOR": {
-				"description" : "Le Juge Bègue est un dictateur. Une fois par partie durant la journée, il peut révéler son rôle et choisir un joueur à éliminer. Si ce joueur était un Loup-Garou, le village se réjouit et le Juge est élu capitaine (maire). Sinon, le Juge est éliminé.",
-				"action" : "Pas d'actions pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "Le Juge Bègue est un dictateur. Une fois par partie durant la journée, il peut révéler son rôle et choisir un joueur à éliminer. Si ce joueur était un Loup-Garou, le village se réjouit et le Juge est élu capitaine (maire). Sinon, le Juge est éliminé.",
+				"action": "Pas d'actions pendant la nuit.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": false,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Thief",
-		"roleValues":
-		{
+		"nameRole": "Thief",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Voleur est le premier rôle à se réveiller la nuit. Il choisit parmi les deux rôles proposés par le maître du jeu, ceux-ci n'étant pas dans la partie. Si l'un des rôles est un Loup-Garou, le Voleur est obligé de le prendre.",
-				"action" : "Le Voleur choisit parmi les deux rôles proposés par le maître du jeu. Si un Loup-Garou est présent, il doit le sélectionner.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "Le Voleur est le premier rôle à se réveiller la nuit. Il choisit parmi les deux rôles proposés par le maître du jeu, ceux-ci n'étant pas dans la partie. Si l'un des rôles est un Loup-Garou, le Voleur est obligé de le prendre.",
+				"action": "Le Voleur choisit parmi les deux rôles proposés par le maître du jeu. Si un Loup-Garou est présent, il doit le sélectionner.",
 				"powerState": "UNIQUE",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			},
 			"AUTHOR": {
-				"description" : "Le Voleur est un maître dans l'art des pièges. Il peut poser des pièges sur les autres joueurs pour obtenir plus d'informations sur la partie en cours. Le Voleur dispose de trois pièges, qu'il peut utiliser une fois chacun pendant la nuit : Silencieux (le Voleur sait que sa cible a fait une action pendant la nuit), Bruyant (tous les joueurs sont prévenus que le rôle du joueur ciblé s'est réveillé), Blessant (tous les joueurs voient que la cible s'est réveillée, mais ne connait pas son rôle). Si un piège n'est pas déclenché, il est de nouveau utilisable. Un piège se déclenche uniquement lorsque la cible a effectué une action, si cette dernière se réveille mais ne fait rien, le piège n'est pas considéré comme déclenché.",
-				"action" : "Le Voleur choisit un joueur à piéger. Les pièges disponibles sont : Silencieux, Bruyant, Blessant. Si le joueur piégé se réveille la nuit, mais ne fait aucune action, le piège n'est pas déclenché.",
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "Le Voleur est un maître dans l'art des pièges. Il peut poser des pièges sur les autres joueurs pour obtenir plus d'informations sur la partie en cours. Le Voleur dispose de trois pièges, qu'il peut utiliser une fois chacun pendant la nuit : Silencieux (le Voleur sait que sa cible a fait une action pendant la nuit), Bruyant (tous les joueurs sont prévenus que le rôle du joueur ciblé s'est réveillé), Blessant (tous les joueurs voient que la cible s'est réveillée, mais ne connait pas son rôle). Si un piège n'est pas déclenché, il est de nouveau utilisable. Un piège se déclenche uniquement lorsque la cible a effectué une action, si cette dernière se réveille mais ne fait rien, le piège n'est pas considéré comme déclenché.",
+				"action": "Le Voleur choisit un joueur à piéger. Les pièges disponibles sont : Silencieux, Bruyant, Blessant. Si le joueur piégé se réveille la nuit, mais ne fait aucune action, le piège n'est pas déclenché.",
 				"powerState": "CONSUMABLE",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
@@ -607,168 +634,172 @@
 			"NORMAL": {
 				"description": "Une fois par partie, le Singe Savant peut décider d'utiliser son pouvoir. S'il le fait, il désigne des joueurs un par un. Il voit alors leur rôle, mais est éliminé s'il tombe sur un Loup-Garou.",
 				"action": "Une fois par partie, le Singe Savant peut regarder les rôles des autres joueurs, un par un. Il est éliminé si un Loup-Garou est ciblé.",
-				"isSolo": false,
+				"powerState": "PERMANENT",
 				"isNocturnal": true,
-				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Villager",
-		"roleValues":
-		{
+		"nameRole": "Villager",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le simple Villageois doit utiliser sa force de déduction pour trouver et éliminer les Loups-Garous.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "Le simple Villageois doit utiliser sa force de déduction pour trouver et éliminer les Loups-Garous.",
+				"action": "Pas d'action pendant la nuit.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": false,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 10,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 10
+				"doTargeting": false,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"VillagerVillager",
-		"roleValues":
-		{
+		"nameRole": "VillagerVillager",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Villageois-Villageois est un rôle connu de tous les joueurs, grâce à sa carte arborant l'icône du Villageois sur ses deux faces.",
-				"action" : "Pas d'action pendant la nuit.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "Le Villageois-Villageois est un rôle connu de tous les joueurs, grâce à sa carte arborant l'icône du Villageois sur ses deux faces.",
+				"action": "Pas d'action pendant la nuit.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": false,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Werewolf",
-		"roleValues":
-		{
+		"nameRole": "Werewolf",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Les Loups-Garous choisissent une victime à dévorer pendant la nuit.",
-				"action" : "Les Loups-Garous choisissent un joueur à dévorer.",
-				"hasTarget": false,
-				"kills": true,
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "Les Loups-Garous choisissent une victime à dévorer pendant la nuit.",
+				"action": "Les Loups-Garous choisissent un joueur à dévorer.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": true,
+				"isSolo": false,
+				"maxOccurrence": 6,
+				"condition": "NO_CONDITION",
 				"rolesToStick": ["WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR", "WOLFFATHER-NORMAL", "LITTLEGIRL-NORMAL"],
-				"maxOccurrence": 6
+				"doTargeting": false,
+				"doKilling": true
 			}
 		}
 	},
 	{
-		"nameRole":"WhiteWerewolf",
-		"roleValues":
-		{
+		"nameRole": "WhiteWerewolf",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Loup Blanc est un rôle solitaire. Il gagne lorsqu'il est le dernier Loup-Garou vivant. Toutes les deux nuits, en plus de son tour standard avec les autres Loups-Garous, le Loup Blanc se réveille une seconde fois pour dévorer un autre Loup-Garou.",
-				"action" : "Le Loup Blanc dévore une victime avec les autres Loups-Garous, puis se réveille une seconde fois pour dévorer l'un de ses congénaires.",
-				"hasTarget": false,
-				"kills": true,
-				"isSolo": true,
-				"isNocturnal" : true,
+				"description": "Le Loup Blanc est un rôle solitaire. Il gagne lorsqu'il est le dernier Loup-Garou vivant. Toutes les deux nuits, en plus de son tour standard avec les autres Loups-Garous, le Loup Blanc se réveille une seconde fois pour dévorer un autre Loup-Garou.",
+				"action": "Le Loup Blanc dévore une victime avec les autres Loups-Garous, puis se réveille une seconde fois pour dévorer l'un de ses congénaires.",
 				"powerState": "CONDITIONAL",
-				"condition": "ALLWEREWOLVES",
+				"isNocturnal": true,
 				"isWerewolf": true,
+				"isSolo": true,
+				"maxOccurrence": 1,
+				"condition": "ALL_WEREWOLVES",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": true
 			}
 		}
 	},
 	{
-		"nameRole":"WildChild",
-		"roleValues":
-		{
+		"nameRole": "WildChild",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "L'Enfant Sauvage choisit un joueur qui sera son mentor pour la partie. Il est un simple Villageois jusqu'à ce que son mentor soit éliminé, puis devient un Loup-Garou.",
-				"action" : "L'enfant Sauvage choisit un joueur qui sera son mentor. Si ce dernier meurt, l'Enfant Sauvage devient un Loup-Garou.",
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "L'Enfant Sauvage choisit un joueur qui sera son mentor pour la partie. Il est un simple Villageois jusqu'à ce que son mentor soit éliminé, puis devient un Loup-Garou.",
+				"action": "L'enfant Sauvage choisit un joueur qui sera son mentor. Si ce dernier meurt, l'Enfant Sauvage devient un Loup-Garou.",
 				"powerState": "CONSUMABLE",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"Witch",
-		"roleValues":
-		{
+		"nameRole": "Witch",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "La Sorcière possède deux potions : une potion de mort servant à tuer le joueur de son choix, et une potion de vie servant à sauver le joueur victime des Loups-Garous. La Sorcière peut utiliser ses deux potions la même nuit.",
-				"action" : "La Sorcière peut utiliser sa potion de vie pour sauver la victime des Loups-Garous, et sa potion de mort pour éliminer un autre joueur.",
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "La Sorcière possède deux potions : une potion de mort servant à tuer le joueur de son choix, et une potion de vie servant à sauver le joueur victime des Loups-Garous. La Sorcière peut utiliser ses deux potions la même nuit.",
+				"action": "La Sorcière peut utiliser sa potion de vie pour sauver la victime des Loups-Garous, et sa potion de mort pour éliminer un autre joueur.",
 				"powerState": "CONSUMABLE",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": false,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": [],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"WolfFather",
-		"roleValues":
-		{
+		"nameRole": "WolfFather",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Grand-Père des Loups a le pouvoir de convertir la victime des Loups-Garous en l'un des leurs. Une fois par partie, le Grand-Père des Loups peut faire signe au maître du jeu qu'il veut infecter la victime des Loups-Garous. Celle-ci ne sera alors pas éliminée, et se réveillera en tant que Loup-Garou pour les nuits à venir.",
-				"action" : "Le Grand-Père des Loups peut choisir d'infecter la victime des Loups-Garous afin d'agrandir la meute.",
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "Le Grand-Père des Loups a le pouvoir de convertir la victime des Loups-Garous en l'un des leurs. Une fois par partie, le Grand-Père des Loups peut faire signe au maître du jeu qu'il veut infecter la victime des Loups-Garous. Celle-ci ne sera alors pas éliminée, et se réveillera en tant que Loup-Garou pour les nuits à venir.",
+				"action": "Le Grand-Père des Loups peut choisir d'infecter la victime des Loups-Garous afin d'agrandir la meute.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": true,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": ["WEREWOLF-NORMAL", "LITTLEGIRL-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
-				"maxOccurrence": 1
+				"doTargeting": true,
+				"doKilling": false
 			}
 		}
 	},
 	{
-		"nameRole":"WolfHound",
-		"roleValues":
-		{
+		"nameRole": "WolfHound",
+		"roleValues": {
 			"NORMAL": {
-				"description" : "Le Chien-Loup peut choisir d'être un simple Villageois ou un Loup-Garou au début de la partie.",
-				"action" : "Le Chien-Loup peut choisir de se réveiller pour devenir Loup-Garou, ou de rester endormi pour être un simple Villageois.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : false,
+				"description": "Le Chien-Loup peut choisir d'être un simple Villageois ou un Loup-Garou au début de la partie.",
+				"action": "Le Chien-Loup peut choisir de se réveiller pour devenir Loup-Garou, ou de rester endormi pour être un simple Villageois.",
 				"powerState": "CONSUMABLE",
-				"condition": "NOCONDITION",
+				"isNocturnal": false,
 				"isWerewolf": true,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": ["WEREWOLF-NORMAL", "WOLFFATHER-NORMAL", "LITTLEGIRL-NORMAL"],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			},
 			"AUTHOR": {
-				"description" : "Le Chien-Loup est un bébé Loup-Garou. S'il meurt, les Loups-Garous sont pris de rage et dévoreront une deuxième victime la nuit suivante.",
-				"action" : "Le Chien-Loup déclenche la rage des Loups-Garous s'il meurt. Ces derniers dévoreront une deuxième victime la nuit suivante.",
-				"hasTarget": false,
-				"isSolo": false,
-				"isNocturnal" : true,
+				"description": "Le Chien-Loup est un bébé Loup-Garou. S'il meurt, les Loups-Garous sont pris de rage et dévoreront une deuxième victime la nuit suivante.",
+				"action": "Le Chien-Loup déclenche la rage des Loups-Garous s'il meurt. Ces derniers dévoreront une deuxième victime la nuit suivante.",
 				"powerState": "PERMANENT",
-				"condition": "NOCONDITION",
+				"isNocturnal": true,
 				"isWerewolf": true,
+				"isSolo": false,
+				"maxOccurrence": 1,
+				"condition": "NO_CONDITION",
 				"rolesToStick": ["WEREWOLF-NORMAL", "WOLFFATHER-NORMAL", "LITTLEGIRL-NORMAL"],
-				"maxOccurrence": 1
+				"doTargeting": false,
+				"doKilling": false
 			}
 		}
 	}

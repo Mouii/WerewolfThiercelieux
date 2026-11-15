@@ -49,13 +49,14 @@
     <string name="Power_CONSUMABLE">Consumable</string>
     <string name="Power_CONDITIONAL">Conditional</string>
     <string name="Power_UNIQUE">Unique</string>
-    <string name="Condition_NOCONDITION">No condition</string>
-    <string name="Condition_ONEWEREWOLF">One Werewolf</string>
-    <string name="Condition_ONEVILLAGER">One Villager</string>
-    <string name="Condition_ALLWEREWOLVES">All Werewolves</string>
-    <string name="Condition_ALLVILLAGERS">All Villagers</string>
-    <string name="Condition_LINKEDROLES">Linked Roles</string>
-    <string name="Condition_ISALONE">Is solitary</string>
+    <string name="Condition_NO_CONDITION">No condition</string>
+    <string name="Condition_ONE_WEREWOLF">One Werewolf</string>
+    <string name="Condition_ONE_VILLAGER">One Villager</string>
+    <string name="Condition_ALL_WEREWOLVES">All Werewolves</string>
+    <string name="Condition_ALL_VILLAGERS">All Villagers</string>
+    <string name="Condition_LINKED_PLAYERS">Linked Roles</string>
+    <string name="Condition_IS_ALONE">Is solitary</string>
+    <string name="Condition_ON_MORNING">In the morning</string>
 
     <!-- Generic -->
     <string name="Generic_Yes">Yes</string>
@@ -147,7 +148,7 @@
     <string name="CreationView_PowerSpinner">Power</string>
     <string name="CreationView_PowerText">Specifies the category of the power used by the role : \nPERMANENT : The power is always active. Use this option when the role has no power.\nCONSUMABLE : The power can be consumed at any time during the game. You will be able to change the \"Wakes up at night\" option in the roles view to deactivate the role. If the role is supposed to wake up at night in later turns, change the configuration setting accordingly.\nCONDITIONAL : The power can be activated based on a condition set up in the following dropdowns.\nUNIQUE : The power is usable one time, the role will not be woken up at night afterwards. Usable only on roles that wake up at night.</string>
     <string name="CreationView_ConditionSpinner">Condition</string>
-    <string name="CreationView_ConditionText">You must choose the \"CONDITIONAL\" power to edit this parameter. Specifies the role\'s wake up conditions : \nNOCONDITION : The default value, used for powers that are always active. \nONEWEREWOLF : The player wakes up when at least one Werewolf is dead. \nONEVILLAGER : The player wakes up when at least one simple Villager is dead. \nALLWEREWOLVES : The player wakes up when all Werewolves are dead. \nALLVILLAGERS : The player wakes up when all simple Villagers are dead. \nLINKEDROLES : The player wakes up when all the specified roles are dead. \nISALONE : The player wakes up when they\'re the last one in play with this role. Works only with roles that can have multiple occurrences.</string>
+    <string name="CreationView_ConditionText">You must choose the \"CONDITIONAL\" power to edit this parameter. Specifies the role\'s wake up conditions : \nNO_CONDITION : The default value, used for powers that are always active. \nONE_WEREWOLF : The player wakes up when at least one Werewolf is dead. \nONE_VILLAGER : The player wakes up when at least one simple Villager is dead. \nALL_WEREWOLVES : The player wakes up when all Werewolves are dead. \nALL_VILLAGERS : The player wakes up when all simple Villagers are dead. \nLINKED_PLAYERS : The player wakes up when all the specified roles are dead. \nIS_ALONE : The player wakes up when they\'re the last one in play with this role. Works only with roles that can have multiple occurrences.\nON_MORNING : The power is activated when the morning comes.</string>
     <string name="CreationView_Linked">Linked roles</string>
     <string name="CreationView_LinkedText">Select the roles to link. Each link is named based on a combination of the target role\'s name and version. The player will wake up at the same time as the roles it has been linked with. If you need to create a new Werewolf that has a second turn, use the \"Werewolf\" option instead.</string>
     <string name="CreationView_LinkedButton">Link</string>
@@ -287,4 +288,13 @@
     <string name="Restart_Title">Restart the game</string>
     <string name="Restart_Confirm">Cancel the deaths and the targets and go back to the beginning of the game? The players and their roles are kept.</string>
     <string name="History_Restarted">The game was restarted</string>
+    <string name="RandomPick_Help">Tap a role to add it, long press to remove one.</string>
+    <string name="RandomPick_Selected">%1$d role(s) selected · %2$d player(s) without role</string>
+    <string name="RandomPick_TooMany">You selected too many roles for %1$d players.</string>
+    <string name="RandomPick_Replace">%1$d player(s) who already have a role will be replaced if you validate.</string>
+    <string name="RandomConfirm_Text">Give the %1$d selected role(s) at random to the players?</string>
+    <string name="RandomConfirm_Fewer">You selected fewer roles (%1$d) than players without role (%2$d): %3$d player(s) will have no role.</string>
+    <string name="RandomConfirm_Replace">%1$d player(s) who already have a role have to be replaced so the random applies to them. You will choose them next.</string>
+    <string name="RandomReplace_Title">Players to replace</string>
+    <string name="RandomReplace_Help">Check %1$d player(s) whose role will be replaced (%2$d checked).</string>
 </resources>

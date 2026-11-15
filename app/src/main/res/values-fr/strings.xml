@@ -49,13 +49,14 @@
     <string name="Power_CONSUMABLE">Consommable</string>
     <string name="Power_CONDITIONAL">Conditionnel</string>
     <string name="Power_UNIQUE">Unique</string>
-    <string name="Condition_NOCONDITION">Pas de condition</string>
-    <string name="Condition_ONEWEREWOLF">Un Loup</string>
-    <string name="Condition_ONEVILLAGER">Un Villageois</string>
-    <string name="Condition_ALLWEREWOLVES">Tous les Loups</string>
-    <string name="Condition_ALLVILLAGERS">Tous les Villageois</string>
-    <string name="Condition_LINKEDROLES">Rôles liés</string>
-    <string name="Condition_ISALONE">Est solitaire</string>
+    <string name="Condition_NO_CONDITION">Pas de condition</string>
+    <string name="Condition_ONE_WEREWOLF">Un Loup</string>
+    <string name="Condition_ONE_VILLAGER">Un Villageois</string>
+    <string name="Condition_ALL_WEREWOLVES">Tous les Loups</string>
+    <string name="Condition_ALL_VILLAGERS">Tous les Villageois</string>
+    <string name="Condition_LINKED_PLAYERS">Rôles liés</string>
+    <string name="Condition_IS_ALONE">Est solitaire</string>
+    <string name="Condition_ON_MORNING">Au matin</string>
 
     <!-- Generic -->
     <string name="Generic_Yes">Oui</string>
@@ -148,7 +149,7 @@
     <string name="CreationView_PowerSpinner">Pouvoir</string>
     <string name="CreationView_PowerText">Spécifier les pouvoirs que possèdent le rôle : \nPERMANENT : Le pouvoir s\'applique constamment. Sélectionner cette option si le rôle n\'a pas de pouvoir. \nCONSUMABLE : Le pouvoir peut être consommé pendant la partie. Il sera possible de modifier l\'option \"Se réveille la nuit\" pendant la partie pour désactiver le rôle en utilisant la vue dédiée à cet effet. Si le rôle ne doit pas se réveiller la nuit par défaut, le configurer de la sorte dans les paramètres de rôle.\nCONDITIONAL : Le pouvoir peu évoluer en fonction des conditions spécifiées dans la liste ci-dessous. \nUNIQUE : Le rôle est appelé la nuit une seule fois. Fonctionne uniquement avec des rôles pouvant se réveiller la nuit.</string>
     <string name="CreationView_ConditionSpinner">Condition</string>
-    <string name="CreationView_ConditionText">Pour modifier ce paramètre, le type de pouvoir \"CONDITIONAL\" doit être sélectionné. Spécifie les conditions de réveil appliquées au rôle : \nNOCONDITION : Valeur par défaut, utilisée pour des pouvoirs sans condition.\nONEWEREWOLF : Le joueur se réveille si au moins un Loup-Garou est mort.\nONEVILLAGER : Le joueur se réveille si au moins un Villageois est mort.\nALLWEREWOLVES : Le joueur se réveille si tous les Loup-Garous sont morts.\nALLVILLAGERS : Le joueur se réveille si tous les Villageois sont morts.\nLINKEDROLES : Le joueur se réveille si tous les rôles spécifiés sont morts.\nISALONE : Le joueur se réveille s\'il est le dernier à avoir ce rôle. Fonctionne uniquement avec les rôles pouvant avoir de multiples occurrences.</string>
+    <string name="CreationView_ConditionText">Pour modifier ce paramètre, le type de pouvoir \"CONDITIONAL\" doit être sélectionné. Spécifie les conditions de réveil appliquées au rôle : \nNO_CONDITION : Valeur par défaut, utilisée pour des pouvoirs sans condition.\nONE_WEREWOLF : Le joueur se réveille si au moins un Loup-Garou est mort.\nONE_VILLAGER : Le joueur se réveille si au moins un Villageois est mort.\nALL_WEREWOLVES : Le joueur se réveille si tous les Loup-Garous sont morts.\nALL_VILLAGERS : Le joueur se réveille si tous les Villageois sont morts.\nLINKED_PLAYERS : Le joueur se réveille si tous les rôles spécifiés sont morts.\nIS_ALONE : Le joueur se réveille s\'il est le dernier à avoir ce rôle. Fonctionne uniquement avec les rôles pouvant avoir de multiples occurrences.\nON_MORNING : Le pouvoir s\'active quand le matin arrive.</string>
     <string name="CreationView_Linked">Rôles liés</string>
     <string name="CreationView_LinkedText">Sélectionner les rôles à lier. Chaque lien est représenté par une combinaison composée du nom du rôle et de sa version. Ce rôle jouera en même temps que les autres. Si vois voulez créer un Loup-Garou jouant une deuxième fois, catégorisez-le comme Loup-Garou.</string>
     <string name="CreationView_LinkedButton">Lier</string>
@@ -287,4 +288,13 @@
     <string name="Restart_Title">Recommencer la partie</string>
     <string name="Restart_Confirm">Annuler les morts et les cibles et revenir au début de la partie ? Les joueurs et leurs rôles sont conservés.</string>
     <string name="History_Restarted">La partie a été recommencée</string>
+    <string name="RandomPick_Help">Touchez un rôle pour l\'ajouter, appui long pour en retirer un.</string>
+    <string name="RandomPick_Selected">%1$d rôle(s) choisi(s) · %2$d joueur(s) sans rôle</string>
+    <string name="RandomPick_TooMany">Vous avez choisi trop de rôles pour %1$d joueurs.</string>
+    <string name="RandomPick_Replace">%1$d joueur(s) ayant déjà un rôle seront remplacés si vous validez.</string>
+    <string name="RandomConfirm_Text">Donner au hasard les %1$d rôle(s) choisi(s) aux joueurs ?</string>
+    <string name="RandomConfirm_Fewer">Vous avez choisi moins de rôles (%1$d) que de joueurs sans rôle (%2$d) : %3$d joueur(s) n\'auront pas de rôle.</string>
+    <string name="RandomConfirm_Replace">%1$d joueur(s) ayant déjà un rôle doivent être remplacés pour que le tirage s\'applique à eux. Vous les choisirez ensuite.</string>
+    <string name="RandomReplace_Title">Joueurs à remplacer</string>
+    <string name="RandomReplace_Help">Cochez %1$d joueur(s) dont le rôle sera remplacé (%2$d coché(s)).</string>
 </resources>

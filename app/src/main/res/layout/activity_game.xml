@@ -14,17 +14,6 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/turnPhase"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/panel_bg"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textColor="@color/white" />
-
         <!-- Random roles / forget the names -->
         <TextView
             android:id="@+id/randomButton"
@@ -42,12 +31,23 @@
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:layout_marginStart="6dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/panel_bg"
             android:contentDescription="@string/ResetRoles_Title"
             android:gravity="center"
             android:text="↺"
             android:textColor="@color/white"
             android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/turnPhase"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/panel_bg"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="@color/white" />
 
         <!-- Start the game again : nobody dead, no target, back to the beginning -->
         <TextView

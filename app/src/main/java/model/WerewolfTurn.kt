@@ -4,8 +4,7 @@ package model
 const val WOLF_TURN = "WerewolfTurn"
 
 /***
- * Not a player : a marker placed in the turn order to call the pack of werewolves
- * when no simple werewolf is in the game. isNocturnal tells if the turn is enabled.
+ * Not a player : a marker for the pack of werewolves in the turn order
  */
 class WerewolfTurn(
     name: String,
@@ -15,13 +14,18 @@ class WerewolfTurn(
     name,
     description,
     "",
-    false,
-    true,
     PowerState.PERMANENT,
-    ConditionalActivation.NO_CONDITION,
+    true,
     false,
-    arrayOf(),
-    order,
+    false,
     1,
+    ConditionalActivation.NO_CONDITION,
+    arrayOf(),
+    false,
+    false,
     "NORMAL"
-)
+) {
+    init {
+        this.order = order
+    }
+}

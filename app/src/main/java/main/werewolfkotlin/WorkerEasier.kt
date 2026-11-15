@@ -1,11 +1,25 @@
 package main.werewolfkotlin
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.TextView
+import androidx.core.content.ContextCompat.getString
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import model.*
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Locale
 
 class WorkerEasier {
 
@@ -25,16 +39,19 @@ class WorkerEasier {
         data class CharacterJSON (
             val description : String,
             val action : String,
-            val isSolo : Boolean,
-            val isNocturnal : Boolean,
             val powerState: String,
-            val condition: String,
+            val isNocturnal : Boolean,
             val isWerewolf: Boolean,
-            val rolesToStick: Array<String>,
+            val isSolo : Boolean,
             val maxOccurrence: Int,
-            //Does the role choose players ? null when the file is older : the usual value of the role is used
+            val condition: String,
+            val rolesToStick: Array<String>,
+            //Does the role choose players ? null in an old file : the usual value of the role is used
+            val doTargeting: Boolean? = null,
+            //Does the target of the role die ? null in an old file : the usual value of the role is used
+            val doKilling: Boolean? = null,
+            //Names of the first files, only read : hasTarget is doTargeting, kills is doKilling
             val hasTarget: Boolean? = null,
-            //Does the target of the role die ? null when the file is older : the usual value of the role is used
             val kills: Boolean? = null
         ) {
             //Rewriting of the equals function
@@ -46,12 +63,15 @@ class WorkerEasier {
 
                 if (description != other.description) return false
                 if (action != other.action) return false
-                if (isNocturnal != other.isNocturnal) return false
                 if (powerState != other.powerState) return false
-                if (condition != other.condition) return false
+                if (isNocturnal != other.isNocturnal) return false
                 if (isWerewolf != other.isWerewolf) return false
-                if (!rolesToStick.contentEquals(other.rolesToStick)) return false
+                if (isSolo != other.isSolo) return false
                 if (maxOccurrence != other.maxOccurrence) return false
+                if (condition != other.condition) return false
+                if (!rolesToStick.contentEquals(other.rolesToStick)) return false
+                if (doTargeting != other.doTargeting) return false
+                if (doKilling != other.doKilling) return false
 
                 return true
             }
@@ -60,12 +80,15 @@ class WorkerEasier {
             override fun hashCode(): Int {
                 var result = description.hashCode()
                 result = 31 * result + action.hashCode()
-                result = 31 * result + isNocturnal.hashCode()
                 result = 31 * result + powerState.hashCode()
-                result = 31 * result + condition.hashCode()
+                result = 31 * result + isNocturnal.hashCode()
                 result = 31 * result + isWerewolf.hashCode()
-                result = 31 * result + rolesToStick.contentHashCode()
+                result = 31 * result + isSolo.hashCode()
                 result = 31 * result + maxOccurrence
+                result = 31 * result + condition.hashCode()
+                result = 31 * result + rolesToStick.contentHashCode()
+                result = 31 * result + (doTargeting?.hashCode() ?: 0)
+                result = 31 * result + (doKilling?.hashCode() ?: 0)
                 return result
             }
         }
@@ -76,6 +99,23 @@ class WorkerEasier {
             val nameRole: String,
             val roleValues: MutableMap<String, CharacterJSON>
         )
+
+        //The older files have keys that the new ones don't have : they must not stop the reading
+        private val jsonFormat = Json { ignoreUnknownKeys = true }
+
+        /***
+         * Condition from its name. The first names (NOCONDITION, ISALONE...) of the older files are understood too
+         */
+        fun parseCondition(name : String) : ConditionalActivation = when(name) {
+            "NOCONDITION" -> ConditionalActivation.NO_CONDITION
+            "ONEWEREWOLF" -> ConditionalActivation.ONE_WEREWOLF
+            "ONEVILLAGER" -> ConditionalActivation.ONE_VILLAGER
+            "ALLWEREWOLVES" -> ConditionalActivation.ALL_WEREWOLVES
+            "ALLVILLAGERS" -> ConditionalActivation.ALL_VILLAGERS
+            "LINKEDROLES" -> ConditionalActivation.LINKED_PLAYERS
+            "ISALONE" -> ConditionalActivation.IS_ALONE
+            else -> ConditionalActivation.valueOf(name)
+        }
 
         //MOST IMPORTANT LIST! IT'S THE LIST OF THE CHARACTERS IN THE GAME
         var characterListType : MutableList<Pair<String, MutableMap<String, CharacterGame>>> = mutableListOf()
@@ -154,7 +194,7 @@ class WorkerEasier {
             val jsonString = File(completeJSONPath).bufferedReader().use { it.readText() }
 
             //Getting the complete json
-            val json = Json.decodeFromString<List<RoleJSON>>(jsonString)
+            val json = jsonFormat.decodeFromString<List<RoleJSON>>(jsonString)
 
             //For each role
             json.forEach { roleObject ->
@@ -167,21 +207,19 @@ class WorkerEasier {
                         getStringByKey(roleObject.nameRole, context),
                         value.description,
                         value.action,
-                        value.isSolo,
-                        value.isNocturnal,
                         PowerState.valueOf(value.powerState),
-                        ConditionalActivation.valueOf(value.condition),
+                        value.isNocturnal,
                         value.isWerewolf,
-                        value.rolesToStick,
-                        0,
+                        value.isSolo,
                         value.maxOccurrence,
+                        parseCondition(value.condition),
+                        value.rolesToStick,
+                        value.doTargeting ?: value.hasTarget ?: defaultDoTargeting(roleObject.nameRole, key),
+                        value.doKilling ?: value.kills ?: defaultDoKilling(roleObject.nameRole),
                         key
                     )
 
-                    mappedCharacter[key] = getGoodCharacterCast(characterGame, roleObject.nameRole).also {
-                        it.doKilling = value.kills ?: defaultKills(roleObject.nameRole)
-                        it.doTargeting = value.hasTarget ?: defaultHasTarget(roleObject.nameRole, key)
-                    }
+                    mappedCharacter[key] = getGoodCharacterCast(characterGame, roleObject.nameRole)
 
                 }
 
@@ -248,20 +286,20 @@ class WorkerEasier {
             val jsonString = File(completeJSONPath).bufferedReader().use { it.readText() }
 
             //Getting the complete json
-            val json = Json.decodeFromString<List<RoleJSON>>(jsonString)
+            val json = jsonFormat.decodeFromString<List<RoleJSON>>(jsonString)
 
             val jsonRoleMap = json.first { it.nameRole == role }.roleValues
 
             jsonRoleMap[type] = CharacterJSON(
                 character.description,
                 character.action,
-                character.isSolo,
-                character.isNocturnal,
                 character.powerState.toString(),
-                character.condition.toString(),
+                character.isNocturnal,
                 character.isWerewolf,
-                character.rolesToStick,
+                character.isSolo,
                 character.maxOccurrence,
+                character.condition.toString(),
+                character.rolesToStick,
                 character.doTargeting,
                 character.doKilling
             )
@@ -269,7 +307,7 @@ class WorkerEasier {
             val updateJSON = File(completeJSONPath)
 
             //Encode back
-            updateJSON.writeText(Json.encodeToString(json))
+            updateJSON.writeText(jsonFormat.encodeToString(json))
         }
 
         /***
@@ -285,7 +323,7 @@ class WorkerEasier {
             val jsonString = File(completeJSONPath).bufferedReader().use { it.readText() }
 
             //Getting the complete json
-            val json = Json.decodeFromString<List<RoleJSON>>(jsonString)
+            val json = jsonFormat.decodeFromString<List<RoleJSON>>(jsonString)
 
             val jsonRoleMap = json.first { it.nameRole == character.className }.roleValues
 
@@ -294,7 +332,7 @@ class WorkerEasier {
             val updateJSON = File(completeJSONPath)
 
             //Encode back
-            updateJSON.writeText(Json.encodeToString(json))
+            updateJSON.writeText(jsonFormat.encodeToString(json))
         }
 
         /**
@@ -312,438 +350,42 @@ class WorkerEasier {
          */
         fun getGoodCharacterCast(character : CharacterGame, role: String) : CharacterGame {
             when(role) {
-                "Actor" -> return Actor(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Angel" -> return Angel(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "BearTamer" -> return BearTamer(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "BigBadWolf" -> return  BigBadWolf(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Brother" -> return Brother(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Colossus" -> return Colossus(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Crow" -> return Crow(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Cupid" -> return Cupid(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Defender" -> return Defender(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Elder" -> return Elder(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Fireman" -> return Fireman(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Fox" -> return Fox(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Gypsy" -> return Gypsy(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Hunter" -> return Hunter(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Idiot" -> return Idiot(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "LittleGirl" -> return LittleGirl(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Manipulator" -> return Manipulator(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Piper" -> return Piper(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "PowerfulMotherOfWolves" -> return PowerfulMotherOfWolves(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Puppeteer" -> return Puppeteer(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "RustyKnight" -> return RustyKnight(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Scapegoat" -> return Scapegoat(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Seer" -> return Seer(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Servant" -> return Servant(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Sister" -> return Sister(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "StutteringJudge" -> return StutteringJudge(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Thief" -> return Thief(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "TrainedMonkey" -> return TrainedMonkey(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Villager" -> return Villager(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "VillagerVillager" -> return VillagerVillager(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Werewolf" -> return Werewolf(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "WhiteWerewolf" -> return WhiteWerewolf(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "WildChild" -> return WildChild(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "Witch" -> return Witch(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "WolfFather" -> return WolfFather(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
-                "WolfHound" -> return WolfHound(character.name
-                    , character.description
-                    , character.action
-                    , character.isSolo
-                    , character.isNocturnal
-                    , character.powerState
-                    , character.condition
-                    , character.isWerewolf
-                    , character.rolesToStick
-                    , character.order
-                    , character.maxOccurrence
-                    , character.mode)
+                "Actor" -> return Actor(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Angel" -> return Angel(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "BearTamer" -> return BearTamer(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "BigBadWolf" -> return BigBadWolf(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Brother" -> return Brother(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Colossus" -> return Colossus(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Crow" -> return Crow(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Cupid" -> return Cupid(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Defender" -> return Defender(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Elder" -> return Elder(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Fireman" -> return Fireman(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Fox" -> return Fox(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Gypsy" -> return Gypsy(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Hunter" -> return Hunter(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Idiot" -> return Idiot(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "LittleGirl" -> return LittleGirl(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Manipulator" -> return Manipulator(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Piper" -> return Piper(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "PowerfulMotherOfWolves" -> return PowerfulMotherOfWolves(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Puppeteer" -> return Puppeteer(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "RustyKnight" -> return RustyKnight(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Scapegoat" -> return Scapegoat(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Seer" -> return Seer(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Servant" -> return Servant(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Sister" -> return Sister(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "StutteringJudge" -> return StutteringJudge(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Thief" -> return Thief(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "TrainedMonkey" -> return TrainedMonkey(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Villager" -> return Villager(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "VillagerVillager" -> return VillagerVillager(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Werewolf" -> return Werewolf(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "WhiteWerewolf" -> return WhiteWerewolf(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "WildChild" -> return WildChild(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "Witch" -> return Witch(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "WolfFather" -> return WolfFather(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
+                "WolfHound" -> return WolfHound(character.name, character.description, character.action, character.powerState, character.isNocturnal, character.isWerewolf, character.isSolo, character.maxOccurrence, character.condition, character.rolesToStick, character.doTargeting, character.doKilling, character.mode).also { it.order = character.order }
             }
 
             //Can't happened, just need here
@@ -756,15 +398,15 @@ class WorkerEasier {
         /***
          * Roles whose target dies. Used when the roles file of the phone does not say it yet
          */
-        fun defaultKills(className : String) : Boolean =
+        fun defaultDoKilling(className : String) : Boolean =
             className == "Werewolf" || className == "BigBadWolf" || className == "WhiteWerewolf"
 
         /***
          * Roles that do not choose players. Used when the roles file of the phone does not say it yet
          */
-        fun defaultHasTarget(className : String, mode : String) : Boolean {
+        fun defaultDoTargeting(className : String, mode : String) : Boolean {
             //The target of the werewolves is a death : it goes in the block of the deaths
-            if (defaultKills(className)) return false
+            if (defaultDoKilling(className)) return false
 
             val noTarget = className in setOf(
                 "Actor", "Angel", "BearTamer", "Brother", "Elder", "Fireman", "Hunter", "Idiot",

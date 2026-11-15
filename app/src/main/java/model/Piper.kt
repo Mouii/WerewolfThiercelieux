@@ -4,29 +4,31 @@ class Piper(
     name: String,
     description: String,
     action: String,
-    isSolo: Boolean,
-    isNocturnal: Boolean,
     powerState: PowerState,
-    condition: ConditionalActivation,
+    isNocturnal: Boolean,
     isWerewolf: Boolean,
-    rolesToStick: Array<String>,
-    order: Int,
+    isSolo: Boolean,
     maxOccurrence: Int,
-    characterMode: String
+    condition: ConditionalActivation,
+    rolesToStick: Array<String>,
+    doTargeting: Boolean,
+    doKilling: Boolean,
+    mode: String
 ) : CharacterGame(
     name,
     description,
     action,
-    isSolo,
-    isNocturnal,
     powerState,
-    condition,
+    isNocturnal,
     isWerewolf,
-    rolesToStick,
-    order,
+    isSolo,
     maxOccurrence,
-    characterMode
+    condition,
+    rolesToStick,
+    doTargeting,
+    doKilling,
+    mode
 ) {
 
-    override fun clone() = Piper(this.name, this.description, this.action, this.isSolo, this.isNocturnal, this.powerState, this.condition, this.isWerewolf, this.rolesToStick, this.order, this.maxOccurrence, this.mode)
+    override fun clone() = Piper(name, description, action, powerState, isNocturnal, isWerewolf, isSolo, maxOccurrence, condition, rolesToStick, doTargeting, doKilling, mode).also { it.order = order }
 }
