@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:forceDarkAllowed="false"
     android:padding="5dp"
-    android:background="@drawable/main_activity_alpha">
+    android:background="@drawable/bg_main_alpha">
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="550dp"
         android:gravity="center"
-        android:background="#80000000">
+        android:background="@color/scrim">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,8 +52,8 @@
                     android:gravity="center"
                     android:layout_marginTop="20dp"
                     android:padding="10dp"
-                    android:textColor="#000000"
-                    android:background="@drawable/description_border"
+                    android:textColor="@color/black"
+                    android:background="@drawable/bg_description_border"
                     android:spinnerMode="dropdown" />
             </LinearLayout>
 
@@ -82,7 +82,7 @@
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_SoloSpinner"
-                        app:drawableEndCompat="@drawable/helpicon" />
+                        app:drawableEndCompat="@drawable/ic_help" />
 
                     <Spinner
                         android:id="@+id/soloSpinner"
@@ -92,7 +92,7 @@
                         android:layout_marginTop="10dp"
                         android:padding="10dp"
                         android:textColor="@color/black"
-                        android:background="@drawable/description_border"
+                        android:background="@drawable/bg_description_border"
                         android:spinnerMode="dropdown" />
                 </LinearLayout>
 
@@ -112,7 +112,7 @@
                         android:drawablePadding="10dp"
                         android:layout_gravity="center_horizontal"
                         android:text="@string/CreationView_NocturneSpinner"
-                        app:drawableEndCompat="@drawable/helpicon" />
+                        app:drawableEndCompat="@drawable/ic_help" />
 
                     <Spinner
                         android:id="@+id/nocturneSpinner"
@@ -122,7 +122,7 @@
                         android:layout_marginTop="10dp"
                         android:padding="10dp"
                         android:textColor="@color/black"
-                        android:background="@drawable/description_border"
+                        android:background="@drawable/bg_description_border"
                         android:spinnerMode="dropdown" />
                 </LinearLayout>
 
@@ -141,7 +141,7 @@
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_WerewolfSpinner"
-                        app:drawableEndCompat="@drawable/helpicon" />
+                        app:drawableEndCompat="@drawable/ic_help" />
 
                     <Spinner
                         android:id="@+id/werewolfSpinner"
@@ -151,7 +151,7 @@
                         android:layout_marginTop="10dp"
                         android:padding="10dp"
                         android:textColor="@color/black"
-                        android:background="@drawable/description_border"
+                        android:background="@drawable/bg_description_border"
                         android:spinnerMode="dropdown" />
                 </LinearLayout>
 
@@ -170,7 +170,7 @@
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_Mode"
-                        app:drawableEndCompat="@drawable/helpicon" />
+                        app:drawableEndCompat="@drawable/ic_help" />
 
                     <EditText
                         android:id="@+id/categoryEdit"
@@ -199,7 +199,7 @@
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_PowerSpinner"
-                        app:drawableEndCompat="@drawable/helpicon" />
+                        app:drawableEndCompat="@drawable/ic_help" />
 
                     <Spinner
                         android:id="@+id/powerSpinner"
@@ -209,7 +209,7 @@
                         android:layout_marginTop="10dp"
                         android:padding="10dp"
                         android:textColor="@color/black"
-                        android:background="@drawable/description_border"
+                        android:background="@drawable/bg_description_border"
                         android:spinnerMode="dropdown" />
                 </LinearLayout>
 
@@ -228,7 +228,7 @@
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_ConditionSpinner"
-                        app:drawableEndCompat="@drawable/helpicon" />
+                        app:drawableEndCompat="@drawable/ic_help" />
 
                     <Spinner
                         android:id="@+id/conditionalSpinner"
@@ -238,7 +238,7 @@
                         android:layout_marginTop="10dp"
                         android:padding="10dp"
                         android:textColor="@color/black"
-                        android:background="@drawable/description_border"
+                        android:background="@drawable/bg_description_border"
                         android:spinnerMode="dropdown" />
                 </LinearLayout>
 
@@ -257,7 +257,7 @@
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_Linked"
-                        app:drawableEndCompat="@drawable/helpicon" />
+                        app:drawableEndCompat="@drawable/ic_help" />
 
                     <Button
                         android:id="@+id/linkButton"
@@ -282,7 +282,7 @@
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_Action"
-                        app:drawableEndCompat="@drawable/helpicon" />
+                        app:drawableEndCompat="@drawable/ic_help" />
 
                     <EditText
                         android:id="@+id/actionEdit"
@@ -314,7 +314,7 @@
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:text="@string/CreationView_Description"
-                        app:drawableEndCompat="@drawable/helpicon" />
+                        app:drawableEndCompat="@drawable/ic_help" />
 
                     <EditText
                         android:id="@+id/descriptionEdit"

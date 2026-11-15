@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:background="#333333"
+    android:background="@color/row_dark"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="8dp">
@@ -15,7 +15,7 @@
         android:paddingStart="4dp"
         android:paddingEnd="10dp"
         android:text="☰"
-        android:textColor="#AAAAAA"
+        android:textColor="@color/text_secondary"
         android:textSize="22sp" />
 
     <ImageView
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/Band_Pending"
-            android:textColor="#FFB300"
+            android:textColor="@color/warning"
             android:textSize="11sp"
             android:visibility="gone" />
     </LinearLayout>

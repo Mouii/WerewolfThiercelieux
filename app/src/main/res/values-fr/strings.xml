@@ -81,11 +81,6 @@
     <string name="RoleView_AncientButton">Ancien</string>
 
     <!-- Select buttons -->
-    <string name="SelectButton_StartGame">Démarrer</string>
-    <string name="SelectButton_Previous">&lt;</string>
-    <string name="SelectButton_Next">&gt;</string>
-    <string name="SelectButton_Cancel">C</string>
-    <string name="SelectButton_Delete">X</string>
 
     <!-- Game buttons -->
     <string name="GameButton_Roles">Rôles</string>
@@ -101,12 +96,6 @@
     <string name="InformationView_ChangeName">Changer le nom</string>
 
     <!-- Select View -->
-    <string name="SelectView_NumberOfCharacters">Nombre de joueurs sélectionnés : %1$d</string>
-    <string name="SelectView_selectionTitle">Sélectionner un élément</string>
-    <string name="SelectView_selectionMessage">Version de %s sélectionnée : %s</string>
-    <string name="SelectView_clearButton">Vider</string>
-    <string name="SelectView_clearDialogTitle">Vider la liste</string>
-    <string name="SelectView_clearDialogMessage">Vous allez supprimer la liste des personnages sélectionnés pour votre partie. Êtes-vous sur de vouloir continuer ?</string>
 
 
     <!-- Game View -->
@@ -118,7 +107,6 @@
     <string name="GameView_phaseDawn">Le jour se lève, procédons aux éliminations !</string>
     <string name="GameView_phaseDay">C\'est le jour, débattez sur les décisions à prendre !</string>
     <string name="GameView_phaseEvening">Le dîner est servi ! Attention, ces villageois sont encore vivants, mais leurs ennemis le sont tout autant…</string>
-    <string name="GameView_numberCharacters">Nombre de personnages encore en jeu : %1$d</string>
 
     <!-- Description View -->
     <string name="DescriptionView_CreationButton">Créer</string>
@@ -151,7 +139,6 @@
     <string name="CreationView_ConditionSpinner">Condition</string>
     <string name="CreationView_ConditionText">Pour modifier ce paramètre, le type de pouvoir \"CONDITIONAL\" doit être sélectionné. Spécifie les conditions de réveil appliquées au rôle : \nNO_CONDITION : Valeur par défaut, utilisée pour des pouvoirs sans condition.\nONE_WEREWOLF : Le joueur se réveille si au moins un Loup-Garou est mort.\nONE_VILLAGER : Le joueur se réveille si au moins un Villageois est mort.\nALL_WEREWOLVES : Le joueur se réveille si tous les Loup-Garous sont morts.\nALL_VILLAGERS : Le joueur se réveille si tous les Villageois sont morts.\nLINKED_PLAYERS : Le joueur se réveille si tous les rôles spécifiés sont morts.\nIS_ALONE : Le joueur se réveille s\'il est le dernier à avoir ce rôle. Fonctionne uniquement avec les rôles pouvant avoir de multiples occurrences.\nON_MORNING : Le pouvoir s\'active quand le matin arrive.</string>
     <string name="CreationView_Linked">Rôles liés</string>
-    <string name="CreationView_LinkedText">Sélectionner les rôles à lier. Chaque lien est représenté par une combinaison composée du nom du rôle et de sa version. Ce rôle jouera en même temps que les autres. Si vois voulez créer un Loup-Garou jouant une deuxième fois, catégorisez-le comme Loup-Garou.</string>
     <string name="CreationView_LinkedButton">Lier</string>
     <string name="CreationView_Action">Action</string>
     <string name="CreationView_ActionHint">Action de nuit</string>
@@ -161,6 +148,7 @@
     <string name="CreationView_DescriptionText">Décrire les actions du rôle.</string>
     <string name="CreationView_ValidButton">Valider</string>
     <string name="CreationView_Title">Création de rôle</string>
+    <string name="CreationView_Incomplete">Renseignez le rôle et sa catégorie avant d\'enregistrer</string>
 
     <!-- FAQ View -->
     <string name="FaqView_title">F.A.Q.</string>
@@ -209,30 +197,22 @@
     <string name="SeatDialog_Title">Joueur</string>
     <string name="SeatDialog_Name">Nom du joueur</string>
     <string name="SeatDialog_NoRole">— Aucun rôle —</string>
-    <string name="SeatDialog_MarkDead">Marquer comme mort</string>
-    <string name="SeatDialog_UnmarkDead">Annuler la mort</string>
-    <string name="SeatDialog_Resurrect">Ressusciter</string>
-    <string name="Band_Title">ORDRE DE PASSAGE</string>
     <string name="Band_OrderButton">Ordre de passage</string>
     <string name="Band_OrderTitle">Ordre de passage</string>
     <string name="Band_Awake">Éveillé la nuit</string>
     <string name="Band_WakeUp">Réveiller</string>
     <string name="Band_PutToSleep">Endormir</string>
     <string name="Band_Pending">Effectif à la fin de la nuit</string>
-    <string name="Band_NightOnly">L\'ordre ne peut pas changer pendant la nuit</string>
     <string name="Band_NotCalledTonight">Ce rôle dort cette nuit</string>
-    <string name="Band_CallOnlyAtNight">Les rôles ne s\'appellent que pendant la nuit</string>
     <string name="Block_Infected">Infectés</string>
     <string name="Pack_Infected">Joueurs infectés, éveillés aussi : %1$s</string>
     <string name="WolfTurn_Name">Tour des loups</string>
-    <string name="WolfTurn_Description">Appelle la meute de loups-garous à ce moment de la nuit. Placez-le où vous voulez.</string>
     <string name="WolfTurn_Switch">Tour des loups</string>
     <string name="RoleView_Alive">%1$d/%2$d en vie</string>
     <string name="InformationView_TabPlayers">Joueurs</string>
     <string name="InformationView_TabRoles">Rôles</string>
     <string name="InformationView_TabInfos">Infos</string>
     <string name="InformationView_TabHistory">Historique</string>
-    <string name="InformationView_NotAssigned">%1$d pas encore assigné(s)</string>
     <string name="InformationView_InfectSolo">Rôles solitaires</string>
     <string name="InformationView_AddPlayer">+ Joueur</string>
     <string name="InformationView_RemoveSelected">Retirer la sélection</string>
@@ -256,25 +236,20 @@
     <string name="Block_Clear">Vider</string>
     <string name="Band_Hint">Double appui sur un rôle : description · Appui long : réveiller / endormir · Bouton Ordre de passage : changer l\'ordre</string>
     <string name="RandomRoles_Title">Rôles au hasard</string>
-    <string name="RandomRoles_Confirm">Donner au hasard les %1$d rôles restants aux joueurs sans rôle ?</string>
     <string name="RandomRoles_None">Aucun joueur sans rôle, ou plus aucun rôle disponible</string>
-    <string name="ClearNames_Title">Effacer les noms</string>
-    <string name="ClearNames_Confirm">Effacer les noms de tous les joueurs ?</string>
     <string name="SeatDialog_RoleTitle">RÔLE</string>
     <string name="SeatDialog_Close">Fermer</string>
     <string name="Extension_Main">Jeu principal</string>
     <string name="Extension_NewMoon">Nouvelle Lune</string>
     <string name="Extension_Village">Le Village</string>
     <string name="Extension_Characters">Personnages</string>
+    <string name="Extension_Custom">Personnalisé</string>
     <string name="Select_Title">Préparation de la partie</string>
     <string name="Select_Extensions">EXTENSIONS</string>
-    <string name="Select_ConfigureExtensions">Rôles des extensions</string>
     <string name="Select_Players">JOUEURS</string>
     <string name="Select_ClearNames">Effacer tous les noms</string>
     <string name="Select_Start">Lancer la partie</string>
     <string name="Select_NoExtension">Activez au moins une extension</string>
-    <string name="ExtensionConfig_Title">Rôles des extensions</string>
-    <string name="ExtensionConfig_Reset">Extensions par défaut</string>
     <string name="SeatDialog_Dead">Mort</string>
     <string name="InformationView_NoRole">Sans rôle</string>
     <string name="Select_Resume">Reprendre la partie en cours</string>
@@ -297,4 +272,5 @@
     <string name="RandomConfirm_Replace">%1$d joueur(s) ayant déjà un rôle doivent être remplacés pour que le tirage s\'applique à eux. Vous les choisirez ensuite.</string>
     <string name="RandomReplace_Title">Joueurs à remplacer</string>
     <string name="RandomReplace_Help">Cochez %1$d joueur(s) dont le rôle sera remplacé (%2$d coché(s)).</string>
+    <string name="GameView_Previous">&lt;</string>
 </resources>

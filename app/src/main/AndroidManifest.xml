@@ -13,7 +13,7 @@
         android:theme="@style/Theme.WerewolfKotlin"
         tools:targetApi="34">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
             android:exported="true">
@@ -30,7 +30,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".SelectActivity"
+            android:name=".ui.activity.SelectActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true">
@@ -40,7 +40,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".GameActivity"
+            android:name=".ui.activity.GameActivity"
             android:screenOrientation="portrait"
             android:excludeFromRecents="true"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -51,7 +51,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".InformationActivity"
+            android:name=".ui.activity.InformationActivity"
             android:screenOrientation="portrait"
             android:exported="true"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -62,7 +62,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".RoleActivity"
+            android:name=".ui.activity.RoleActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false">
@@ -72,7 +72,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".FaqActivity"
+            android:name=".ui.activity.FaqActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true">
@@ -82,7 +82,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".DescriptionActivity"
+            android:name=".ui.activity.DescriptionActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true">
@@ -93,7 +93,7 @@
         </activity>
 
         <activity
-            android:name=".CreationActivity"
+            android:name=".ui.activity.CreationActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true"

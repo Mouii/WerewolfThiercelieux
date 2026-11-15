@@ -73,11 +73,6 @@
     <string name="MenuButton_Exit">Exit</string>
 
     <!-- Select buttons -->
-    <string name="SelectButton_StartGame">Begin</string>
-    <string name="SelectButton_Previous">&lt;</string>
-    <string name="SelectButton_Next">&gt;</string>
-    <string name="SelectButton_Cancel">C</string>
-    <string name="SelectButton_Delete">X</string>
 
     <!-- Game buttons -->
     <string name="GameButton_Roles">Roles</string>
@@ -101,12 +96,6 @@
     <string name="InformationView_ChangeName">Change the name</string>
 
     <!-- Select View -->
-    <string name="SelectView_NumberOfCharacters">Number of characters selected : %1$d</string>
-    <string name="SelectView_selectionTitle">Select an item</string>
-    <string name="SelectView_selectionMessage">Selected version of %s : %s</string>
-    <string name="SelectView_clearButton">Clear</string>
-    <string name="SelectView_clearDialogTitle">Clear the list</string>
-    <string name="SelectView_clearDialogMessage">You\'re about to clear the list of selected characters for your game. Are you sure you want to do this ?</string>
 
     <!-- Game View -->
     <string name="GameView_StartGame">Start the game</string>
@@ -117,7 +106,6 @@
     <string name="GameView_phaseDawn">Morning, proceed with the eliminations!</string>
     <string name="GameView_phaseDay">Day time! Chat and speak about what to do!</string>
     <string name="GameView_phaseEvening">Dinner is served! But watch out, these villagers are alive, so are their enemies…</string>
-    <string name="GameView_numberCharacters">Number of characters in game : %1$d</string>
 
     <!-- Description View -->
     <string name="DescriptionView_CreationButton">Create</string>
@@ -150,7 +138,6 @@
     <string name="CreationView_ConditionSpinner">Condition</string>
     <string name="CreationView_ConditionText">You must choose the \"CONDITIONAL\" power to edit this parameter. Specifies the role\'s wake up conditions : \nNO_CONDITION : The default value, used for powers that are always active. \nONE_WEREWOLF : The player wakes up when at least one Werewolf is dead. \nONE_VILLAGER : The player wakes up when at least one simple Villager is dead. \nALL_WEREWOLVES : The player wakes up when all Werewolves are dead. \nALL_VILLAGERS : The player wakes up when all simple Villagers are dead. \nLINKED_PLAYERS : The player wakes up when all the specified roles are dead. \nIS_ALONE : The player wakes up when they\'re the last one in play with this role. Works only with roles that can have multiple occurrences.\nON_MORNING : The power is activated when the morning comes.</string>
     <string name="CreationView_Linked">Linked roles</string>
-    <string name="CreationView_LinkedText">Select the roles to link. Each link is named based on a combination of the target role\'s name and version. The player will wake up at the same time as the roles it has been linked with. If you need to create a new Werewolf that has a second turn, use the \"Werewolf\" option instead.</string>
     <string name="CreationView_LinkedButton">Link</string>
     <string name="CreationView_Action">Action</string>
     <string name="CreationView_ActionHint">Night action</string>
@@ -160,6 +147,7 @@
     <string name="CreationView_DescriptionText">Specify the actions performed by the role.</string>
     <string name="CreationView_ValidButton">Create</string>
     <string name="CreationView_Title">Role Creation</string>
+    <string name="CreationView_Incomplete">Fill the role and its category before saving</string>
 
     <!-- FAQ View -->
     <string name="FaqView_title">F.A.Q.</string>
@@ -209,30 +197,22 @@
     <string name="SeatDialog_Title">Player</string>
     <string name="SeatDialog_Name">Player name</string>
     <string name="SeatDialog_NoRole">— No role —</string>
-    <string name="SeatDialog_MarkDead">Mark as dead</string>
-    <string name="SeatDialog_UnmarkDead">Cancel death</string>
-    <string name="SeatDialog_Resurrect">Resurrect</string>
-    <string name="Band_Title">TURN ORDER</string>
     <string name="Band_OrderButton">Turn order</string>
     <string name="Band_OrderTitle">Turn order</string>
     <string name="Band_Awake">Awake at night</string>
     <string name="Band_WakeUp">Wake up</string>
     <string name="Band_PutToSleep">Put to sleep</string>
     <string name="Band_Pending">Takes effect when the night ends</string>
-    <string name="Band_NightOnly">The order can\'t be changed during the night</string>
     <string name="Band_NotCalledTonight">This role sleeps tonight</string>
-    <string name="Band_CallOnlyAtNight">Roles can only be called during the night</string>
     <string name="Block_Infected">Infected</string>
     <string name="Pack_Infected">Infected players, awake too: %1$s</string>
     <string name="WolfTurn_Name">Werewolf turn</string>
-    <string name="WolfTurn_Description">Calls the pack of werewolves at this moment of the night. Move it where you want.</string>
     <string name="WolfTurn_Switch">Werewolf turn</string>
     <string name="RoleView_Alive">%1$d/%2$d alive</string>
     <string name="InformationView_TabPlayers">Players</string>
     <string name="InformationView_TabRoles">Roles</string>
     <string name="InformationView_TabInfos">Infos</string>
     <string name="InformationView_TabHistory">Historic</string>
-    <string name="InformationView_NotAssigned">%1$d not assigned yet</string>
     <string name="InformationView_InfectSolo">Solo roles</string>
     <string name="InformationView_AddPlayer">+ Player</string>
     <string name="InformationView_RemoveSelected">Remove selected</string>
@@ -256,25 +236,20 @@
     <string name="Block_Clear">Clear</string>
     <string name="Band_Hint">Double tap a role: description · Long press: wake up / sleep · Turn order button: change the order</string>
     <string name="RandomRoles_Title">Random roles</string>
-    <string name="RandomRoles_Confirm">Give the %1$d remaining roles at random to the players without role?</string>
     <string name="RandomRoles_None">No player without role, or no role left</string>
-    <string name="ClearNames_Title">Clear names</string>
-    <string name="ClearNames_Confirm">Clear the names of all the players?</string>
     <string name="SeatDialog_RoleTitle">ROLE</string>
     <string name="SeatDialog_Close">Close</string>
     <string name="Extension_Main">Main game</string>
     <string name="Extension_NewMoon">New Moon</string>
     <string name="Extension_Village">The Village</string>
     <string name="Extension_Characters">Characters</string>
+    <string name="Extension_Custom">Customize</string>
     <string name="Select_Title">Game setup</string>
     <string name="Select_Extensions">EXTENSIONS</string>
-    <string name="Select_ConfigureExtensions">Roles of the extensions</string>
     <string name="Select_Players">PLAYERS</string>
     <string name="Select_ClearNames">Clear all names</string>
     <string name="Select_Start">Start the game</string>
     <string name="Select_NoExtension">Activate at least one extension</string>
-    <string name="ExtensionConfig_Title">Roles of the extensions</string>
-    <string name="ExtensionConfig_Reset">Default extensions</string>
     <string name="SeatDialog_Dead">Dead</string>
     <string name="InformationView_NoRole">Without role</string>
     <string name="Select_Resume">Resume the game in progress</string>
@@ -297,4 +272,5 @@
     <string name="RandomConfirm_Replace">%1$d player(s) who already have a role have to be replaced so the random applies to them. You will choose them next.</string>
     <string name="RandomReplace_Title">Players to replace</string>
     <string name="RandomReplace_Help">Check %1$d player(s) whose role will be replaced (%2$d checked).</string>
+    <string name="GameView_Previous">&lt;</string>
 </resources>

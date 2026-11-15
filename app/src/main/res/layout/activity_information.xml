@@ -9,7 +9,7 @@
     android:padding="5dp"
     android:focusableInTouchMode="true"
     android:fitsSystemWindows="true"
-    android:background="#343434">
+    android:background="@color/background_dark">
 
     <TextView
         android:layout_width="wrap_content"
@@ -25,11 +25,11 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2A2A2A"
+        android:background="@color/tab_bar"
         app:tabMode="scrollable"
         app:tabIndicatorColor="@color/teal_200"
         app:tabSelectedTextColor="@color/teal_200"
-        app:tabTextColor="#AAAAAA" />
+        app:tabTextColor="@color/text_secondary" />
 
     <FrameLayout
         android:layout_width="match_parent"

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.plugin.serialization'
@@ -27,6 +29,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -35,29 +41,27 @@ android {
 
 kotlin {
     compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+        jvmTarget = JvmTarget.JVM_17
     }
 }
 
 dependencies {
-    // JSON
-    implementation 'com.google.code.gson:gson:2.14.0'
+    // JSON : one library for the whole application (roles file, saved game)
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.12.0'
+    // org.json is used by the small preferences stores. It is part of Android,
+    // this dependency only brings it to the unit tests running on the computer.
     implementation 'org.json:json:20260814'
 
     // AndroidX
     implementation 'androidx.core:core-ktx:1.19.1'
-    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.8.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.2'
 
     // Material Design
-    implementation 'com.google.android.material:material:1.13.0'
+    implementation 'com.google.android.material:material:1.14.0'
 
-    // Room
-    implementation 'androidx.room:room-ktx:2.8.5'
-
-    // Unit tests
+    // Unit tests : the model and the rules of the game run on the computer, without Android
     testImplementation 'junit:junit:4.13.2'
 
     // Instrumentation tests

@@ -65,20 +65,20 @@
     </LinearLayout>
 
     <!-- Line of the roles, in turn order : under the phase, above the players -->
-    <main.werewolfkotlin.TurnBandView
+    <main.werewolfkotlin.ui.view.TurnBandView
         android:id="@+id/turnBand"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp" />
 
     <!-- The players, on a dark panel so the pictures stand out -->
-    <main.werewolfkotlin.PlayerCircleView
+    <main.werewolfkotlin.ui.view.PlayerCircleView
         android:id="@+id/playerCircle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:background="@drawable/circle_panel_bg" />
+        android:background="@drawable/panel_circle_bg" />
 
     <!-- Action of the called role (the text is reduced to fit in this box) -->
     <ScrollView
@@ -125,7 +125,7 @@
             android:checked="true"
             android:gravity="center"
             android:text="@string/Block_Deaths"
-            android:textColor="#B388FF" />
+            android:textColor="@color/violet" />
 
         <Button
             style="@style/PanelButton"
@@ -148,7 +148,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            android:text="@string/SelectButton_Previous" />
+            android:text="@string/GameView_Previous" />
 
         <Button
             style="@style/PanelButton"
