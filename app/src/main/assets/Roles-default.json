@@ -7,7 +7,7 @@
   "roles": [
     {
       "nameRole": "Actor",
-      "extension": "NEW_MOON",
+      "extension": "CHARACTERS",
       "powerState": "CONSUMABLE",
       "isNocturnal": true,
       "isWerewolf": false,
@@ -31,7 +31,7 @@
     },
     {
       "nameRole": "Angel",
-      "extension": "NEW_MOON",
+      "extension": "CHARACTERS",
       "powerState": "PERMANENT",
       "isNocturnal": false,
       "isWerewolf": false,
@@ -55,7 +55,7 @@
     },
     {
       "nameRole": "BearTamer",
-      "extension": "VILLAGE",
+      "extension": "CHARACTERS",
       "powerState": "PERMANENT",
       "isNocturnal": false,
       "isWerewolf": false,
@@ -109,7 +109,7 @@
     },
     {
       "nameRole": "Brother",
-      "extension": "VILLAGE",
+      "extension": "CHARACTERS",
       "powerState": "CONDITIONAL",
       "isNocturnal": true,
       "isWerewolf": false,
@@ -162,7 +162,7 @@
     },
     {
       "nameRole": "Crow",
-      "extension": "NEW_MOON",
+      "extension": "VILLAGE",
       "powerState": "PERMANENT",
       "isNocturnal": true,
       "isWerewolf": false,
@@ -210,7 +210,7 @@
     },
     {
       "nameRole": "Defender",
-      "extension": "MAIN",
+      "extension": "NEW_MOON",
       "powerState": "PERMANENT",
       "isNocturnal": true,
       "isWerewolf": false,
@@ -234,7 +234,7 @@
     },
     {
       "nameRole": "Elder",
-      "extension": "MAIN",
+      "extension": "NEW_MOON",
       "powerState": "PERMANENT",
       "isNocturnal": false,
       "isWerewolf": false,
@@ -258,7 +258,7 @@
     },
     {
       "nameRole": "Fireman",
-      "extension": "CHARACTERS",
+      "extension": "VILLAGE",
       "powerState": "PERMANENT",
       "isNocturnal": false,
       "isWerewolf": false,
@@ -282,7 +282,7 @@
     },
     {
       "nameRole": "Fox",
-      "extension": "VILLAGE",
+      "extension": "CHARACTERS",
       "powerState": "CONSUMABLE",
       "isNocturnal": true,
       "isWerewolf": false,
@@ -306,7 +306,7 @@
     },
     {
       "nameRole": "Gypsy",
-      "extension": "NEW_MOON",
+      "extension": "CHARACTERS",
       "powerState": "PERMANENT",
       "isNocturnal": true,
       "isWerewolf": false,
@@ -354,7 +354,7 @@
     },
     {
       "nameRole": "Idiot",
-      "extension": "MAIN",
+      "extension": "NEW_MOON",
       "powerState": "PERMANENT",
       "isNocturnal": false,
       "isWerewolf": false,
@@ -507,7 +507,7 @@
     },
     {
       "nameRole": "RustyKnight",
-      "extension": "VILLAGE",
+      "extension": "CHARACTERS",
       "powerState": "PERMANENT",
       "isNocturnal": false,
       "isWerewolf": false,
@@ -531,7 +531,7 @@
     },
     {
       "nameRole": "Scapegoat",
-      "extension": "MAIN",
+      "extension": "NEW_MOON",
       "powerState": "PERMANENT",
       "isNocturnal": false,
       "isWerewolf": false,
@@ -579,7 +579,7 @@
     },
     {
       "nameRole": "Servant",
-      "extension": "NEW_MOON",
+      "extension": "CHARACTERS",
       "powerState": "PERMANENT",
       "isNocturnal": false,
       "isWerewolf": false,
@@ -603,7 +603,7 @@
     },
     {
       "nameRole": "Sister",
-      "extension": "VILLAGE",
+      "extension": "CHARACTERS",
       "powerState": "CONDITIONAL",
       "isNocturnal": true,
       "isWerewolf": false,
@@ -632,7 +632,7 @@
     },
     {
       "nameRole": "StutteringJudge",
-      "extension": "VILLAGE",
+      "extension": "CHARACTERS",
       "powerState": "PERMANENT",
       "isNocturnal": false,
       "isWerewolf": false,
@@ -728,7 +728,7 @@
     },
     {
       "nameRole": "VillagerVillager",
-      "extension": "VILLAGE",
+      "extension": "CHARACTERS",
       "powerState": "PERMANENT",
       "isNocturnal": false,
       "isWerewolf": false,
@@ -777,7 +777,7 @@
     },
     {
       "nameRole": "WhiteWerewolf",
-      "extension": "CHARACTERS",
+      "extension": "VILLAGE",
       "powerState": "CONDITIONAL",
       "isNocturnal": true,
       "isWerewolf": true,
