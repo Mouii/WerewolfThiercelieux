@@ -2,240 +2,355 @@ package main.werewolfkotlin.data
 
 import android.content.Context
 import android.util.Log
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import model.CharacterGame
 import model.ConditionalActivation
+import model.Extension
+import model.NightSlot
 import model.PowerState
-import model.RoleDefaults
+import model.RoleChange
 import java.io.File
 
 /***
- * Where the roles come from : the JSON file of the phone, copied from the assets the first time
- * (one file per language). The list of the roles of the game is kept here, in memory.
+ * Where the roles come from.
+ *
+ * The roles are read from sources, in order. Each source is one file with its own key, and a role
+ * can exist in several sources : those are its variants, and the moderator picks the one he wants.
+ *
+ *  - the roles of the game and the variants of the author are in the assets : they never change,
+ *    so the application only reads them ;
+ *  - the roles the moderator writes are in one file of the phone, which is the only one written to.
+ *
+ * A source that cannot be read is skipped : a broken optional file never stops the application,
+ * and the roles the moderator wrote can never be lost by an update.
  */
 object RolesRepository {
 
     private const val TAG = "RolesRepository"
 
-    //Default asset source name
-    private const val SOURCE_FILENAME = "Roles-default.json"
+    /** Key of the source that holds what the moderator wrote */
+    const val CUSTOM_KEY = "CUSTOM"
 
-    //Where the file of the phone is
-    private const val PHONE_FILE = "/json/Roles.json"
+    /** Sources read from the assets, in reading order. The first one is required */
+    private val assetSources = listOf("Roles-default.json", "Roles-author.json")
 
-    //Will have the complete JSON path for the roles
-    private var completeJSONPath: String = ""
+    /** The only file the application writes : the roles of the moderator */
+    private const val CUSTOM_FILE = "Roles-custom.json"
 
-    // ── JSON shape ─────────────────────────────────────────────────
-
-    /** Data class for association with the json file */
-    @Serializable
-    data class CharacterJSON(
-        val description: String,
-        val action: String,
-        val powerState: String,
-        val isNocturnal: Boolean,
-        val isWerewolf: Boolean,
-        val isSolo: Boolean,
-        val maxOccurrence: Int,
-        val condition: String,
-        val rolesToStick: List<String>,
-        //Does the role choose players ? null in an old file : the usual value of the role is used
-        val doTargeting: Boolean? = null,
-        //Does the target of the role die ? null in an old file : the usual value of the role is used
-        val doKilling: Boolean? = null,
-        //Names of the first files, only read : hasTarget is doTargeting, kills is doKilling
-        val hasTarget: Boolean? = null,
-        val kills: Boolean? = null
-    )
-
-    /** The variants (NORMAL, AUTHOR...) of a role */
-    @Serializable
-    data class RoleJSON(
-        val nameRole: String,
-        val roleValues: MutableMap<String, CharacterJSON>
-    )
-
-    //The older files have keys that the new ones don't have : they must not stop the reading
-    private val jsonFormat = Json { ignoreUnknownKeys = true }
-
-    /***
-     * Condition from its name. The first names (NOCONDITION, ISALONE...) of the older files are understood too
-     */
-    fun parseCondition(name: String): ConditionalActivation = when (name) {
-        "NOCONDITION" -> ConditionalActivation.NO_CONDITION
-        "ONEWEREWOLF" -> ConditionalActivation.ONE_WEREWOLF
-        "ONEVILLAGER" -> ConditionalActivation.ONE_VILLAGER
-        "ALLWEREWOLVES" -> ConditionalActivation.ALL_WEREWOLVES
-        "ALLVILLAGERS" -> ConditionalActivation.ALL_VILLAGERS
-        "LINKEDROLES" -> ConditionalActivation.LINKED_PLAYERS
-        "ISALONE" -> ConditionalActivation.IS_ALONE
-        else -> ConditionalActivation.valueOf(name)
-    }
+    //An unknown field must never stop the reading of a file
+    private val jsonFormat = Json { ignoreUnknownKeys = true; prettyPrint = true }
 
     // ── The roles in memory ────────────────────────────────────────
 
-    /** THE LIST OF THE CHARACTERS IN THE GAME : for each role class, its variants by mode */
+    /** The roles of the game : for each role, its variants by key (see CharacterGame.key) */
     var roleTypes: MutableList<Pair<String, MutableMap<String, CharacterGame>>> = mutableListOf()
         private set
 
+    /** Box of the game each role comes from, set by the first source that declares it */
+    private val extensions: MutableMap<String, Extension> = mutableMapOf()
+
+    /** Language the roles in memory were read in : reading again in another language is needed */
+    private var loadedLanguage: String = ""
+
     val isLoaded: Boolean get() = roleTypes.isNotEmpty()
 
-    /** The variants of a role class, by mode */
+    /** The variants of a role, by source key */
     fun variantsOf(className: String): MutableMap<String, CharacterGame>? =
         roleTypes.firstOrNull { it.first == className }?.second
 
-    /** The role of the list from its class and its mode */
-    fun prototypeOf(className: String, mode: String): CharacterGame? = variantsOf(className)?.get(mode)
+    /** A precise variant of a role, from its key */
+    fun prototypeOf(className: String, key: String): CharacterGame? = variantsOf(className)?.get(key)
+
+    /** Box of the game a role comes from. A role of the moderator belongs to his own box */
+    fun extensionOf(className: String): Extension = extensions[className] ?: Extension.CUSTOM
+
+    /** A role can be changed or removed : only the roles the moderator wrote can */
+    fun isEditable(character: CharacterGame): Boolean = character.source == CUSTOM_KEY
+
+    /***
+     * What tells a variant apart from the other variants of its role : its name in the reference
+     * language of its file (the first one it is written in, English for the files of the application).
+     */
+    fun referenceName(role: RoleJSON): String =
+        role.texts["en"]?.name?.takeIf { it.isNotBlank() }
+            ?: role.texts.values.firstOrNull { it.name.isNotBlank() }?.name
+            ?: role.nameRole
 
     // ── Loading ────────────────────────────────────────────────────
 
     /***
-     * Name of the file in the language of the application
+     * Read every source. The roles of the game are required, the other sources are optional.
+     * False when the roles of the game could not be read : nothing can be played then.
      */
-    private fun inLanguage(context: Context, filename: String): String {
-        val lang = AppSettings.languageOrEnglish(context)
-        if (!AppSettings.languages.contains(lang) || lang == "en") return filename
+    fun load(context: Context): Boolean {
+        val language = AppSettings.languageOrEnglish(context)
 
-        val lastIndex = filename.lastIndexOf("/")
-        val folder = filename.substring(0, lastIndex + 1)
-        val name = filename.substring(lastIndex + 1).replace(".json", "-$lang.json")
-        return folder + name
-    }
+        roleTypes = mutableListOf()
+        extensions.clear()
+        loadedLanguage = language
 
-    /** Path of the file of the phone */
-    fun phoneFilePath(context: Context): String = context.filesDir.toString() + PHONE_FILE
-
-    /***
-     * Load the list of characters from the file of the phone
-     */
-    fun loadFromPhone(context: Context): Boolean {
-        return try {
-            setCharactersFromJson(phoneFilePath(context), context)
-            true
-        } catch (ex: Exception) {
-            Log.e(TAG, "The roles file of the phone cannot be read", ex)
-            false
-        }
-    }
-
-    /***
-     * Delete all existing characters in the file read by the app
-     * and reload the default one from the json in the assets
-     */
-    fun resetCharacters(context: Context): Boolean {
-        val sourceFile = inLanguage(context, SOURCE_FILENAME)
-
-        return try {
-            context.assets.open(sourceFile).use { inputStream ->
-                val file = File(completeJSONPath)
-
-                if (file.exists()) file.delete()
-                file.parentFile?.mkdirs()
-                file.createNewFile()
-
-                roleTypes.clear()
-
-                file.outputStream().use { outputStream -> inputStream.copyTo(outputStream) }
-
-                setCharactersFromJson(completeJSONPath, context, true)
+        var first = true
+        for (name in assetSources) {
+            val source = readAsset(context, name)
+            if (source == null) {
+                if (first) {
+                    Log.e(TAG, "The roles of the game cannot be read : $name")
+                    return false
+                }
+                Log.w(TAG, "Source skipped : $name")
+            } else {
+                fill(source, language)
             }
-            true // Successful copy
+            first = false
+        }
+
+        readCustom(context)?.let { fill(it, language) }
+
+        return isLoaded
+    }
+
+    /***
+     * Read the sources again when the language changed, so the texts follow
+     */
+    fun reloadIfLanguageChanged(context: Context) {
+        if (loadedLanguage != AppSettings.languageOrEnglish(context)) load(context)
+    }
+
+    /** Everything has to be read again (the moderator changed the language) */
+    fun clear() {
+        roleTypes = mutableListOf()
+        extensions.clear()
+        loadedLanguage = ""
+    }
+
+    /***
+     * A source of roles from the text of its file. Also used by the tests that check the roles files.
+     */
+    fun decode(text: String): RoleSourceJSON = jsonFormat.decodeFromString<RoleSourceJSON>(text)
+
+    private fun readAsset(context: Context, name: String): RoleSourceJSON? = try {
+        context.assets.open(name).use { input -> decode(input.readBytes().decodeToString()) }
+    } catch (ex: Exception) {
+        Log.e(TAG, "The roles file $name cannot be read", ex)
+        null
+    }
+
+    private fun readCustom(context: Context): RoleSourceJSON? {
+        val file = customFile(context)
+        if (!file.exists()) return null
+        return try {
+            decode(file.readText())
         } catch (ex: Exception) {
-            Log.e(TAG, "The roles file could not be written from the assets", ex)
-            false // Failed copy
+            Log.e(TAG, "The roles of the moderator cannot be read", ex)
+            null
+        }
+    }
+
+    private fun customFile(context: Context) = File(context.filesDir, CUSTOM_FILE)
+
+    /***
+     * Put the roles of a source in memory. A role that is already there gains a variant.
+     */
+    fun fill(source: RoleSourceJSON, language: String) {
+        for (role in source.roles) {
+            val variants = variantsOf(role.nameRole) ?: mutableMapOf<String, CharacterGame>().also {
+                roleTypes.add(Pair(role.nameRole, it))
+            }
+            //Two variants of a role with the same name : the second one says where it comes from
+            var key = referenceName(role)
+            if (variants.containsKey(key)) {
+                Log.w(TAG, "Two variants of ${role.nameRole} are named $key")
+                key = "$key (${source.key})"
+            }
+            variants[key] = build(role, source.key, key, language)
+
+            //The first source that declares a role says which box it comes from
+            if (!extensions.containsKey(role.nameRole)) {
+                role.extension?.let { extensions[role.nameRole] = Extension.parse(it) }
+            }
         }
     }
 
     /***
-     * Main function to import the characters from the json into the list used by the app
+     * One role, read in the language of the application. A missing language falls back to English.
      */
-    fun setCharactersFromJson(filename: String, context: Context, cameFromReset: Boolean = false) {
-        if (!cameFromReset) completeJSONPath = inLanguage(context, filename)
+    private fun build(role: RoleJSON, sourceKey: String, key: String, language: String): CharacterGame {
+        val texts = role.texts[language] ?: role.texts["en"] ?: role.texts.values.firstOrNull()
 
-        roleTypes.addAll(readJson().map { roleObject ->
-            val variants: MutableMap<String, CharacterGame> = mutableMapOf()
-
-            roleObject.roleValues.forEach { (mode, value) ->
-                variants[mode] = CharacterGame(
-                    roleObject.nameRole,
-                    context.stringByKey(roleObject.nameRole),
-                    value.description,
-                    value.action,
-                    PowerState.valueOf(value.powerState),
-                    value.isNocturnal,
-                    value.isWerewolf,
-                    value.isSolo,
-                    value.maxOccurrence,
-                    parseCondition(value.condition),
-                    value.rolesToStick.toTypedArray(),
-                    value.doTargeting ?: value.hasTarget ?: RoleDefaults.doTargeting(roleObject.nameRole, mode),
-                    value.doKilling ?: value.kills ?: RoleDefaults.doKilling(roleObject.nameRole),
-                    mode
+        return CharacterGame(
+            className = role.nameRole,
+            name = texts?.name?.ifBlank { role.nameRole } ?: role.nameRole,
+            description = texts?.description ?: "",
+            action = texts?.action ?: "",
+            powerState = parsePower(role.powerState),
+            isNocturnal = role.isNocturnal,
+            isWerewolf = role.isWerewolf,
+            isSolo = role.isSolo,
+            maxOccurrence = role.maxOccurrence,
+            condition = parseCondition(role.condition),
+            doTargeting = role.doTargeting,
+            doKilling = role.doKilling,
+            source = sourceKey,
+            playsAt = parseSlot(role.playsAt),
+            hasSeparateTurn = role.hasSeparateTurn,
+            ownsInfectionBlock = role.ownsInfectionBlock,
+            definesPackTurn = role.definesPackTurn,
+            conditionTurn = role.conditionTurn,
+            keepsTargets = role.keepsTargets,
+            targetsDead = role.targetsDead,
+            key = key,
+            becomes = role.becomes?.let { change ->
+                RoleChange(
+                    fires = if (change.fires == "EVERY_TIME") RoleChange.Firing.EVERY_TIME
+                    else RoleChange.Firing.ONCE,
+                    isNocturnal = change.isNocturnal,
+                    isWerewolf = change.isWerewolf,
+                    isSolo = change.isSolo,
+                    doTargeting = change.doTargeting,
+                    doKilling = change.doKilling,
+                    powerState = change.powerState?.let { parsePower(it) },
+                    playsAt = change.playsAt?.let { parseSlot(it) },
+                    copiesTarget = change.copiesTarget
                 )
             }
-
-            Pair(roleObject.nameRole, variants)
-        })
-    }
-
-    /***
-     * When resetting language, we reset the path and context
-     */
-    fun resetDataSaved() {
-        completeJSONPath = ""
-    }
-
-    /**
-     * Reset important data for translation
-     */
-    fun resetForTranslation() {
-        roleTypes.clear()
-    }
-
-    // ── Editing ────────────────────────────────────────────────────
-
-    private fun readJson(): List<RoleJSON> =
-        jsonFormat.decodeFromString(File(completeJSONPath).bufferedReader().use { it.readText() })
-
-    private fun writeJson(json: List<RoleJSON>) {
-        File(completeJSONPath).writeText(jsonFormat.encodeToString(json))
-    }
-
-    /***
-     * Add a new character even from edition mode
-     */
-    fun addOrUpdateNewCharacter(character: CharacterGame, role: String, mode: String) {
-        roleTypes.first { it.first == role }.second[mode] = character
-
-        val json = readJson()
-        json.first { it.nameRole == role }.roleValues[mode] = CharacterJSON(
-            character.description,
-            character.action,
-            character.powerState.toString(),
-            character.isNocturnal,
-            character.isWerewolf,
-            character.isSolo,
-            character.maxOccurrence,
-            character.condition.toString(),
-            character.rolesToStick.toList(),
-            character.doTargeting,
-            character.doKilling
         )
-        writeJson(json)
+    }
+
+    // ── Reading the named values ───────────────────────────────────
+
+    /***
+     * Power from its name. An unknown name gives a role without power rather than an error.
+     * UNIQUE was the first name of SETUP and is still understood.
+     */
+    fun parsePower(name: String): PowerState = when (name.uppercase()) {
+        "SETUP", "UNIQUE" -> PowerState.SETUP
+        "CONSUMABLE" -> PowerState.CONSUMABLE
+        "CONDITIONAL" -> PowerState.CONDITIONAL
+        "PERMANENT" -> PowerState.PERMANENT
+        else -> {
+            Log.w(TAG, "Unknown power : $name")
+            PowerState.PERMANENT
+        }
     }
 
     /***
-     * Delete a character
-     * Note that it can't delete the characters that were wrote by default
-     * except on hacking
+     * Condition from its name. The first names of the older files are understood too.
      */
-    fun deleteCharacterFromList(character: CharacterGame) {
-        roleTypes.first { it.first == character.className }.second.remove(character.mode)
+    fun parseCondition(name: String): ConditionalActivation = when (name.uppercase()) {
+        "NO_CONDITION", "NOCONDITION" -> ConditionalActivation.NO_CONDITION
+        "ONE_WEREWOLF", "ONEWEREWOLF" -> ConditionalActivation.ONE_WEREWOLF
+        "ONE_VILLAGER", "ONEVILLAGER" -> ConditionalActivation.ONE_VILLAGER
+        "ALL_WEREWOLVES", "ALLWEREWOLVES" -> ConditionalActivation.ALL_WEREWOLVES
+        "ALL_VILLAGERS", "ALLVILLAGERS" -> ConditionalActivation.ALL_VILLAGERS
+        "IS_ALONE", "ISALONE" -> ConditionalActivation.IS_ALONE
+        "MY_TARGET_DIES" -> ConditionalActivation.MY_TARGET_DIES
+        "TARGET_CHOSEN" -> ConditionalActivation.TARGET_CHOSEN
+        "TURN_REACHED" -> ConditionalActivation.TURN_REACHED
+        "ON_MORNING", "ONMORNING" -> ConditionalActivation.ON_MORNING
+        else -> {
+            Log.w(TAG, "Unknown condition : $name")
+            ConditionalActivation.NO_CONDITION
+        }
+    }
 
-        val json = readJson()
-        json.first { it.nameRole == character.className }.roleValues.remove(character.mode)
-        writeJson(json)
+    private fun parseSlot(name: String?): NightSlot =
+        if (name != null && name.uppercase() == "WEREWOLF_TURN") NightSlot.WEREWOLF_TURN
+        else NightSlot.OWN_MOMENT
+
+    // ── The roles of the moderator ─────────────────────────────────
+
+    /***
+     * Add or replace a role of the moderator. Only his own file is written.
+     */
+    fun saveCustom(context: Context, character: CharacterGame) {
+        val variants = variantsOf(character.className) ?: mutableMapOf<String, CharacterGame>().also {
+            roleTypes.add(Pair(character.className, it))
+        }
+
+        //The moderator can write several variants of a role : their names tell them apart
+        variants[character.key] = character
+
+        writeCustom(context)
+    }
+
+    /** A variant of this role already has this name */
+    fun isNameTaken(className: String, name: String): Boolean = variantsOf(className)?.containsKey(name) == true
+
+    /***
+     * Remove a role of the moderator. A role of the game or of the author cannot be removed.
+     */
+    fun deleteCustom(context: Context, character: CharacterGame): Boolean {
+        if (!isEditable(character)) return false
+
+        variantsOf(character.className)?.remove(character.key)
+        roleTypes.removeAll { it.second.isEmpty() }
+
+        writeCustom(context)
+        return true
+    }
+
+    /***
+     * Forget every role the moderator wrote
+     */
+    fun deleteAllCustom(context: Context): Boolean {
+        val file = customFile(context)
+        val removed = !file.exists() || file.delete()
+        if (removed) load(context)
+        return removed
+    }
+
+    /***
+     * Write the file of the moderator from what is in memory
+     */
+    private fun writeCustom(context: Context) {
+        val language = loadedLanguage.ifEmpty { "en" }
+
+        val roles = roleTypes.flatMap { (name, variants) ->
+            variants.values.filter { isEditable(it) }.map { character ->
+                RoleJSON(
+                    nameRole = name,
+                    extension = extensions[name]?.name,
+                    powerState = character.powerState.name,
+                    isNocturnal = character.isNocturnal,
+                    isWerewolf = character.isWerewolf,
+                    isSolo = character.isSolo,
+                    maxOccurrence = character.maxOccurrence,
+                    doTargeting = character.doTargeting,
+                    doKilling = character.doKilling,
+                    condition = character.condition.name,
+                    conditionTurn = character.conditionTurn,
+                    becomes = character.becomes?.let { change ->
+                        RoleChangeJSON(
+                            fires = change.fires.name,
+                            isNocturnal = change.isNocturnal,
+                            isWerewolf = change.isWerewolf,
+                            isSolo = change.isSolo,
+                            doTargeting = change.doTargeting,
+                            doKilling = change.doKilling,
+                            powerState = change.powerState?.name,
+                            playsAt = change.playsAt?.takeIf { it == NightSlot.WEREWOLF_TURN }?.name,
+                            copiesTarget = change.copiesTarget
+                        )
+                    },
+                    playsAt = if (character.playsAt == NightSlot.WEREWOLF_TURN) "WEREWOLF_TURN" else null,
+                    hasSeparateTurn = character.hasSeparateTurn,
+                    ownsInfectionBlock = character.ownsInfectionBlock,
+                    definesPackTurn = character.definesPackTurn,
+                    keepsTargets = character.keepsTargets,
+                    targetsDead = character.targetsDead,
+                    //Written in one language only : the name typed by the moderator is its own reference
+                    texts = mapOf(
+                        language to RoleTextsJSON(character.key, character.description, character.action)
+                    )
+                )
+            }
+        }
+
+        try {
+            val source = RoleSourceJSON(CUSTOM_KEY, AppSettings.languages, roles)
+            customFile(context).writeText(jsonFormat.encodeToString(source))
+        } catch (ex: Exception) {
+            Log.e(TAG, "The roles of the moderator could not be written", ex)
+        }
     }
 }

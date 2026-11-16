@@ -13,12 +13,13 @@ import main.werewolfkotlin.game.NightCall
 import main.werewolfkotlin.game.RoleRoster
 import main.werewolfkotlin.game.Seat
 import model.CharacterGame
+import model.NightSlot
 import model.PowerState
 
 /***
  * The game in progress (GameState) turned into the save format (SavedGame), and put back from it.
  *
- * The roles are not written in full : the role of the roles file is found again from its name and its mode,
+ * The roles are not written in full : the role of the roles file is found again from its name and the key of its variant,
  * and what changed during the game (order, awake, power...) is applied on it. So a game can only be
  * resumed while its roles still exist in the roles file.
  */
@@ -51,7 +52,7 @@ object GameSnapshot {
             roles = state.allCharacters.map { character ->
                 SavedRole(
                     className = character.className,
-                    mode = character.mode,
+                    key = character.key,
                     order = character.order,
                     isNocturnal = character.isNocturnal,
                     powerState = character.powerState.name,
@@ -59,6 +60,12 @@ object GameSnapshot {
                     isInfected = character.isInfected,
                     doTargeting = character.doTargeting,
                     isAlive = state.aliveCharacters.any { it === character },
+                    isSolo = character.isSolo,
+                    doKilling = character.doKilling,
+                    playsAt = if (character.playsAt == NightSlot.WEREWOLF_TURN) "WEREWOLF_TURN" else null,
+                    changeApplied = character.changeApplied,
+                    copiedClass = character.copiedFrom?.first,
+                    copiedKey = character.copiedFrom?.second,
                     hasConsumablePower = state.consumables.containsKey(character),
                     consumablePowerUsed = state.consumables[character] ?: false
                 )
@@ -117,15 +124,26 @@ object GameSnapshot {
 
             //Roles : a copy of the role of the roles file, with what changed during the game
             val roles = saved.roles.map { line ->
-                val prototype = RolesRepository.prototypeOf(line.className, line.mode)
+                val prototype = RolesRepository.prototypeOf(line.className, line.key)
                     ?: throw IllegalStateException("Unknown role " + line.className)
 
                 val character = prototype.copyAt(line.order)
+
+                //A role that copied another one takes its behaviour again, then what the game changed
+                if (line.copiedClass != null && line.copiedKey != null) {
+                    val model = RolesRepository.prototypeOf(line.copiedClass, line.copiedKey)
+                        ?: throw IllegalStateException("Unknown copied role " + line.copiedClass)
+                    character.copyBehaviourOf(model)
+                }
                 character.doTargeting = line.doTargeting
                 character.isNocturnal = line.isNocturnal
                 character.powerState = PowerState.valueOf(line.powerState)
                 character.isWerewolf = line.isWerewolf
                 character.isInfected = line.isInfected
+                character.isSolo = line.isSolo
+                character.doKilling = line.doKilling
+                character.changeApplied = line.changeApplied
+                if (line.playsAt == "WEREWOLF_TURN") character.playsAt = NightSlot.WEREWOLF_TURN
                 character
             }
             state.allCharacters.addAll(roles)

@@ -46,7 +46,7 @@ object GameState {
     var werewolfTurn: Int = -1
 
     /** The pack of werewolves is called even without simple werewolf (set in the turn order window) */
-    var wolfTurnForced: Boolean = false
+    var wolfTurnForced: Boolean = true
 
     /** Night navigation. The steps are frozen when the night starts, so going back never has to undo anything */
     var nightSteps: List<Int> = emptyList()                       //Orders called tonight
@@ -98,7 +98,7 @@ object GameState {
         //labels are not game data : the screen gives them once and they stay
 
         werewolfTurn = -1
-        wolfTurnForced = false
+        wolfTurnForced = true
         clearNight()
         pendingNocturnal.clear()
         nightSnapshot.clear()

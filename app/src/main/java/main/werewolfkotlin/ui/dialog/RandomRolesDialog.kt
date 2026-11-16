@@ -41,6 +41,8 @@ class RandomRolesDialog(private val activity: Activity, private val onApplied: (
     /***
      * Step 1 : the roles to give. Tap a card to add one (a window asks the variant if there are some),
      * long press to remove one. At the limit of the role, a tap removes them all.
+     * A role that exists in several copies (sisters, brothers, werewolves...) asks at its first tap
+     * whether one copy or all of them are wanted.
      */
     private fun showSelection() {
         val panel = PanelDialog(activity, activity.getString(R.string.RandomRoles_Title))
@@ -71,12 +73,21 @@ class RandomRolesDialog(private val activity: Activity, private val onApplied: (
 
                 val tile = panel.cardTile(RoleImages.of(first), first.name, count > 0) {
                     if (remaining(variants) > 0) {
-                        if (variants.size > 1) {
-                            VariantDialog.show(activity, variants, 0) { variant -> chosen.add(variant); render() }
-                        } else {
-                            chosen.add(first)
-                            render()
+                        //Once the variant is known : one copy, or the choice between one and all of them
+                        val add: (CharacterGame) -> Unit = { variant ->
+                            val left = remaining(variants)
+                            if (count == 0 && left > 1) {
+                                askHowMany(variant, left) { copies ->
+                                    repeat(copies) { chosen.add(variant) }
+                                    render()
+                                }
+                            } else {
+                                chosen.add(variant)
+                                render()
+                            }
                         }
+
+                        if (variants.size > 1) VariantDialog.show(activity, variants, 0, add) else add(first)
                     } else if (count > 0) {
                         chosen.removeAll { it.className == first.className }
                         render()
@@ -129,6 +140,18 @@ class RandomRolesDialog(private val activity: Activity, private val onApplied: (
         }
 
         render()
+        panel.show()
+    }
+
+    /***
+     * A role that exists in several copies : only one, or all the copies that can still be given ?
+     */
+    private fun askHowMany(variant: CharacterGame, left: Int, onChosen: (copies: Int) -> Unit) {
+        val panel = PanelDialog(activity, variant.name)
+        panel.body.addView(panel.text(activity.getString(R.string.RandomPick_HowMany)))
+
+        panel.addButton(activity.getString(R.string.RandomPick_One)) { onChosen(1) }
+        panel.addButton(activity.getString(R.string.RandomPick_All, left), accent = true) { onChosen(left) }
         panel.show()
     }
 

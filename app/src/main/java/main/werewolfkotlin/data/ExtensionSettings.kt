@@ -17,12 +17,13 @@ object ExtensionSettings {
         context.prefs(Prefs.EXTENSIONS).edit().putBoolean("enabled_" + extension.id, enabled).apply()
     }
 
-    fun hasEnabled(context: Context): Boolean = Extension.values().any { isEnabled(context, it) }
+    /** At least one box that holds roles is activated : a game can be started */
+    fun hasEnabled(context: Context): Boolean = availableRoles(context).isNotEmpty()
 
-    /** Every role (one per mode) that belongs to an activated extension */
+    /** Every role (one per variant) that belongs to an activated extension */
     fun availableRoles(context: Context): List<CharacterGame> {
         return RolesRepository.roleTypes
-            .filter { isEnabled(context, Extension.of(it.first)) }
+            .filter { isEnabled(context, RolesRepository.extensionOf(it.first)) }
             .flatMap { it.second.values }
             .sortedBy { it.name }
     }

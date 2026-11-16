@@ -1,308 +1,398 @@
-[
-	{
-		"nameRole": "Actor",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Actor is a doppelganger. On the first night, they choose a player whose role is revealed to the Actor. The Actor now copies this role for the rest of the game. That means there can be two Seers, two Witches, etc. If the Actor copies a solitary role, they become a Duo role and must fulfill their win condition together.",
-				"action": "The Actor chooses a player and copies their role. They also play this role and follow the rules associated to it. If it is a solitary role, both the Actor and the copied player must win together.",
-				"powerState": "SETUP",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Angel",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Angel is a divinator. Once per game, they can choose to reveal a role to everybody. The character revealed stays alive.",
-				"action": "The Angel can choose to reveal the role of a character.",
-				"powerState": "CONSUMABLE",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "BearTamer",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Bear Tamer can signal if one of his neighbours is a Werewolf. If the game master makes a sound like a bear growl, that means one of the alive neighbours of the Bear Tamer is a Werewolf. The Bear also growls if the Bear Tamer is infected.",
-				"action": "No action for the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "BigBadWolf",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Big Bad Wolf can eat a second victim during the night. They eat with the others Werewolves on their turn, then has a unique turn for themselves.",
-				"action": "The Big Bad Wolf chooses a victim to eat. On its only turn, they can eat another victim.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": true,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": true
-			}
-		}
-	},
-	{
-		"nameRole": "Brother",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Brothers wake up at night and know each other. They can communicate at night with signs.",
-				"action": "The Brothers recognize each other and can communicate through signs.",
-				"powerState": "CONDITIONAL",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 3,
-				"condition": "IS_ALONE",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Cupid",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Cupid has been touched too much by love. They select two players that will fall in love. Then, they choose one of the two that will be the cheater, and a third player that will be the cheated. If the lover or the cheater dies, the three die. If the cheated dies, he is the only one to do so. The lover and cheater cannot go against each others. Cheated cannot go against the cheater.",
-				"action": "The Cupid choose three people to put in a triangle of love. They select two players that will fall in love. Then, they choose one of the two that will be the cheater, and a third player that will be the cheated. If the lover or the cheater dies, the three die. If the cheated dies, he is the only one to do so. The lover and cheater cannot go against each others. Cheated cannot go against the cheater.",
-				"powerState": "SETUP",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Fireman",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Arsonist kills their two closest alive neighbours when they die.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "LittleGirl",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Little Girl is a frail child. Too scared to sleep alone, they wake up to sleep with someone else. The Little Girl chooses a player, which is woken up. Both see each other, and the role of the target is revealed to the Little Girl. If it is a Werewolf, the Little Girl is eliminated. This counts as an additional victim for the night. The Little Girl cannot be directly targeted by werewolves. But if their host dies, so do they. This does not apply if the host is killed in another way than the kill of the Werewolves.",
-				"action": "The Little Girl chooses another player to sleep with. The target wakes up, shows their role and sees the little girl. If it is a Werewolf, the Little Girl dies. If the werewolves kills the host, they die too.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Manipulator",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Manipulator is a racist. They select a number of players equal to the number of Werewolves in play (an information given by the Game Master). If the selected players are eliminated, the Manipulator wins. If the Manipulator is still alive when there are no more Werewolves in play, the Manipulator wakes up to kill in their name. If there are no Werewolves in play at the beginning of the game, the Game Master can choose the number of players to eliminate.",
-				"action": "The Manipulator chooses a number of players that must die in order for them to win. This number is given by the Game Master. If all the Werewolves are dead, they can select a victim to kill.",
-				"powerState": "CONDITIONAL",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": true,
-				"maxOccurrence": 1,
-				"condition": "ALL_WEREWOLVES",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Piper",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Piper is a solitary role. They have to charm all the players in the village. Each night, the Piper chooses two players to charm; they, along with the previously charmed players, all wake up at the same time. As more players are charmed, the difficulty for the Piper to stay hidden increases. Once they manage to charm everybody, no matter when, they win.",
-				"action": "The Piper chooses two players to charm. Then all the charmed players wake up.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": true,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "RustyKnight",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Rusty Knight, if killed during the night, can kill a Werewolf from tetanus. The next morning, the closest Werewolf on their left dies. This action helps a lot to see innocents between the Knight and the killed Werewolf. If they die by the the village, or a Villager during the night, the closest Villager to the right of the Rusty Knight dies.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Scapegoat",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Scapegoat is a victim of life. When there is a tie during the vote of the day from the Village, they die instead, and choose who is not allowed to vote the next day. If they are eaten by the Werewolves during the night, the Werewolves get sick and will not kill the following night.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Servant",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Servant is a promoter. Once a special Villager has been killed, they wake up at night and select a player. If it is a simple Villager, they promote the simple Villager to one of the special Villager roles previously eliminated. This special role is now back in the game. Roles with consumable powers are restored to their initial state, like the Witch which regains their potions. The Servant can select a dead role from a character that was infected, as the infection is not linked to the role itself.",
-				"action": "The Servant attempts to find a simple Villager in order to promote them with a dead player's role.",
-				"powerState": "CONSUMABLE",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Sister",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Sisters wake up at night and know each other. They can communicate at night with signs.",
-				"action": "The Sisters recognize each other and can communicate through signs.",
-				"powerState": "CONDITIONAL",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 2,
-				"condition": "IS_ALONE",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "StutteringJudge",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Stuttering Judge is a dictator. Once per game during daytime, they can reveal themselves select a player to kill. If the victim is a Werewolf, the Village rejoices and they become the Captain (mayor). Otherwise, they die.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Thief",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Thief is a trap master. They can place traps on other players in order to have more information about the game. The Thief has three traps that they can each use once during the game: Silent (the Thief knows if their target has woken up and performed an action during the night), Noisy (everybody is notified of the target's role when they are woken up), Harming (everybody sees the player that has woken up, but not their role). If a trap isn not triggered, it is available again. The trap triggers only when the target performs an action, meaning that waking up but not doing anything is not considered as triggering the trap.",
-				"action": "The Thief chooses player to trap. The available traps are: Silent, Noisy, Hurtful. If the trapped player wakes up but does not perform an action during the night, or does not wake up at all, the trap is not triggered and is available again.",
-				"powerState": "CONSUMABLE",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "WolfHound",
-		"roleValues": {
-			"AUTHOR": {
-				"description": "The Wolf Hound is a cub Wolf. If they die, the Werewolves become angry and will kill an additional player the next night.",
-				"action": "The Wolf Hound provokes the anger the pack of Werewolves on death. They will kill an additional player the next night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": true,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": ["WEREWOLF-NORMAL", "WOLFFATHER-NORMAL", "LITTLEGIRL-NORMAL"],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	}
-]
+{
+  "key": "AUTHOR",
+  "languages": [
+    "en",
+    "fr"
+  ],
+  "roles": [
+    {
+      "nameRole": "Actor",
+      "powerState": "CONDITIONAL",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "TARGET_CHOSEN",
+      "becomes": {
+        "fires": "ONCE",
+        "copiesTarget": true
+      },
+      "texts": {
+        "en": {
+          "name": "Doppleganger",
+          "description": "On the first night, the Doppleganger choose a player whose role is revealed to it. It now copies this role for the rest of the game. That means there can be two Seers, two Witches, etc. If the Dopple copies a solitary role, they become a Duo role and must fulfill their win condition together.",
+          "action": "The Doppleganger chooses a player and copies their role. They also play this role and follow the rules associated to it. If it is a solitary role, both the Dopple and the copied player must win together."
+        },
+        "fr": {
+          "name": "Doppleganger",
+          "description": "Pendant la première nuit, il choisit un joueur et le rôle de ce dernier est lui révélé. Il copie alors ce rôle pour le restant de la partie. Il peut donc y avoir deux Voyantes, deux Sorcières, etc. Si le Dopple copie un rôle solitaire, les deux joueurs se retrouvent en équipe et doivent satisfaire leur condition de victoire ensemble.",
+          "action": "Le Doppleganger choisit un joueur et copie son rôle. Il joue ce rôle et respecte ses règles avec l'autre joueur. Si le rôle copié est un rôle solitaire, les deux joueurs doivent gagner ensemble."
+        }
+      }
+    },
+    {
+      "nameRole": "Angel",
+      "powerState": "CONSUMABLE",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Fortune Teller",
+          "description": "Once per game, the Fortune Teller can choose to reveal a role of anybody in plain light. The character revealed stays alive unless it's a werewolf, in this case it dies under the lights of justice. An infected is considered a werewolf and so die.",
+          "action": "The Fortune Teller can choose to reveal the role of a character in plain day. If it's a wolf, it dies."
+        },
+        "fr": {
+          "name": "Divinateur",
+          "description": "Une fois par partie, le Divinateur peut choisir un joueur qui révèle son rôle au grand jour. La cible révélé reste en vie sauf si c'est un loup, dans ce cas elle meurt sous les lumières de la justice. Un infecté est considéré comme un loup et meurt donc.",
+          "action": "Le divinateur peut choisir de révéler le rôle d'un joueur au grand jour. Si c'est un loup, il meurt"
+        }
+      }
+    },
+    {
+      "nameRole": "BigBadWolf",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": true,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": true,
+      "condition": "NO_CONDITION",
+      "hasSeparateTurn": true,
+      "texts": {
+        "en": {
+          "name": "The True Big Bad Wolf",
+          "description": "The Big Bad Wolf can eat a second victim during the night. They eat with the others Werewolves on their turn, then has a unique turn for themselves.",
+          "action": "The Big Bad Wolf chooses a victim to eat. On its only turn, they can eat another victim."
+        },
+        "fr": {
+          "name": "Le Vrai Grand Méchant Loup",
+          "description": "Le Grand Méchant Loup peut dévorer une seconde victime pendant la nuit. Il dévore une première fois en concertation avec les autres Loups-Garous pendant leur tour, puis est réveillé de nouveau afin qu'il choisisse une seconde victime.",
+          "action": "Le Grand Méchant Loup choisit une seconde victime à dévorer pendant son tour."
+        }
+      }
+    },
+    {
+      "nameRole": "Cupid",
+      "powerState": "SETUP",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Cupid Throuple",
+          "description": "The Cupid has been touched too much by love. It select two players that will fall in love. Then, it choose one of the two that will be the cheater, and a third player that will be the lover. If the lover or the cheater dies, the three die. If the cheated dies, he is the only one to do so. The lover and cheater cannot go against each others. Cheated cannot go against the cheater.",
+          "action": "The Cupid choose three people to put in a triangle of love. It choose the first two players, the cheater between the two then the third player that will be the lover. Lover and cheater follow the love's rule. The cheated only on the cheater."
+        },
+        "fr": {
+          "name": "Cupidon Trouple",
+          "description": "Cupidon a un peu trop d'amour. Il va sélectionner deux joueurs qui forment le couple de base. Parmi les deux il désigne un trompeur, et désigne un troisième joueur qui sera l'amant. Le trompeur et l'amant suivent les règles de l'amour. Le trompé sur le trompeur seulement. Si l'amant ou le trompeur meurt, les trois meurent. Si le trompé meurt, il meurt tout seul.",
+          "action": "Cupidon choisit trois joueurs à mettre dans un triangle amoureux. Il sélectionne d'abord le couple, puis le trompeur parmi eux, et un troisième joueur (le trompé). Le trompeur et l'amant suivent les règles de l'amour, le trompé seulement envers le trompeur."
+        }
+      }
+    },
+    {
+      "nameRole": "Cupid",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Cupid Hanger Out",
+          "description": "This Cupid has lost some powers for more speed. Every night, Cupid choose two players that will follow the rules of Love for one night and one day.",
+          "action": "The Cupid choose two players to put together for one night and one day."
+        },
+        "fr": {
+          "name": "Cupidon Plan",
+          "description": "Ce Cupidon a perdu du pouvoir pour gagner en rapidité. Chaque nuit, il se réveille pour désigner deux joueurs qui suivront les règles de l'amour pour une nuit et un jour.",
+          "action": "Cupidon choisit deux joueurs à mettre ensemble pour une nuit et un jour."
+        }
+      }
+    },
+    {
+      "nameRole": "Fireman",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": true,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Arsonist",
+          "description": "The Arsonist wants to burn all the village. To do so, he has to put traps. Every night, in preference as the last one called, the Arsonist put a flame token on a player. If this player dies during the night or the day, it kills the two neighbours of this player. The token stay for one night and one day. The Arsonist wins if he's in the last four players.",
+          "action": "The Arsonist place a burn token on a target to make it explode. If the target dies while having it, it kills its two neighbours. The token stay one night and one day."
+        },
+        "fr": {
+          "name": "Brûleur",
+          "description": "Le Brûleur veut mettre tout le village en feu. Pour y parvenir, il place des pièges. Chaque nuit il se réveille, de préférence en tant que dernier appelé, et place un jeton de feu sur une cible. Si la cible meurt , ses deux voisins meurent aussi. Le jeton reste une nuit et un jour. Le Brûleur gagne s'il est parmi les quatres derniers vivants.",
+          "action": "Le Brûleur place un jeton sur une cible pour la faire exploser. Si la cible meurt avec, ses deux voisins aussi. Le jeton reste une nuit et un jour."
+        }
+      }
+    },
+    {
+      "nameRole": "LittleGirl",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "The Frail Girl",
+          "description": "Too scared to sleep alone, The Frail Girl wakes up to sleep with someone else. She chooses a player, which is woken up. Both see each other, and the role of the target is revealed to The Frail Girl. If it is a Werewolf, The Frail Girl is eliminated. This counts as an additional victim for the night. The Frail Girl cannot be directly targeted by werewolves. But if the host dies, she dies too. This does not apply if the host is killed in another way than the kill of the Werewolves. The Frail Girl can't sleep a second time at this target's place. There is exceptions to the rule with a werewolf host : The Frail Girl is in love with it, or she manage to be infected.",
+          "action": "The Frail Girl choose a target where she sleeps in its house. The target's role is revealed. If it's a werewolf, The Frail Girl dies. Otherwise, it follow the Doom of the host if the werewolves attack."
+        },
+        "fr": {
+          "name": "La Fille Fragile",
+          "description": "Trop apeurée à l'idée de dormir seule, La Fille Fragile se réveille et choisit un joueur chez lequel elle dormira. Celui-ci se réveille, et son rôle lui est révélé. Si la cible est un Loup-Garou, la Fille Fragile est éliminée et compte comme une élimination supplémentaire de la nuit. La Fille Fragile ne peut pas être ciblée par les Loups-Garous, mais si son hôte meurt, elle meurt aussi. Si l'hôte meurt autrement que par les loups, elle survit. La Petite Fille ne peut re-sélectionner un joueur qu'elle a déjà visité. Il y a une exception à la règle de la mort si l'hôte est un loup : La Fille Fragile est amoureuse de ce Loup, ou elle est infectée.",
+          "action": "La Fille Fragile choisit une cible chez qui dormir. Le role de la cible lui est révélé. Si c'est un loup, elle meurt. Autrement, elle suivra la destinée de son hôte si les loups attaquent."
+        }
+      }
+    },
+    {
+      "nameRole": "Manipulator",
+      "powerState": "CONDITIONAL",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": true,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "ALL_WEREWOLVES",
+      "becomes": {
+        "fires": "ONCE",
+        "isNocturnal": true,
+        "doKilling": true,
+        "powerState": "PERMANENT"
+      },
+      "keepsTargets": true,
+      "texts": {
+        "en": {
+          "name": "The Serial Killer",
+          "description": "The Serial Killer has a list of enemies he wants to die. On the first night, the Game Master gives him the number of werewolves in the game, and ask The Serial Killer an equal number of players he will have to make dead. If all the targets die, he wins alone. If the job isn't finished when the werewolves are defeated, he wakes up at night to finish the job.",
+          "action": "The Serial Killer choose a number of players equal to the number of werewolves to eliminate. If these players are dead, he wins alone. If the werewolves are defeated and the job not finished, he wakes up and kill a player."
+        },
+        "fr": {
+          "name": "Le Tueur en Série",
+          "description": "Le Tueur en Série a une liste d'ennemis qu'il veut voir mort. La première nuit, le Maître du Jeu lui donne le nombre de loups dans la partie. Le Tueur devra ensuite choisir un nombre de joueurs égal à ce chiffre à faire éliminer. Si les cibles sont toutes mortent, il gagne tout seul. Si les loups sont vaincus et que le travail n'est pas terminé, le Tueur se réveillera pour terminer le travail.",
+          "action": "Le Tueur en Série choisit un nombre de cibles égal au nombre de loups dans la partie à faire éliminer. Si ces joueurs sont morts, il gagne tout seul. Si les loups sont vaincus et le travail non terminé, il se réveille et tue une cible."
+        }
+      }
+    },
+    {
+      "nameRole": "Piper",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": true,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "keepsTargets": true,
+      "texts": {
+        "en": {
+          "name": "Vampire Piper",
+          "description": "The Vampire Piper is a nasty foe. It must charm the village to win. Every night he charms two players of its choice. But their is a special statement : one of the two must be someone that will be killed! The supposed to be dead stay alive. Counterpart : if the piper dies, so does all the charmed.",
+          "action": "The Piper chooses two players to charm, but one of them must be one to be killed this night showed by the Game Master. They will wake up with old charmed. If the Piper dies, so does all the charmed."
+        },
+        "fr": {
+          "name": "Flûteur Vampire",
+          "description": "Le Flûteur Vampire est un félon redoutable. Il doit envoûter tous les joueurs du village pour gagner. Chaque nuit, il charme deux nouveaux joueurs de son choix. Mais l'un d'entre eux doit être une des victimes de la nuit. La supposée victime reste vivante. La contrepartie : si le Flûteur Vampire meurt, tous les charmés aussi.",
+          "action": "Le Flûteur Vampire choisit deux joueurs à charmer, dont l'un d'entre eux doit être une victime de la nuit montrée par le Maître du Jeu. Ils se réveilleront avec les anciens charmés. Si le Flûteur Vampire meurt, tous les charmés aussi."
+        }
+      }
+    },
+    {
+      "nameRole": "RustyKnight",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Old Knight",
+          "description": "The Old Knight is a Rusty Knight with something more. It kills the werewolf the most at its left the next night of tetanus. But if it's killed from a source that is a villager, it kills the villager the most at its right directly; meaning that if someone is spared, this means it's not someone good. The Old Knight stay a gentleman. If he's killed by a solo role, he kills the next night one of these solos",
+          "action": "No action during the night."
+        },
+        "fr": {
+          "name": "Vieux Chevalier",
+          "description": "Le Vieux Chevalier est comme un Chevaler à l'Épée Rouillée avec un élément en plus. Il tue toujours le loup-garou le plus à sa gauche la prochaine nuit du tétanos. Mais s'il est tué par une source villageoise, il tue le villageois le plus à sa droite immédiatement; ce qui veut dire que si quelqu'un est épargné, c'est qu'il n'est pas quelqu'un de droit. Le Vieux Chevalier reste toujours poli. S'il est tué par l'un des rôles solos, il tue la prochaine nuit le rôle solo en question.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "Scapegoat",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "True Scapegoat Of Life",
+          "description": "The Scapegoat is a victim of life. When there is a tie during the vote of the day from the Village, they die instead, and choose who is not allowed to vote the next day. If they are eaten by the Werewolves during the night, the Werewolves get sick and will not kill the following night.",
+          "action": "No action during the night."
+        },
+        "fr": {
+          "name": "Le Bouc Émissaire de la vie",
+          "description": "Le Bouc Emissaire est une victime des misères de la vie. Il est éliminé si une égalité se produit lors du vote de la journée. De cette manière, il peut choisir les joueurs qui ne seront pas autorisés à voter le jour suivant. Si le Bouc Emissaire est dévoré par les Loups-Garous, ceux-ci tombent malades et ne dévoreront pas la nuit suivante.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "Servant",
+      "powerState": "CONSUMABLE",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "targetsDead": true,
+      "texts": {
+        "en": {
+          "name": "Necromancer",
+          "description": "The Necromancer is a complex but powerful role. It can replay a special good dead role. Each role can be replayed one more time per game. There are two types of roles : passives and actives. Passives roles are non night permanent roles that give their properties to the necromancer for one night and one day. Actives roles are consumable, setup or permanent targeting roles played by dead characters one last time. Note that the Necromancer doesn't replay any kind of werewolf or solo... but can activate the role of an old infected!",
+          "action": "The Necromancer may activate a good dead special role to use its powers one last time; or make the dead player owning the role play at her turn."
+        },
+        "fr": {
+          "name": "Nécromancienne",
+          "description": "La Nécromancienne est un rôle complexe mais puissant. Elle peut réactiver un rôle spécial gentil mort. Chaque rôle ne peut être rejoué qu'une fois par partie. Il y a deux types de rôles : passifs et actifs. Les rôles passifs sont des rôles permanents qui ne se réveillent pas la nuit qui donennt leurs propriétés à la nécromancienne pour une nuit et un jour. Les rôles actifs sont les rôles de setup, consommables ou permanents qui font du ciblage et sont joués par leurs propriétaires morts une dernière fois. Note est que la Nécromancienne ne peut rejouer un rôle de loup ou solitaire... mais peut réactiver le rôle de l'ancienne infecté!",
+          "action": "La Nécromancienne peut activer un rôle spécial gentil décédé et bénéficier de ses pouvoirs une dernière fois; ou faire rejouer le propriétaire du rôle durant son tour. (Le tour de la Nécromancienne)"
+        }
+      }
+    },
+    {
+      "nameRole": "Sister",
+      "powerState": "CONDITIONAL",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 2,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "IS_ALONE",
+      "becomes": {
+        "fires": "ONCE",
+        "isSolo": true,
+        "doKilling": true,
+        "powerState": "PERMANENT"
+      },
+      "texts": {
+        "en": {
+          "name": "Devilish Sisters",
+          "description": "The Devilish Sisters are dark people with a daemon pact. They start as villagers and must win with the village. But if one of them is killed, the other goes on a killing spree by her own and must win alone.",
+          "action": "The Sisters recognize each other and can communicate through signs. If one of them is killed, the remaining one select a target to kill"
+        },
+        "fr": {
+          "name": "Sœurs Démoniaques",
+          "description": "Les Sœurs sont des personnes sombres avec un pacte démoniaque. Elles démarrent en tant que villageoises et doivent gagner avec le village. Mais si l'une d'elles meurt, l'autre part en folie meurtrière et doit gagner seule",
+          "action": "Les Sœurs se réveillent et se reconnaissent. Elles peuvent communiquer pendant un court instant. Si l'une d'elles est morte, la sœur vivante sélectionne une cible à éliminer."
+        }
+      }
+    },
+    {
+      "nameRole": "StutteringJudge",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Dictator",
+          "description": "The Dictactor car once per game during daytime, reveal himself and select a player to kill. If the victim is a Werewolf or a Solo, the Village rejoices and he become the Captain (mayor). Otherwise, he dies because he became an assassin.",
+          "action": "No action during the night."
+        },
+        "fr": {
+          "name": "Dictateur",
+          "description": "Le Dictateur peut une fois par partie durant la journée, il peut révéler son rôle et choisir un joueur à éliminer. Si ce joueur était un Loup-Garou ou un Solitaire, le village se réjouit et le Dictacteur est élu capitaine (maire). Sinon, il est éliminé car un assassin.",
+          "action": "Pas d'actions pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "Thief",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Spy",
+          "description": "The Spy has the skill to see who wakes up at night. It is invited to make this role play near the end of the night. The Spy select, each night, up to two players to know if they wake up at night. The Spy know the statement of the role; meaning a Witch with potions, or a Fox with its nose is detected as positive, but will be detected as negative if there is no potions, no sense, etc...",
+          "action": "The Thief chooses up to two players to know if they wake up at night with absolute informations about the statements."
+        },
+        "fr": {
+          "name": "Espion",
+          "description": "L'Espion a l'art de savoir qui se réveille la nuit ou non. Il est conseillé de placer le rôle vers la fin de la nuit. L'Espion, chaque nuit, sélectionne jusqu'à deux joueurs pour savoir s'ils se réveillent la nuit. L'Espion connait l'état exact des rôles; ce qui veut dire qu'une Sorcière avec ses potions, un Renard qui a son flair seront vus comme positifs; mais seront vus comme négatifs s'il n'y a plus de potions, de flair, etc...",
+          "action": "L'Espion choisit jusqu'à deux joueurs à connaître l'activité nocturne avec des informations exacts à propos de leurs statuts."
+        }
+      }
+    },
+    {
+      "nameRole": "WolfHound",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": true,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": true,
+      "condition": "NO_CONDITION",
+      "playsAt": "WEREWOLF_TURN",
+      "texts": {
+        "en": {
+          "name": "Wolf Cub",
+          "description": "The Wolf Cub is the only werewolf that has a power when dying. If it dies, the Werewolves become angry and will kill an additional player the next night.",
+          "action": "The Wolf Cub provokes the anger the pack of Werewolves on death. They will kill an additional player the next night."
+        },
+        "fr": {
+          "name": "Louveteau",
+          "description": "Le Louveteau est le seul Loup-Garou à avoir un pouvoir lorsqu'il meurt. Dans cette situation, les Loups-Garous sont pris de rage et dévoreront une victime additionnelle la nuit suivante.",
+          "action": "Le Chien-Loup déclenche la rage des Loups-Garous s'il meurt. Ces derniers dévoreront une victime supplémentaire la nuit suivante."
+        }
+      }
+    }
+  ]
+}

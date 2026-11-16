@@ -249,31 +249,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/linkText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:drawablePadding="10dp"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/white"
-                        android:text="@string/CreationView_Linked"
-                        app:drawableEndCompat="@drawable/ic_help" />
-
-                    <Button
-                        android:id="@+id/linkButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/CreationView_LinkedButton"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
                         android:id="@+id/actionText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

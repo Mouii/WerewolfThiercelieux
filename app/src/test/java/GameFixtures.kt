@@ -4,7 +4,9 @@ import main.werewolfkotlin.game.RoleRoster
 import main.werewolfkotlin.game.Seat
 import model.CharacterGame
 import model.ConditionalActivation
+import model.NightSlot
 import model.PowerState
+import model.RoleChange
 
 /***
  * Short ways to build a game in a test : a role, a table of players, a role given to a player.
@@ -25,10 +27,14 @@ object GameFixtures {
         isWerewolf: Boolean = false,
         isSolo: Boolean = false,
         condition: ConditionalActivation = ConditionalActivation.NO_CONDITION,
-        rolesToStick: Array<String> = emptyArray(),
         doTargeting: Boolean = false,
         doKilling: Boolean = false,
-        mode: String = "NORMAL",
+        source: String = "NORMAL",
+        playsAt: NightSlot = NightSlot.OWN_MOMENT,
+        hasSeparateTurn: Boolean = false,
+        ownsInfectionBlock: Boolean = false,
+        definesPackTurn: Boolean = false,
+        becomes: RoleChange? = null,
         order: Int = 0
     ): CharacterGame {
         val character = CharacterGame(
@@ -42,10 +48,14 @@ object GameFixtures {
             isSolo = isSolo,
             maxOccurrence = 4,
             condition = condition,
-            rolesToStick = rolesToStick,
             doTargeting = doTargeting,
             doKilling = doKilling,
-            mode = mode
+            source = source,
+            playsAt = playsAt,
+            hasSeparateTurn = hasSeparateTurn,
+            ownsInfectionBlock = ownsInfectionBlock,
+            definesPackTurn = definesPackTurn,
+            becomes = becomes
         )
         character.order = order
         return character
@@ -56,6 +66,8 @@ object GameFixtures {
      */
     fun newGame(playerCount: Int = 3) {
         GameState.reset()
+        //The pack without wolves is tested on its own : here a game only holds the roles it is given
+        GameState.wolfTurnForced = false
         RoleOrders.replaceAll(emptyMap())
         repeat(playerCount) { index -> GameState.seats.add(Seat("Player " + (index + 1))) }
     }

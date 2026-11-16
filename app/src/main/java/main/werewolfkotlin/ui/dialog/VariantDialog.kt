@@ -20,7 +20,8 @@ object VariantDialog {
     fun show(activity: Activity, variants: List<CharacterGame>, start: Int, onChoose: (CharacterGame) -> Unit) {
         var index = start
 
-        val panel = PanelDialog(activity, variants.first().name)
+        //The title is the role, the selector shows the name of each variant
+        val panel = PanelDialog(activity, variants.first().className)
 
         fun arrow(symbol: String): TextView = panel.text(symbol, 26f, activity.colorOf(R.color.cyan), true).apply {
             gravity = Gravity.CENTER
@@ -50,7 +51,7 @@ object VariantDialog {
 
         fun render() {
             val variant = variants[index]
-            keyText.text = variant.mode
+            keyText.text = variant.name
             val res = RoleImages.of(variant)
             if (res != 0) picture.setImageResource(res) else picture.setImageDrawable(null)
             description.text = variant.description

@@ -2,12 +2,10 @@ package main.werewolfkotlin.ui.activity
 
 import main.werewolfkotlin.R
 import main.werewolfkotlin.data.RolesRepository
-import main.werewolfkotlin.data.stringByKey
 import main.werewolfkotlin.ui.Labels
 import main.werewolfkotlin.ui.adapter.SpinnerAdapter
 import main.werewolfkotlin.ui.adapter.SpinnerPairAdapter
 import main.werewolfkotlin.ui.design.RoleImages
-import model.stickKey
 
 import android.content.Context
 import android.graphics.Color
@@ -39,8 +37,8 @@ class CreationActivity : AppCompatActivity() {
         /** Name of the role to change ("Seer"...). Absent : a new role is being created */
         const val EXTRA_ROLE_NAME = "RoleName"
 
-        /** Mode of the role to change ("NORMAL", "AUTHOR"...) */
-        const val EXTRA_ROLE_MODE = "RoleMode"
+        /** Key of the variant to change (see CharacterGame.key) */
+        const val EXTRA_ROLE_KEY = "RoleKey"
     }
 
     //Object from the xml view to get all the elements
@@ -48,9 +46,6 @@ class CreationActivity : AppCompatActivity() {
 
     //Getting all the inputs associated to the fitting id
     private lateinit var mapValues : MutableMap<Int, String>
-
-    //Linked roles
-    private var rolesForLink : MutableList<String> = mutableListOf()
 
     //Actual character in edition mode
     private var characterEdit : CharacterGame? = null
@@ -158,38 +153,34 @@ class CreationActivity : AppCompatActivity() {
 
         characterEdit = roleBeingChanged()
 
-        //Every role of the roles file : its name for the spinner, and its links for the link button
+        //Every role of the roles file : its name for the spinner
         val listRoles = RolesRepository.roleTypes.map { Pair(it.first, it.second.values.first().name) }
-        val listLink = RolesRepository.roleTypes.flatMap { role ->
-            role.second.keys.map { mode -> stickKey(role.first, mode) }
-        }
 
         //The three fields the moderator types in
         val listEdit = listOf(binding.categoryEdit, binding.actionEdit, binding.descriptionEdit)
         val listYN = listOf("", yes, no)
-        val arrayCheck = BooleanArray(listLink.size) { false }
 
         prepareValues()
         prepareRoleSpinner(listRoles)
         prepareSpinners(listYN)
         prepareEditTexts(listEdit)
-        bindButtons(listLink, arrayCheck)
+        bindButtons()
 
         //Edition mode : the form starts with the values of the role being changed
-        fillFormWith(characterEdit ?: return, listRoles, listYN, listEdit, listLink, arrayCheck)
+        fillFormWith(characterEdit ?: return, listRoles, listYN, listEdit)
     }
 
     /***
      * The role the description screen asked to change, or null when a role is being created.
      *
-     * The description screen only gives the name and the mode of the role : it is read from the
+     * The description screen only gives the name of the role and the key of its variant : it is read from the
      * roles file, so there is never a copy of a role travelling between two screens.
      * A copy is taken, so that changing the form never touches the role of the roles file.
      */
     private fun roleBeingChanged(): CharacterGame? {
         val roleName = intent.getStringExtra(EXTRA_ROLE_NAME) ?: return null
-        val roleMode = intent.getStringExtra(EXTRA_ROLE_MODE) ?: return null
-        return RolesRepository.prototypeOf(roleName, roleMode)?.clone()
+        val roleKey = intent.getStringExtra(EXTRA_ROLE_KEY) ?: return null
+        return RolesRepository.prototypeOf(roleName, roleKey)?.clone()
     }
 
     /***
@@ -272,18 +263,7 @@ class CreationActivity : AppCompatActivity() {
     /***
      * The buttons of the screen : the links between roles, saving, and going back
      */
-    private fun bindButtons(listLink: List<String>, arrayCheck: BooleanArray) {
-        binding.linkButton.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle(R.string.CreationView_Linked)
-                .setMultiChoiceItems(listLink.toTypedArray(), arrayCheck) { _, index, isChecked ->
-                    arrayCheck[index] = isChecked
-                    if (isChecked) rolesForLink.add(listLink[index]) else rolesForLink.remove(listLink[index])
-                }
-                .setNegativeButton(getString(R.string.Generic_Cancel), null)
-                .show()
-        }
-
+    private fun bindButtons() {
         binding.validButton.setOnClickListener { createOrUpdateNewRole() }
         binding.returnButton.setOnClickListener { finish() }
     }
@@ -308,9 +288,7 @@ class CreationActivity : AppCompatActivity() {
         role: CharacterGame,
         listRoles: List<Pair<String, String>>,
         listYN: List<String>,
-        listEdit: List<EditText>,
-        listLink: List<String>,
-        arrayCheck: BooleanArray
+        listEdit: List<EditText>
     ) {
         //The role of the form is fixed : only its values can be changed
         binding.roleSpinner.setSelection(listRoles.map { it.first }.indexOf(role.className))
@@ -331,30 +309,21 @@ class CreationActivity : AppCompatActivity() {
             Labels.condition(this, role.condition)
         )
 
-        rolesForLink = role.rolesToStick.toMutableList()
-
         //Important to set up after the text in order to avoid an infinite loop
         listEdit.forEach { editText ->
             when (editText.id) {
-                binding.categoryEdit.id -> setEditText(editText, role.mode)
+                binding.categoryEdit.id -> setEditText(editText, role.name)
                 binding.actionEdit.id -> setEditText(editText, role.action)
                 binding.descriptionEdit.id -> setEditText(editText, role.description)
             }
-        }
-
-        listLink.forEachIndexed { index, element ->
-            if (role.rolesToStick.contains(element)) arrayCheck[index] = true
         }
     }
 
     /***
      * Create the new role. If it was an edition, delete the previous one and create the new one.
-     * This can allow a change of mode
+     * This can allow a change of name
      */
     private fun createOrUpdateNewRole() {
-
-        //In edition mode, we delete the previous one
-        characterEdit?.let { RolesRepository.deleteCharacterFromList(it) }
 
         val descriptionRole = formValue(binding.descriptionEdit.id)
         val actionRole = formValue(binding.actionEdit.id)
@@ -365,36 +334,56 @@ class CreationActivity : AppCompatActivity() {
             ?: PowerState.PERMANENT
         val conditionRole = ConditionalActivation.entries.firstOrNull { it.name == formValue(binding.conditionalSpinner.id) }
             ?: ConditionalActivation.NO_CONDITION
-        val stickRole = rolesForLink.toTypedArray()
         val baseRole = formValue(binding.roleSpinner.id)
-        val keyTypeRole = formValue(binding.categoryEdit.id).uppercase().trim()
+        val variantName = formValue(binding.categoryEdit.id).trim()
 
-        //A role of the game is always based on an existing role : without it, nothing can be saved
-        val baseVariants = RolesRepository.roleTypes.firstOrNull { it.first == baseRole }?.second
-        if (baseVariants == null || keyTypeRole.isEmpty()) {
+        //A variant is always based on a role of the game : without it, nothing can be saved
+        val baseVariants = RolesRepository.variantsOf(baseRole)
+        if (baseVariants == null || variantName.isEmpty()) {
             Toast.makeText(this, R.string.CreationView_Incomplete, Toast.LENGTH_SHORT).show()
             return
         }
-        val maxOccurrenceRole = baseVariants.values.first().maxOccurrence
+
+        //The name is what tells the variants of a role apart : two cannot share it
+        //(the variant being changed can of course keep its own name)
+        val nameOfAnother = RolesRepository.isNameTaken(baseRole, variantName) && variantName != characterEdit?.key
+        if (nameOfAnother) {
+            Toast.makeText(this, R.string.CreationView_NameTaken, Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        //The variant keeps the nature of its role : how it takes part in the night, whether it
+        //chooses players and whether its target dies are not asked in the form.
+        val reference = baseVariants.values.first()
 
         val newCharacter = CharacterGame(
-            baseRole,
-            stringByKey(baseRole),
-            descriptionRole,
-            actionRole,
-            powerRole,
-            nocturneRole,
-            isWerewolfRole,
-            isSoloRole,
-            maxOccurrenceRole,
-            conditionRole,
-            stickRole,
-            characterEdit?.doTargeting ?: true,
-            characterEdit?.doKilling ?: false,
-            keyTypeRole
+            className = baseRole,
+            name = variantName,
+            description = descriptionRole,
+            action = actionRole,
+            powerState = powerRole,
+            isNocturnal = nocturneRole,
+            isWerewolf = isWerewolfRole,
+            isSolo = isSoloRole,
+            maxOccurrence = reference.maxOccurrence,
+            condition = conditionRole,
+            doTargeting = reference.doTargeting,
+            doKilling = reference.doKilling,
+            source = RolesRepository.CUSTOM_KEY,
+            playsAt = reference.playsAt,
+            hasSeparateTurn = reference.hasSeparateTurn,
+            ownsInfectionBlock = reference.ownsInfectionBlock,
+            definesPackTurn = reference.definesPackTurn,
+            //The change of the role only fits the condition it was written for
+            becomes = if (conditionRole == reference.condition) reference.becomes else null,
+            conditionTurn = reference.conditionTurn,
+            keepsTargets = reference.keepsTargets,
+            targetsDead = reference.targetsDead
         )
 
-        RolesRepository.addOrUpdateNewCharacter(newCharacter, baseRole, keyTypeRole)
+        //In edition mode, the previous version of the variant is replaced
+        characterEdit?.let { RolesRepository.deleteCustom(this, it) }
+        RolesRepository.saveCustom(this, newCharacter)
 
         finish()
     }

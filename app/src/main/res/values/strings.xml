@@ -4,42 +4,6 @@
     <string name="title_menu">Werewolves of Miller\'s Hollow</string>
 
     <!-- Characters -->
-    <string name="Actor">Actor</string>
-    <string name="Angel">Angel</string>
-    <string name="BearTamer">Bear Tamer</string>
-    <string name="BigBadWolf">Big Bad Wolf</string>
-    <string name="Brother">Brother</string>
-    <string name="Colossus">Colossus</string>
-    <string name="Crow">Crow</string>
-    <string name="Cupid">Cupid</string>
-    <string name="Defender">Defender</string>
-    <string name="Elder">Elder</string>
-    <string name="Fireman">Arsonist</string>
-    <string name="Fox">Fox</string>
-    <string name="Gypsy">Gypsy</string>
-    <string name="Hunter">Hunter</string>
-    <string name="Idiot">Idiot of the Village</string>
-    <string name="LittleGirl">Little Girl</string>
-    <string name="Manipulator">Manipulator</string>
-    <string name="Piper">Flute Player</string>
-    <string name="PowerfulMotherOfWolves">Powerful Mother Of Wolves</string>
-    <string name="Puppeteer">Puppeteer</string>
-    <string name="RustyKnight">Rusty Knight</string>
-    <string name="Scapegoat">Scapegoat</string>
-    <string name="Seer">Seer</string>
-    <string name="Servant">Devoted Servant</string>
-    <string name="Sister">Sister</string>
-    <string name="StutteringJudge">Stuttering Judge</string>
-    <string name="Thief">Thief</string>
-    <string name="TrainedMonkey">Trained Monkey</string>
-    <string name="Villager">Villager</string>
-    <string name="VillagerVillager">Villager-Villager</string>
-    <string name="Werewolf">Werewolf</string>
-    <string name="WhiteWerewolf">White Werewolf</string>
-    <string name="WildChild">Wild Child</string>
-    <string name="Witch">Witch</string>
-    <string name="WolfFather">Wolf Father</string>
-    <string name="WolfHound">Wolf Hound</string>
     <string name="Phase_SLEEPING">Sleeping</string>
     <string name="Phase_NIGHT">Night</string>
     <string name="Phase_DAWN">Dawn</string>
@@ -48,14 +12,16 @@
     <string name="Power_PERMANENT">Permanent</string>
     <string name="Power_CONSUMABLE">Consumable</string>
     <string name="Power_CONDITIONAL">Conditional</string>
-    <string name="Power_UNIQUE">Unique</string>
+    <string name="Power_SETUP">Setup</string>
     <string name="Condition_NO_CONDITION">No condition</string>
     <string name="Condition_ONE_WEREWOLF">One Werewolf</string>
     <string name="Condition_ONE_VILLAGER">One Villager</string>
     <string name="Condition_ALL_WEREWOLVES">All Werewolves</string>
     <string name="Condition_ALL_VILLAGERS">All Villagers</string>
-    <string name="Condition_LINKED_PLAYERS">Linked Roles</string>
     <string name="Condition_IS_ALONE">Is solitary</string>
+    <string name="Condition_MY_TARGET_DIES">Its target dies</string>
+    <string name="Condition_TARGET_CHOSEN">It chooses a target</string>
+    <string name="Condition_TURN_REACHED">A turn is reached</string>
     <string name="Condition_ON_MORNING">In the morning</string>
 
     <!-- Generic -->
@@ -132,13 +98,11 @@
     <string name="CreationView_WerewolfText">Determines if the role is considered as a Werewolf.</string>
     <string name="CreationView_Mode">Mode</string>
     <string name="CreationView_HintMode">Enter your title mode</string>
-    <string name="CreationView_ModeText">Enter the role\'s identifier key. The \"NORMAL\" and \"AUTHOR\" keys are reserved and cannot be used.</string>
+    <string name="CreationView_ModeText">Name of your variant, as it will be shown when you pick a role.</string>
     <string name="CreationView_PowerSpinner">Power</string>
-    <string name="CreationView_PowerText">Specifies the category of the power used by the role : \nPERMANENT : The power is always active. Use this option when the role has no power.\nCONSUMABLE : The power can be consumed at any time during the game. You will be able to change the \"Wakes up at night\" option in the roles view to deactivate the role. If the role is supposed to wake up at night in later turns, change the configuration setting accordingly.\nCONDITIONAL : The power can be activated based on a condition set up in the following dropdowns.\nUNIQUE : The power is usable one time, the role will not be woken up at night afterwards. Usable only on roles that wake up at night.</string>
+    <string name="CreationView_PowerText">Specifies the category of the power used by the role : \nPERMANENT : The power is always active. Use this option when the role has no power.\nCONSUMABLE : The power can be consumed at any time during the game. You will be able to change the \"Wakes up at night\" option in the roles view to deactivate the role. If the role is supposed to wake up at night in later turns, change the configuration setting accordingly.\nCONDITIONAL : The power can be activated based on a condition set up in the following dropdowns.\nSETUP : The power is usable one time, the role will not be woken up at night afterwards. Usable only on roles that wake up at night.</string>
     <string name="CreationView_ConditionSpinner">Condition</string>
-    <string name="CreationView_ConditionText">You must choose the \"CONDITIONAL\" power to edit this parameter. Specifies the role\'s wake up conditions : \nNO_CONDITION : The default value, used for powers that are always active. \nONE_WEREWOLF : The player wakes up when at least one Werewolf is dead. \nONE_VILLAGER : The player wakes up when at least one simple Villager is dead. \nALL_WEREWOLVES : The player wakes up when all Werewolves are dead. \nALL_VILLAGERS : The player wakes up when all simple Villagers are dead. \nLINKED_PLAYERS : The player wakes up when all the specified roles are dead. \nIS_ALONE : The player wakes up when they\'re the last one in play with this role. Works only with roles that can have multiple occurrences.\nON_MORNING : The power is activated when the morning comes.</string>
-    <string name="CreationView_Linked">Linked roles</string>
-    <string name="CreationView_LinkedButton">Link</string>
+    <string name="CreationView_ConditionText">You must choose the \"CONDITIONAL\" power to edit this parameter. Says what has to happen for the role to change (a variant changes the same way as the role it is based on) : \nNO_CONDITION : Nothing, the role never changes. \nONE_WEREWOLF : A player of the Werewolf side dies. \nONE_VILLAGER : A player of the Village side dies. \nALL_WEREWOLVES : Every other Werewolf is dead. \nALL_VILLAGERS : Every Villager is dead. \nIS_ALONE : The player is the last one in play with this role. Works only with roles that can have multiple occurrences.\nMY_TARGET_DIES : A player chosen by the role dies.\nTARGET_CHOSEN : The role has just chosen a player.\nTURN_REACHED : The game reaches a given turn.\nON_MORNING : The morning comes.</string>
     <string name="CreationView_Action">Action</string>
     <string name="CreationView_ActionHint">Night action</string>
     <string name="CreationView_ActionText">Specify the text that will appear when the role is woken up at night. This text is never shown if the role does not wake up at night.</string>
@@ -147,7 +111,6 @@
     <string name="CreationView_DescriptionText">Specify the actions performed by the role.</string>
     <string name="CreationView_ValidButton">Create</string>
     <string name="CreationView_Title">Role Creation</string>
-    <string name="CreationView_Incomplete">Fill the role and its category before saving</string>
 
     <!-- FAQ View -->
     <string name="FaqView_title">F.A.Q.</string>
@@ -207,6 +170,7 @@
     <string name="Block_Infected">Infected</string>
     <string name="Pack_Infected">Infected players, awake too: %1$s</string>
     <string name="WolfTurn_Name">Werewolf turn</string>
+    <string name="WolfTurn_Call">The Werewolves choose a player to eat.</string>
     <string name="WolfTurn_Switch">Werewolf turn</string>
     <string name="RoleView_Alive">%1$d/%2$d alive</string>
     <string name="InformationView_TabPlayers">Players</string>
@@ -224,6 +188,7 @@
     <string name="History_Alive">%1$s (%2$s) is set as alive</string>
     <string name="History_Target">%1$s: target %2$s</string>
     <string name="History_TargetRemoved">%1$s: %2$s is no longer a target</string>
+    <string name="History_Copied">%1$s copies the role %2$s (%3$s)</string>
     <string name="History_Infected">%1$s (%2$s) is infected</string>
     <string name="History_Disinfected">%1$s (%2$s) is no longer infected</string>
     <string name="History_Awake">%1$s now wakes up at night</string>
@@ -243,7 +208,6 @@
     <string name="Extension_NewMoon">New Moon</string>
     <string name="Extension_Village">The Village</string>
     <string name="Extension_Characters">Characters</string>
-    <string name="Extension_Custom">Customize</string>
     <string name="Select_Title">Game setup</string>
     <string name="Select_Extensions">EXTENSIONS</string>
     <string name="Select_Players">PLAYERS</string>
@@ -259,11 +223,15 @@
     <string name="Variant_Choose">Choose</string>
     <string name="History_DeathTarget">%1$s: %2$s is selected to die</string>
     <string name="History_DeathTargetRemoved">%1$s: %2$s is no longer selected to die</string>
+    <string name="Extension_Custom">My roles</string>
     <string name="Extension_25Years">25 Years</string>
     <string name="Restart_Title">Restart the game</string>
     <string name="Restart_Confirm">Cancel the deaths and the targets and go back to the beginning of the game? The players and their roles are kept.</string>
     <string name="History_Restarted">The game was restarted</string>
     <string name="RandomPick_Help">Tap a role to add it, long press to remove one.</string>
+    <string name="RandomPick_HowMany">This role exists in several copies. How many do you want to give ?</string>
+    <string name="RandomPick_One">Only one</string>
+    <string name="RandomPick_All">All (%1$d)</string>
     <string name="RandomPick_Selected">%1$d role(s) selected · %2$d player(s) without role</string>
     <string name="RandomPick_TooMany">You selected too many roles for %1$d players.</string>
     <string name="RandomPick_Replace">%1$d player(s) who already have a role will be replaced if you validate.</string>
@@ -273,4 +241,7 @@
     <string name="RandomReplace_Title">Players to replace</string>
     <string name="RandomReplace_Help">Check %1$d player(s) whose role will be replaced (%2$d checked).</string>
     <string name="GameView_Previous">&lt;</string>
+    <string name="CreationView_Incomplete">Choose a role and give a name to your variant</string>
+    <string name="MainView_RolesUnreadable">The roles of the game cannot be read</string>
+    <string name="CreationView_NameTaken">Another variant of this role already has this name</string>
 </resources>

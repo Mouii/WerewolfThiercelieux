@@ -1,663 +1,914 @@
-[
-	{
-		"nameRole": "Actor",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Actor can play three different roles during the game at night. These roles must be chosen outside of the game and are visible to everybody. Once all three have been played, the Actor becomes a simple Villager.",
-				"action": "The Actor may choose one of the roles visible to play for a complete turn. Once the role has been played, it is discarded.",
-				"powerState": "CONSUMABLE",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Angel",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Angel is a solitary role at first. They must die on the first turn (night or day) in order to win. If they survive, then they are a simple Villager. Having an Angel in play makes the game start with the day and not the night (or night with scouting and no actions).",
-				"action": "No action for the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "BearTamer",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Bear Tamer can signal if one of his neighbours is a Werewolf. If the game master makes a sound like a bear growl, that means one of the alive neighbours of the Bear Tamer is a Werewolf. The Bear also growls if the Bear Tamer is infected.",
-				"action": "No action for the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "BigBadWolf",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Big Bad Wolf can eat a second victim during the night. They eat with the others Werewolves on their turn, then has a unique turn for themselves. This power is lost when a Werewolf, Wild Child, or Wolfhound is dead.",
-				"action": "The Big Bad Wolf chooses a victim to eat. On its only turn, they can eat another victim.",
-				"powerState": "CONDITIONAL",
-				"isNocturnal": true,
-				"isWerewolf": true,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "ONE_WEREWOLF",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": true
-			}
-		}
-	},
-	{
-		"nameRole": "Brother",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Brothers wake up at night and know each other. They can communicate at night with signs.",
-				"action": "The Brothers recognize each other and can communicate through signs.",
-				"powerState": "CONDITIONAL",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 3,
-				"condition": "IS_ALONE",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Colossus",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Colossus retaliates against one of the Werewolves when he is killed by them.",
-				"action": "The Colossus chooses one of the Werewolves to kill in revenge for its own death.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Crow",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Crow can give two votes to a player that will apply during the day.",
-				"action": "The Crow chooses a player that will get two votes for the day to come.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Cupid",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Cupid chooses two players during the night to put together into a unite couple. They must win together. If one of them dies, so does the other.",
-				"action": "The Cupid chooses two people to put in love together. If one dies, so does the other.",
-				"powerState": "SETUP",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Defender",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Defender can protect a player from the Werewolves attack. They must choose a different player each night and can select themselves. The protection only works at night, and does not prevent infection, or the Witch's killing potion.",
-				"action": "The Defender chooses one player to protect from the Werewolves attack. They can protect themselves. Must choose a different player every night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Elder",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Elder can survive a second attack from the Werewolves. If the village eliminates them, all special Villagers lose their powers, except the solitary roles. The second life does not prevent from being killed by love. The Elder cannot be infected. If they get a heal potion from the Witch, they gain another life.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Fireman",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Arsonist kills their two closest alive neighbours when they die.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Fox",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Fox can scan three adjacent players and see if there are Werewolves among them. If there is at least one, the Fox keeps its power, it is lost otherwise.",
-				"action": "The Fox can choose a player to scan along with its two neighbors, to see if there are Werewolves among them. If there are none, the Fox loses their power.",
-				"powerState": "CONSUMABLE",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Gypsy",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Gypsy can make players ask questions to the dead so the remaining players can have more information about the game. On their turn, they choose a card and a player that will read it in the morning. If the chosen player must die, the card is not read.",
-				"action": "The Gypsy chooses one of the Spiritism cards, and a player that will read it.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Hunter",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Hunter kills someone else when they die.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Idiot",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Idiot of the Village has a second chance if they are voted to be killed during the day. Considered as too idiotic to be dangerous, they stay alive with their role revealed. However, they lose their voting ability. If there is an Elder in play, and the Elder removes the special Villager's powers, the Idiot dies.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "LittleGirl",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Little Girl can try to spy on the Werewolves, but if she gets spotted, she is the selected victim at their turn.",
-				"action": "The Little Girl spies on the Werewolves turn.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": true,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": ["WEREWOLF-NORMAL", "BIGBADWOLF-NORMAL", "BIGBADWOLF-AUTHOR", "WOLFFATHER-NORMAL", "WHITEWOLF-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Manipulator",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Manipulator is a solitary role. Their objective is to to win with a part of the village. Once the other part is eliminated, they win.",
-				"action": "The Manipulator wakes up and sees the players part of their group. The Manipulator wins when all the players that are not part of their group are dead.",
-				"powerState": "SETUP",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": true,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Piper",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Piper is a solitary role. They have to charm all the players in the village. Each night, the Piper chooses two players to charm; they, along with the previously charmed players, all wake up at the same time. As more players are charmed, the difficulty for the Piper to stay hidden increases. Once they manage to charm everybody, no matter when, they win.",
-				"action": "The Piper chooses two players to charm. Then all the charmed players wake up.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": true,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "PowerfulMotherOfWolves",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Powerful Mother Of Wolves wakes up alone the first two nights and chooses a player. The targeted player loses its role and becomes a Villager.",
-				"action": "The Powerful Mother Of Wolves chooses a player that will lose its powers and become a Villager.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": true,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": ["WEREWOLF-NORMAL", "LITTLEGIRL-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Puppeteer",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Puppeteer is protected once against attacks from the Werewolves, the first hit breaks its puppet and leaves the Puppeteer alive but shocked, they can only communicate without talking afterwards.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "RustyKnight",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Rusty Knight, if killed during the night, can kill a Werewolf from tetanus. The next morning, the closest Werewolf on their left dies. This action helps a lot to see innocents between the Knight and the killed Werewolf.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Scapegoat",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Scapegoat is eliminated if there is a tie in the votes during the day. If they are eliminated this way, they may choose who can vote on the next day. This can be dangerous if the remaining voters are Werewolves. It is also dangerous if there is only one player allowed to vote, and that player is killed during the night; leading to no vote.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			},
-			"AUTHOR": {
-				"description": "The Scapegoat is a victim of life. When there is a tie during the vote of the day from the Village, they die instead, and choose who is not allowed to vote the next day. If they are eaten by the Werewolves during the night, the Werewolves get sick and will not kill the following night.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Seer",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Seer can see the role of another player one time per turn.",
-				"action": "The Seer chooses a player, whose role is revealed to the Seer.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Servant",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Servant can stop the execution of the selected victim during the day and take their place. To perform this action, the Servant has to reveal themselves. They then acquire the role of the selected player, which is still eliminated.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Sister",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Sisters wake up at night and know each other. They can communicate at night with signs.",
-				"action": "The Sisters recognize each other and can communicate through signs.",
-				"powerState": "CONDITIONAL",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 2,
-				"condition": "IS_ALONE",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "StutteringJudge",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Stuttering Judge can run a second vote during a day immediately after the first one. They must give a sign to the Game Master so the second vote is initiated.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Thief",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Thief is the first role to wake up at night. They select one out of two roles proposed by the Game Master that are not in play. If one of the two roles is a Werewolf, the Thief must select it.",
-				"action": "The Thief chooses one of the two roles proposed by the Game Master. If there is a Werewolf among them, the Thief has to select it.",
-				"powerState": "SETUP",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "TrainedMonkey",
-		"roleValues": {
-			"NORMAL": {
-				"description": "Once per game, the Trained Monkey wakes up and chooses whether they want to activate their power. If they do, they can choose to see the roles of any number of players, one by one. They can stop whenever, but they die if a Werewolf is revealed.",
-				"action": "Once per game, the Trained Monkey can decide to look at other player's roles one by one. They die if a Werewolf is revealed.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Villager",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The simple Villager has no power other than its own deduction skills to find out who the Werewolves are.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 10,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "VillagerVillager",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Villager-Villager is a role known to everyone. They cannot hide their own role, as their card is double-sided with the Villager icon.",
-				"action": "No action during the night.",
-				"powerState": "PERMANENT",
-				"isNocturnal": false,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Werewolf",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Werewolves can select a victim to eat during the night. The victim is eliminated from the game.",
-				"action": "The Werewolves choose a player to eat.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": true,
-				"isSolo": false,
-				"maxOccurrence": 6,
-				"condition": "NO_CONDITION",
-				"rolesToStick": ["WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR", "WOLFFATHER-NORMAL", "LITTLEGIRL-NORMAL"],
-				"doTargeting": false,
-				"doKilling": true
-			}
-		}
-	},
-	{
-		"nameRole": "WhiteWerewolf",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The White Werewolf is a solitary role. They win when they are the last one alive. Every two nights, they wake up alone and eat one of their Werewolves companions. They still eat Villagers like the other Werewolves.",
-				"action": "The White Werewolf chooses a victim to eat with the pack. On their own turn, they can eat a Werewolf.",
-				"powerState": "CONDITIONAL",
-				"isNocturnal": true,
-				"isWerewolf": true,
-				"isSolo": true,
-				"maxOccurrence": 1,
-				"condition": "ALL_WEREWOLVES",
-				"rolesToStick": [],
-				"doTargeting": false,
-				"doKilling": true
-			}
-		}
-	},
-	{
-		"nameRole": "WildChild",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Wild Child chooses a player as their mentor. The Wild Child is a simple Villager until their mentor is eliminated, at which point they become a Werewolf.",
-				"action": "The Wild Child chooses a player as their mentor. If the mentor dies, the Wild Child becomes a Werewolf.",
-				"powerState": "CONSUMABLE",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "Witch",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Witch has two potions, one of death to kill another player, and one of resurrection to save the victim of the Werewolves. The Witch can use both potions on the same night.",
-				"action": "The Witch can use her potion of life to save the victim of the Werewolves, and use her potion of death to kill another player.",
-				"powerState": "CONSUMABLE",
-				"isNocturnal": true,
-				"isWerewolf": false,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": [],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "WolfFather",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Wolf Father has the power to convert a victim into a Werewolf. Once per game, the Wolf Father can signal the Game Master that they want to infect the victim of the Werewolves. The victim will not be eliminated and will instead wake up as a Werewolf for the remaining nights.",
-				"action": "The Wolf Father can infect a victim in order to add one more Werewolf to the pack instead of killing it.",
-				"powerState": "PERMANENT",
-				"isNocturnal": true,
-				"isWerewolf": true,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": ["WEREWOLF-NORMAL", "LITTLEGIRL-NORMAL", "WOLFHOUND-NORMAL", "WOLFHOUND-AUTHOR"],
-				"doTargeting": true,
-				"doKilling": false
-			}
-		}
-	},
-	{
-		"nameRole": "WolfHound",
-		"roleValues": {
-			"NORMAL": {
-				"description": "The Wolf Hound is a role that can choose whether they want to be a Werewolf at the beginning of the game.",
-				"action": "The Wolf Hound chooses to wake up and be a Werewolf for the game or stay asleep and be a simple Villager.",
-				"powerState": "CONSUMABLE",
-				"isNocturnal": false,
-				"isWerewolf": true,
-				"isSolo": false,
-				"maxOccurrence": 1,
-				"condition": "NO_CONDITION",
-				"rolesToStick": ["WEREWOLF-NORMAL", "WOLFFATHER-NORMAL", "LITTLEGIRL-NORMAL"],
-				"doTargeting": false,
-				"doKilling": false
-			}
-		}
-	}
-]
+{
+  "key": "NORMAL",
+  "languages": [
+    "en",
+    "fr"
+  ],
+  "roles": [
+    {
+      "nameRole": "Actor",
+      "extension": "NEW_MOON",
+      "powerState": "CONSUMABLE",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Actor",
+          "description": "The Actor can play three different roles during the game at night. These roles must be chosen outside of the game and are visible to everybody. Once all three have been played, the Actor becomes a simple Villager.",
+          "action": "The Actor may choose one of the roles visible to play for a complete turn. Once the role has been played, it is discarded."
+        },
+        "fr": {
+          "name": "Comédien",
+          "description": "Le Comédien peut jouer trois rôles différents pendant la nuit. Ces rôles ne sont pas en jeu, et sont visibles par tous les joueurs. Une fois que tous les rôles ont été joués, le Comédien devient un simple Villageois.",
+          "action": "Le Comédien peut choisir de jouer l'un des rôles proposés pour un tour. Une fois que le rôle choisi est joué, il n'est plus disponible."
+        }
+      }
+    },
+    {
+      "nameRole": "Angel",
+      "extension": "NEW_MOON",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Angel",
+          "description": "The Angel is a solitary role at first. They must die on the first turn (night or day) in order to win. If they survive, then they are a simple Villager. Having an Angel in play makes the game start with the day and not the night (or night with scouting and no actions).",
+          "action": "No action for the night."
+        },
+        "fr": {
+          "name": "Ange",
+          "description": "L'Ange est un rôle solitaire. Pour gagner, il doit mourir durant le premier tour (jour ou nuit). Si ce n'est pas le cas, il devient un simple Villageois. Inclure un Ange dans la partie modifie la structure du jeu, qui commence par un jour au lieu d'une nuit.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "BearTamer",
+      "extension": "VILLAGE",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Bear Tamer",
+          "description": "The Bear Tamer can signal if one of his neighbours is a Werewolf. If the game master makes a sound like a bear growl, that means one of the alive neighbours of the Bear Tamer is a Werewolf. The Bear also growls if the Bear Tamer is infected.",
+          "action": "No action for the night."
+        },
+        "fr": {
+          "name": "Montreur d'Ours",
+          "description": "Le Dresseur d'Ours peut détecter les Loups-Garous parmi ses voisins. Le maître du jeu signale au Dresseur d'Ours que l'un de ses deux voisins vivants est un Loup-Garou, au moyen d'un grognement. Lorsque le Desseur d'Ours est infecté, le grognement se produit à chaque fois.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "BigBadWolf",
+      "extension": "CHARACTERS",
+      "powerState": "CONDITIONAL",
+      "isNocturnal": true,
+      "isWerewolf": true,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": true,
+      "condition": "ONE_WEREWOLF",
+      "becomes": {
+        "fires": "ONCE",
+        "playsAt": "WEREWOLF_TURN",
+        "powerState": "PERMANENT"
+      },
+      "hasSeparateTurn": true,
+      "texts": {
+        "en": {
+          "name": "Big Bad Wolf",
+          "description": "The Big Bad Wolf can eat a second victim during the night. They eat with the others Werewolves on their turn, then has a unique turn for themselves. This power is lost when a Werewolf, Wild Child, or Wolfhound is dead.",
+          "action": "The Big Bad Wolf chooses a victim to eat. On its only turn, they can eat another victim."
+        },
+        "fr": {
+          "name": "Grand Méchant Loup",
+          "description": "Le Grand Méchant Loup peut dévorer une seconde victime pendant la nuit. Il dévore une première fois en concertation avec les autres Loups-Garous pendant leur tour, puis est réveillé de nouveau afin qu'il choisisse une seconde victime. Ce pouvoir est perdu lorsqu'un Loup-Garou, Enfant Sauvage, ou Chien-Loup est éliminé.",
+          "action": "Le Grand Méchant Loup choisit une seconde victime à dévorer pendant son tour."
+        }
+      }
+    },
+    {
+      "nameRole": "Brother",
+      "extension": "VILLAGE",
+      "powerState": "CONDITIONAL",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 3,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "IS_ALONE",
+      "becomes": {
+        "fires": "ONCE",
+        "isNocturnal": false,
+        "powerState": "PERMANENT"
+      },
+      "texts": {
+        "en": {
+          "name": "Brother",
+          "description": "The Brothers wake up at night and know each other. They can communicate at night with signs.",
+          "action": "The Brothers recognize each other and can communicate through signs."
+        },
+        "fr": {
+          "name": "Frère",
+          "description": "Les Frères se réveillent ensemble et se reconnaissent pendant la nuit. Ils peuvent communiquer avec des signes pendant un court instant.",
+          "action": "Les Frères se réveillent et se reconnaissent. Ils peuvent communiquer pendant un court instant."
+        }
+      }
+    },
+    {
+      "nameRole": "Colossus",
+      "extension": "YEARS_25",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Colossus",
+          "description": "The Colossus is a strong villager who will beat werewolves. The Colossus retaliates against one of the Werewolves of its choice when he is killed by them.",
+          "action": "No actions during the night."
+        },
+        "fr": {
+          "name": "Colosse",
+          "description": "Le Colosse est un villageois balèze qui saura répondre convenablement aux loups garous. S'il meurt par eux pendant la nuit, il est réveillé, les loups aussi, et il choisit celui qu'il élimine.",
+          "action": "Pas d'action pendant la nuit"
+        }
+      }
+    },
+    {
+      "nameRole": "Crow",
+      "extension": "NEW_MOON",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Crow",
+          "description": "The Crow can give two votes to a player that will apply during the day.",
+          "action": "The Crow chooses a player that will get two votes for the day to come."
+        },
+        "fr": {
+          "name": "Corbeau",
+          "description": "Le Corbeau peut choisir un joueur qui aura deux voix contre lui le prochain jour.",
+          "action": "Le Corbeau peut choisir un joueur qui aura deux voix contre lui le prochain jour."
+        }
+      }
+    },
+    {
+      "nameRole": "Cupid",
+      "extension": "MAIN",
+      "powerState": "SETUP",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Cupid",
+          "description": "The Cupid chooses two players during the night to put together into a unite couple. They must win together. If one of them dies, so does the other.",
+          "action": "The Cupid chooses two people to put in love together. If one dies, so does the other."
+        },
+        "fr": {
+          "name": "Cupidon",
+          "description": "La première nuit, Cupidon choisit deux joueurs qui se mettent en couple. Ils doivent gagner ensemble. Si l'un des deux meurt, l'autre meurt de chagrin.",
+          "action": "Cupidon choisit deux joueurs à mettre en couple. Si l'un des deux meurt, l'autre meurt de chagrin."
+        }
+      }
+    },
+    {
+      "nameRole": "Defender",
+      "extension": "MAIN",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Defender",
+          "description": "The Defender can protect a player from the Werewolves attack. They must choose a different player each night and can select themselves. The protection only works at night, and does not prevent infection, or the Witch's killing potion.",
+          "action": "The Defender chooses one player to protect from the Werewolves attack. They can protect themselves. Must choose a different player every night."
+        },
+        "fr": {
+          "name": "Salvateur",
+          "description": "Le Salvateur peut protéger un joueur de l'attaque des Loups-Garous pendant la nuit. Il peut se choisir lui-même, mais ne peut pas choisir le même joueur deux nuits de suite. La protection n'agit pas contre l'infection, ni contre la potion de mort de la Sorcière, par exemple.",
+          "action": "Le Salvateur choisit un joueur à protéger de l'attaque des Loups-Garous. Il peut se désigner lui-même, mais ne peut pas protéger le même joueur deux nuits de suite."
+        }
+      }
+    },
+    {
+      "nameRole": "Elder",
+      "extension": "MAIN",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Villager Elder",
+          "description": "The Elder can survive a second attack from the Werewolves. If the village eliminates them, all special Villagers lose their powers, except the solitary roles. The second life does not prevent from being killed by love. The Elder cannot be infected. If they get a heal potion from the Witch, they gain another life.",
+          "action": "No action during the night."
+        },
+        "fr": {
+          "name": "Ancien du village",
+          "description": "L'ancien dispose d'une vie supplémentaire contre l'attaque des Loups-Garous. Si le village élimine l'Ancien, tous les villageois spéciaux perdent leur pouvoir, rôles solitaires exclus. Cet effet ne fonctionne pas par mort de chagrin de Cupidon. L'Ancien ne peut pas être infecté. Si l'Ancien est la cible d'une potion de vie de la Sorcière, il dispose d'une vie supplémentaire.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "Fireman",
+      "extension": "CHARACTERS",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Fireman",
+          "description": "The Arsonist kills their two closest alive neighbours when they die.",
+          "action": "No action during the night."
+        },
+        "fr": {
+          "name": "Pyromane",
+          "description": "Le Pyromane élimine ses deux voisins vivants lorsqu'il meurt.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "Fox",
+      "extension": "VILLAGE",
+      "powerState": "CONSUMABLE",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Fox",
+          "description": "The Fox can scan three adjacent players and see if there are Werewolves among them. If there is at least one, the Fox keeps its power, it is lost otherwise.",
+          "action": "The Fox can choose a player to scan along with its two neighbors, to see if there are Werewolves among them. If there are none, the Fox loses their power."
+        },
+        "fr": {
+          "name": "Renard",
+          "description": "Le Renard peut scanner un joueur et ses deux voisins, et voir s'il y a des Loups-Garous parmi eux. S'il y a au moins un Loup-Garou, le Renard garde son pouvoir, sinon il est perdu.",
+          "action": "Le Renard peut scanner un joueur et ses deux voisins, et voir s'il y a des Loups-Garous parmi eux. S'il n'y en a pas, le Renard perd son pouvoir."
+        }
+      }
+    },
+    {
+      "nameRole": "Gypsy",
+      "extension": "NEW_MOON",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Gypsy",
+          "description": "The Gypsy can make players ask questions to the dead so the remaining players can have more information about the game. On their turn, they choose a card and a player that will read it in the morning. If the chosen player must die, the card is not read.",
+          "action": "The Gypsy chooses one of the Spiritism cards, and a player that will read it."
+        },
+        "fr": {
+          "name": "Bohémienne",
+          "description": "La Bohémienne peut donner des cartes Spiritisme à lire, pour que les joueurs aient des informations supplémentaires sur la partie en cours. Pendant son tour, la Bohémienne choisit une carte et un joueur qui la lira le matin venu. Si le joueur choisi meurt, la carte n'est pas lue.",
+          "action": "La Bohémienne choisit une carte Spiritisme et un joueur qui la lira."
+        }
+      }
+    },
+    {
+      "nameRole": "Hunter",
+      "extension": "MAIN",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Hunter",
+          "description": "The Hunter kills someone else when they die.",
+          "action": "No action during the night."
+        },
+        "fr": {
+          "name": "Chasseur",
+          "description": "Le Chasseur tue le joueur de son choix lorsqu'il meurt.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "Idiot",
+      "extension": "MAIN",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Village idiot",
+          "description": "The Idiot of the Village has a second chance if they are voted to be killed during the day. Considered as too idiotic to be dangerous, they stay alive with their role revealed. However, they lose their voting ability. If there is an Elder in play, and the Elder removes the special Villager's powers, the Idiot dies.",
+          "action": "No action during the night."
+        },
+        "fr": {
+          "name": "Idiot du village",
+          "description": "L'Idiot du Village dispose d'une seconde chance lorsqu'il est victime du vote de la journée. Trop idiot pour être considéré comme dangereux, il reste en vie avec son rôle dévoilé et ne peut plus participer au vote. Si l'Ancien est en jeu et que les Villageois spéciaux perdent leur pouvoirs, l'Idiot du Village meurt.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "LittleGirl",
+      "extension": "MAIN",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "playsAt": "WEREWOLF_TURN",
+      "texts": {
+        "en": {
+          "name": "The Little Girl",
+          "description": "The Little Girl can try to spy on the Werewolves, but if she gets spotted, she is the selected victim at their turn.",
+          "action": "The Little Girl spies on the Werewolves turn."
+        },
+        "fr": {
+          "name": "La Petite Fille",
+          "description": "La Petite Fille peut espionner les Loups-Garous pendant leur tour. Si elle est repérée, elle est sélectionnée comme la victime des Loups-Garous pour cette nuit.",
+          "action": "La Petite Fille espionne les Loups-Garous pendant leur tour."
+        }
+      }
+    },
+    {
+      "nameRole": "Manipulator",
+      "extension": "CHARACTERS",
+      "powerState": "SETUP",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": true,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Manipulator",
+          "description": "The Manipulator is a solitary role. Their objective is to to win with a part of the village. Once the other part is eliminated, they win.",
+          "action": "The Manipulator wakes up and sees the players part of their group. The Manipulator wins when all the players that are not part of their group are dead."
+        },
+        "fr": {
+          "name": "Abominable Sectaire",
+          "description": "L'Abominable Sectaire est un rôle solitaire. Son objectif est de gagner avec une partie du village. Pour cela, il doit s'arranger pour faire éliminer l'autre partie.",
+          "action": "L'Abominable Sectaire se réveille et voit les joueurs faisant partie de son groupe. Pour gagner, il doit faire éliminer tous les autres."
+        }
+      }
+    },
+    {
+      "nameRole": "Piper",
+      "extension": "NEW_MOON",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": true,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "keepsTargets": true,
+      "texts": {
+        "en": {
+          "name": "Piper",
+          "description": "The Piper is a solitary role. They have to charm all the players in the village. Each night, the Piper chooses two players to charm; they, along with the previously charmed players, all wake up at the same time. As more players are charmed, the difficulty for the Piper to stay hidden increases. Once they manage to charm everybody, no matter when, they win.",
+          "action": "The Piper chooses two players to charm. Then all the charmed players wake up."
+        },
+        "fr": {
+          "name": "Joueur de Flûte",
+          "description": "Le Joueur de Flûte est un rôle solitaire. Il doit envoûter tous les joueurs du village. Chaque nuit, il se réveille et désigne deux nouveaux joueurs à envouter. Les anciens et nouveaux envoûtés se réveillent et se reconnaissent. Au fur et à mesure que le nombre de joueurs envoûtés augmente, il est de plus en plus difficile pour le Joueur de Flûte de rester caché. Il gagne lorsque tous les joueurs vivants (excepté lui-même) sont envoûtés, à n'importe quel moment de la partie.",
+          "action": "Le Joueur de Flûte choisit deux nouveaux joueurs à envoûter. Ensuite, les anciens et nouveaux envoûtés se réveillent."
+        }
+      }
+    },
+    {
+      "nameRole": "PowerfulMotherOfWolves",
+      "extension": "YEARS_25",
+      "powerState": "CONDITIONAL",
+      "isNocturnal": true,
+      "isWerewolf": true,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "TURN_REACHED",
+      "conditionTurn": 3,
+      "becomes": {
+        "fires": "ONCE",
+        "playsAt": "WEREWOLF_TURN",
+        "powerState": "PERMANENT"
+      },
+      "hasSeparateTurn": true,
+      "texts": {
+        "en": {
+          "name": "Powerful Mother Of Wolves",
+          "description": "The Powerful Mother Of Wolves wakes up alone the first two nights and chooses a player. The targeted player loses its role and becomes a Villager.",
+          "action": "The Powerful Mother Of Wolves chooses a player that will lose its powers and become a Villager."
+        },
+        "fr": {
+          "name": "Puissante Mère des Loups",
+          "description": "Les deux premières nuits d'une partie, la Puissante Mère Des Loups peut choisir un joueur qui perdra ses pouvoirs et le transformera en simple Villageois.",
+          "action": "La Puissante Mère Des Loups choisit un joueur qui se transformera en simple Villageois."
+        }
+      }
+    },
+    {
+      "nameRole": "Puppeteer",
+      "extension": "YEARS_25",
+      "powerState": "SETUP",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "The Puppeteer",
+          "description": "The Puppeteer is protected once against attacks from the Werewolves, the first hit breaks its puppet and leaves the Puppeteer alive but shocked, they can only communicate without talking afterwards.",
+          "action": "The Puppeteer choose its target which will takes all the attacks for it during the night."
+        },
+        "fr": {
+          "name": "Le Marionettiste",
+          "description": "Le Marionettiste dispose d'une vie supplémentaire contre les Loups-Garous. Lorsqu'il est ciblé, sa marionnette encaisse le coup, le Marionnettiste reste vivant mais est choqué. Il ne peut plus parler pendant le reste de la partie.",
+          "action": "Le Marionettiste sélectionne une cible qui sera sa marionnette et qui prendra les coups à sa place pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "RustyKnight",
+      "extension": "VILLAGE",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Rusty Sword Knight",
+          "description": "The Rusty Knight, if killed during the night, can kill a Werewolf from tetanus. The next night, the closest Werewolf on their left dies. This action helps a lot to see innocents between the Knight and the killed Werewolf.",
+          "action": "No action during the night."
+        },
+        "fr": {
+          "name": "Le Chevalier à l'Épée Rouillée",
+          "description": "Le Chevalier à l'Epée Rouillée donne la maladie du tétanos à un Loup-Garou lorsqu'il est éliminé par ceux-ci. La nuit suivante, le Loup-Garou vivant le plus à sa gauche meurt des suites du tétanos. Cette action permet d'innocenter les joueurs situés entre le Chevalier et le Loup-Garou qu'il a éliminé.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "Scapegoat",
+      "extension": "MAIN",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Scapegoat",
+          "description": "The Scapegoat is eliminated if there is a tie in the votes during the day. If they are eliminated this way, they may choose who can vote on the next day. This can be dangerous if the remaining voters are Werewolves. It is also dangerous if there is only one player allowed to vote, and that player is killed during the night; leading to no vote.",
+          "action": "No action during the night."
+        },
+        "fr": {
+          "name": "Bouc-Émissaire",
+          "description": "Le Bouc Emissaire est éliminé si une égalité se produit lors du vote de la journée. De cette manière, il peut choisir les joueurs qui seront autorisés à voter le jour suivant. Cela est dangereux si les joueurs désignés sont tous des Loups-Garous, ou s'il n'y a qu'un seul joueur autorisé à voter, et que celui-ci meurt avant le vote.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "Seer",
+      "extension": "MAIN",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Seer",
+          "description": "The Seer can see the role of another player one time per turn.",
+          "action": "The Seer chooses a player, whose role is revealed to the Seer."
+        },
+        "fr": {
+          "name": "Voyante",
+          "description": "La Voyante peut voir le rôle d'un joueur une fois par nuit.",
+          "action": "La Voyante désigne un joueur. Le rôle de ce joueur est révélé à la Voyante."
+        }
+      }
+    },
+    {
+      "nameRole": "Servant",
+      "extension": "NEW_MOON",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Devoted Servant",
+          "description": "The Servant can stop the execution of the selected victim during the day and take their place. To perform this action, the Servant has to reveal themselves. They then acquire the role of the selected player, which is still eliminated.",
+          "action": "No action during the night."
+        },
+        "fr": {
+          "name": "Servante dévouée",
+          "description": "La Servante Dévouée peut entraver le vote de la journée et prendre la place du joueur éliminé. Pour effectuer cette action, la Servante se révèle. Elle obtient alors le rôle du joueur éliminé.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "Sister",
+      "extension": "VILLAGE",
+      "powerState": "CONDITIONAL",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 2,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "IS_ALONE",
+      "becomes": {
+        "fires": "ONCE",
+        "isNocturnal": false,
+        "powerState": "PERMANENT"
+      },
+      "texts": {
+        "en": {
+          "name": "Sister",
+          "description": "The Sisters wake up at night and know each other. They can communicate at night with signs.",
+          "action": "The Sisters recognize each other and can communicate through signs."
+        },
+        "fr": {
+          "name": "Soeur",
+          "description": "Les Sœurs se réveillent ensemble et se reconnaissent pendant la nuit. Elles peuvent communiquer avec des signes pendant un court instant.",
+          "action": "Les Sœurs se réveillent et se reconnaissent. Elles peuvent communiquer pendant un court instant."
+        }
+      }
+    },
+    {
+      "nameRole": "StutteringJudge",
+      "extension": "VILLAGE",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Stuttering Judge",
+          "description": "The Stuttering Judge can run a second vote during a day immediately after the first one. They must give a sign to the Game Master so the second vote is initiated.",
+          "action": "No action during the night."
+        },
+        "fr": {
+          "name": "Le Juge Bègue",
+          "description": "Le Juge Bègue peut lancer un second vote de la journée juste après le premier. Pour cela, il fait signe au maître du jeu afin que le second vote soit lancé.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "Thief",
+      "extension": "MAIN",
+      "powerState": "SETUP",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Thief",
+          "description": "The Thief is the first role to wake up at night. They select one out of two roles proposed by the Game Master that are not in play. If one of the two roles is a Werewolf, the Thief must select it.",
+          "action": "The Thief chooses one of the two roles proposed by the Game Master. If there is a Werewolf among them, the Thief has to select it."
+        },
+        "fr": {
+          "name": "Voleur",
+          "description": "Le Voleur est le premier rôle à se réveiller la nuit. Il choisit parmi les deux rôles proposés par le maître du jeu, ceux-ci n'étant pas dans la partie. Si l'un des rôles est un Loup-Garou, le Voleur est obligé de le prendre.",
+          "action": "Le Voleur choisit parmi les deux rôles proposés par le maître du jeu. Si un Loup-Garou est présent, il doit le sélectionner."
+        }
+      }
+    },
+    {
+      "nameRole": "TrainedMonkey",
+      "extension": "YEARS_25",
+      "powerState": "CONSUMABLE",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Trained Monkey",
+          "description": "Once per game, the Trained Monkey wakes up and chooses whether they want to activate their power. If they do, they can choose to see the roles of any number of players, one by one. They can stop whenever, but they die if a Werewolf is revealed.",
+          "action": "Once per game, the Trained Monkey can decide to look at other player's roles one by one. They die if a Werewolf is revealed."
+        },
+        "fr": {
+          "name": "Singe Savant",
+          "description": "Une fois par partie, le Singe Savant peut décider d'utiliser son pouvoir. S'il le fait, il désigne des joueurs un par un. Il voit alors leur rôle, mais est éliminé s'il tombe sur un Loup-Garou.",
+          "action": "Une fois par partie, le Singe Savant peut regarder les rôles des autres joueurs, un par un. Il est éliminé si un Loup-Garou est ciblé."
+        }
+      }
+    },
+    {
+      "nameRole": "Villager",
+      "extension": "MAIN",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 10,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Simple Villager",
+          "description": "The simple Villager has no power other than its own deduction skills to find out who the Werewolves are.",
+          "action": "No action during the night."
+        },
+        "fr": {
+          "name": "Simple Villageois",
+          "description": "Le simple Villageois doit utiliser sa force de déduction pour trouver et éliminer les Loups-Garous.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "VillagerVillager",
+      "extension": "VILLAGE",
+      "powerState": "PERMANENT",
+      "isNocturnal": false,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Villager-Villager",
+          "description": "The Villager-Villager is a role known to everyone. They cannot hide their own role, as their card is double-sided with the Villager icon.",
+          "action": "No action during the night."
+        },
+        "fr": {
+          "name": "Villageois-Villageois",
+          "description": "Le Villageois-Villageois est un rôle connu de tous les joueurs, grâce à sa carte arborant l'icône du Villageois sur ses deux faces.",
+          "action": "Pas d'action pendant la nuit."
+        }
+      }
+    },
+    {
+      "nameRole": "Werewolf",
+      "extension": "MAIN",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": true,
+      "isSolo": false,
+      "maxOccurrence": 6,
+      "doTargeting": false,
+      "doKilling": true,
+      "condition": "NO_CONDITION",
+      "definesPackTurn": true,
+      "texts": {
+        "en": {
+          "name": "Werewolf",
+          "description": "The Werewolves can select a victim to eat during the night. The victim is eliminated from the game.",
+          "action": "The Werewolves choose a player to eat."
+        },
+        "fr": {
+          "name": "Loup-Garou",
+          "description": "Les Loups-Garous choisissent une victime à dévorer pendant la nuit.",
+          "action": "Les Loups-Garous choisissent un joueur à dévorer."
+        }
+      }
+    },
+    {
+      "nameRole": "WhiteWerewolf",
+      "extension": "CHARACTERS",
+      "powerState": "CONDITIONAL",
+      "isNocturnal": true,
+      "isWerewolf": true,
+      "isSolo": true,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": true,
+      "condition": "ALL_WEREWOLVES",
+      "becomes": {
+        "fires": "ONCE",
+        "playsAt": "WEREWOLF_TURN",
+        "powerState": "PERMANENT"
+      },
+      "hasSeparateTurn": true,
+      "texts": {
+        "en": {
+          "name": "White Werewolf",
+          "description": "The White Werewolf is a solitary role. They win when they are the last one alive. Every two nights, they wake up alone and eat one of their Werewolves companions. They still eat Villagers like the other Werewolves.",
+          "action": "The White Werewolf chooses a victim to eat with the pack. On their own turn, they can eat a Werewolf."
+        },
+        "fr": {
+          "name": "Loup Blanc",
+          "description": "Le Loup Blanc est un rôle solitaire. Il gagne lorsqu'il est le dernier Loup-Garou vivant. Toutes les deux nuits, en plus de son tour standard avec les autres Loups-Garous, le Loup Blanc se réveille une seconde fois pour dévorer un autre Loup-Garou.",
+          "action": "Le Loup Blanc dévore une victime avec les autres Loups-Garous, puis se réveille une seconde fois pour dévorer l'un de ses congénaires."
+        }
+      }
+    },
+    {
+      "nameRole": "WildChild",
+      "extension": "CHARACTERS",
+      "powerState": "CONDITIONAL",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": true,
+      "doKilling": false,
+      "condition": "MY_TARGET_DIES",
+      "becomes": {
+        "fires": "ONCE",
+        "isWerewolf": true,
+        "isNocturnal": true,
+        "playsAt": "WEREWOLF_TURN"
+      },
+      "texts": {
+        "en": {
+          "name": "Wild Child",
+          "description": "The Wild Child chooses a player as their mentor. The Wild Child is a simple Villager until their mentor is eliminated, at which point they become a Werewolf.",
+          "action": "The Wild Child chooses a player as their mentor. If the mentor dies, the Wild Child becomes a Werewolf."
+        },
+        "fr": {
+          "name": "Enfant Sauvage",
+          "description": "L'Enfant Sauvage choisit un joueur qui sera son mentor pour la partie. Il est un simple Villageois jusqu'à ce que son mentor soit éliminé, puis devient un Loup-Garou.",
+          "action": "L'enfant Sauvage choisit un joueur qui sera son mentor. Si ce dernier meurt, l'Enfant Sauvage devient un Loup-Garou."
+        }
+      }
+    },
+    {
+      "nameRole": "Witch",
+      "extension": "MAIN",
+      "powerState": "CONSUMABLE",
+      "isNocturnal": true,
+      "isWerewolf": false,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": false,
+      "condition": "NO_CONDITION",
+      "texts": {
+        "en": {
+          "name": "Witch",
+          "description": "The Witch has two potions, one of death to kill another player, and one of resurrection to save the victim of the Werewolves. The Witch can use both potions on the same night.",
+          "action": "The Witch can use her potion of life to save the victim of the Werewolves, and use her potion of death to kill another player."
+        },
+        "fr": {
+          "name": "Sorcière",
+          "description": "La Sorcière possède deux potions : une potion de mort servant à tuer le joueur de son choix, et une potion de vie servant à sauver le joueur victime des Loups-Garous. La Sorcière peut utiliser ses deux potions la même nuit.",
+          "action": "La Sorcière peut utiliser sa potion de vie pour sauver la victime des Loups-Garous, et sa potion de mort pour éliminer un autre joueur."
+        }
+      }
+    },
+    {
+      "nameRole": "WolfFather",
+      "extension": "CHARACTERS",
+      "powerState": "PERMANENT",
+      "isNocturnal": true,
+      "isWerewolf": true,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": true,
+      "condition": "NO_CONDITION",
+      "playsAt": "WEREWOLF_TURN",
+      "ownsInfectionBlock": true,
+      "texts": {
+        "en": {
+          "name": "Infect GrandFather Of Wolves",
+          "description": "The Wolf Father has the power to convert a victim into a Werewolf. Once per game, the Wolf Father can signal the Game Master that they want to infect the victim of the Werewolves. The victim will not be eliminated and will instead wake up as a Werewolf for the remaining nights.",
+          "action": "The Wolf Father can infect a victim in order to add one more Werewolf to the pack instead of killing it."
+        },
+        "fr": {
+          "name": "Infect Grand-Père Des Loups",
+          "description": "Le Grand-Père des Loups a le pouvoir de convertir la victime des Loups-Garous en l'un des leurs. Une fois par partie, le Grand-Père des Loups peut faire signe au maître du jeu qu'il veut infecter la victime des Loups-Garous. Celle-ci ne sera alors pas éliminée, et se réveillera en tant que Loup-Garou pour les nuits à venir.",
+          "action": "Le Grand-Père des Loups peut choisir d'infecter la victime des Loups-Garous afin d'agrandir la meute."
+        }
+      }
+    },
+    {
+      "nameRole": "WolfHound",
+      "extension": "CHARACTERS",
+      "powerState": "CONSUMABLE",
+      "isNocturnal": false,
+      "isWerewolf": true,
+      "isSolo": false,
+      "maxOccurrence": 1,
+      "doTargeting": false,
+      "doKilling": true,
+      "condition": "NO_CONDITION",
+      "playsAt": "WEREWOLF_TURN",
+      "texts": {
+        "en": {
+          "name": "Wolf-Hound",
+          "description": "The Wolf Hound is a role that can choose whether they want to be a Werewolf at the beginning of the game.",
+          "action": "The Wolf Hound chooses to wake up and be a Werewolf for the game or stay asleep and be a simple Villager."
+        },
+        "fr": {
+          "name": "Chien-Loup",
+          "description": "Le Chien-Loup peut choisir d'être un simple Villageois ou un Loup-Garou au début de la partie.",
+          "action": "Le Chien-Loup peut choisir de se réveiller pour devenir Loup-Garou, ou de rester endormi pour être un simple Villageois."
+        }
+      }
+    }
+  ]
+}

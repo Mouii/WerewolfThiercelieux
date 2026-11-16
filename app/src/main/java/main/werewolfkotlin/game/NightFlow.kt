@@ -1,6 +1,7 @@
 package main.werewolfkotlin.game
 
 import model.CharacterGame
+import model.NightSlot
 import model.RoleId
 
 /***
@@ -20,16 +21,16 @@ object NightFlow {
         var active: List<CharacterGame>
 
         if (index == GameState.werewolfTurn) {
-            //The pack of werewolves, plus the infected players who wake up with it
-            active = alive.filter { x -> (x.isWerewolf && x.isNocturnal) || x.isInfected }
+            //The pack of werewolves, the roles that play with it, and the infected players
+            active = alive.filter { x -> playsWithPack(x) }
 
-            //If there is only one werewolf at this turn, better skip it
-            if (active.size == 1 && (active[0].className == RoleId.BIG_BAD_WOLF
-                        || active[0].className == RoleId.WHITE_WEREWOLF))
-                active = emptyList()
+            //A role that also has a turn of its own does not make a pack by itself :
+            //it would be called twice for nothing
+            if (active.size == 1 && active[0].hasSeparateTurn) active = emptyList()
 
         } else {
-            active = alive.filter { x -> x.order == index }
+            //A role placed on the pack is only called with the pack, never at this moment
+            active = alive.filter { x -> x.order == index && x.playsAt == NightSlot.OWN_MOMENT }
 
             //Special cases : if in the unity there are at the same time sleeping roles and awaken roles
             //We filter the non awaken roles
@@ -41,9 +42,28 @@ object NightFlow {
     }
 
     /***
-     * Somebody is awake at this step. The pack of werewolves is always awake, infected included
+     * This role takes part in the meal of the pack
+     */
+    private fun playsWithPack(character: CharacterGame): Boolean =
+        character.isInfected
+                || (character.isNocturnal
+                && (character.isWerewolf || character.playsAt == NightSlot.WEREWOLF_TURN))
+
+    /***
+     * The turn of the pack while no player holds a role of werewolf or a role that kills :
+     * the moderator did not enter these roles (or not yet), and the pack is still called so he can
+     * mark its victim. It disappears as soon as such a role is given : the real pack takes over.
+     */
+    fun isPackWithoutWolves(index: Int): Boolean =
+        index >= 0 && index == GameState.werewolfTurn
+                && GameState.aliveCharacters.none { it.isWerewolf || it.doKilling || it.isInfected }
+
+    /***
+     * Somebody is awake at this step. The pack of werewolves is always awake, infected included,
+     * and the pack without wolves is always called.
      */
     fun isStepAwake(index: Int, active: List<CharacterGame>): Boolean {
+        if (isPackWithoutWolves(index)) return true
         return active.isNotEmpty() && (index == GameState.werewolfTurn || active.all { it.isNocturnal })
     }
 
@@ -55,9 +75,9 @@ object NightFlow {
     fun membersOf(order: Int): List<CharacterGame> {
         val alive = GameState.aliveCharacters
         val live = if (order == GameState.werewolfTurn)
-            alive.filter { it.order == order || (it.isWerewolf && it.isNocturnal && !it.isInfected) }
+            alive.filter { it.order == order || (playsWithPack(it) && !it.isInfected) }
         else
-            alive.filter { it.order == order }
+            alive.filter { it.order == order && it.playsAt == NightSlot.OWN_MOMENT }
 
         return live.ifEmpty { GameState.nightActive[order].orEmpty() }
     }
@@ -69,7 +89,8 @@ object NightFlow {
      */
     fun freeze() {
         val alive = GameState.aliveCharacters
-        val maxKey: Int = alive.maxOfOrNull { x -> x.order } ?: -1
+        //The pack can be called without any role in the game : its moment counts too
+        val maxKey: Int = maxOf(alive.maxOfOrNull { x -> x.order } ?: -1, GameState.werewolfTurn)
 
         val steps = mutableListOf<Int>()
         val actives = mutableMapOf<Int, List<CharacterGame>>()
@@ -123,9 +144,6 @@ object NightFlow {
         val actives = GameState.nightActive[order].orEmpty()
 
         if (GameState.calledOrders.add(order)) {
-            if (actives.size == 1 && actives[0].className == RoleId.WILD_CHILD) {
-                PowerRules.setupWildChild(actives[0])
-            }
             GameState.stepCalls[order] = describe(order, actives)
         }
 
@@ -138,6 +156,12 @@ object NightFlow {
      * Calling the action of a role can change it (a power used only once), so this is done once a night.
      */
     private fun describe(order: Int, characters: List<CharacterGame>): NightCall {
+        //The pack without wolves : nobody to name, the labels of the screen say what happens
+        if (isPackWithoutWolves(order)) {
+            val labels = GameState.labels
+            return NightCall(listOf(NightCall.CalledRole(labels.packName, labels.packAction)))
+        }
+
         val isWolfTurn = order == GameState.werewolfTurn
 
         //Infected players only follow the pack, their own role is called at its own turn
@@ -185,7 +209,7 @@ object NightFlow {
 
         first.forEach { RoleOrders.set(it.className, it.order) }
         second.forEach { RoleOrders.set(it.className, it.order) }
-        if (alive.none { it.className == RoleId.WEREWOLF } && GameState.werewolfTurn >= 0) {
+        if (alive.none { it.definesPackTurn } && GameState.werewolfTurn >= 0) {
             RoleOrders.set(RoleId.WEREWOLF, GameState.werewolfTurn)
         }
 

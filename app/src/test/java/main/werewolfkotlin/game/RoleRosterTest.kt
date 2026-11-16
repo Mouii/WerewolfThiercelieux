@@ -3,7 +3,6 @@ package main.werewolfkotlin.game
 import GameFixtures.give
 import GameFixtures.newGame
 import GameFixtures.role
-import model.RoleId
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -35,8 +34,8 @@ class RoleRosterTest {
 
     @Test
     fun `two players of the same role play at the same moment`() {
-        val first = give(0, role("Werewolf", isWerewolf = true))
-        val second = give(1, role("Werewolf", isWerewolf = true))
+        val first = give(0, role("Werewolf", isWerewolf = true, definesPackTurn = true))
+        val second = give(1, role("Werewolf", isWerewolf = true, definesPackTurn = true))
 
         assertEquals(first.order, second.order)
     }
@@ -63,7 +62,7 @@ class RoleRosterTest {
     @Test
     fun `a player who dies leaves the turn order`() {
         val seer = give(0, role("Seer"))
-        give(1, role("Werewolf", isWerewolf = true))
+        give(1, role("Werewolf", isWerewolf = true, definesPackTurn = true))
 
         val gameOver = RoleRoster.kill(GameState.seats[0])
 
@@ -101,7 +100,7 @@ class RoleRosterTest {
 
     @Test
     fun `the pack of werewolves follows the simple werewolf`() {
-        give(0, role(RoleId.WEREWOLF, isWerewolf = true))
+        give(0, role("Werewolf", isWerewolf = true, definesPackTurn = true))
 
         RoleRoster.updateWerewolfTurn()
 
@@ -109,7 +108,7 @@ class RoleRosterTest {
     }
 
     @Test
-    fun `without werewolf nobody calls the pack`() {
+    fun `without werewolf, and the pack turned off, nobody calls it`() {
         give(0, role("Seer"))
 
         RoleRoster.updateWerewolfTurn()
@@ -120,7 +119,7 @@ class RoleRosterTest {
     @Test
     fun `the players marked to die are eliminated when the turn changes`() {
         give(0, role("Seer"))
-        give(1, role(RoleId.WEREWOLF, isWerewolf = true))
+        give(1, role("Werewolf", isWerewolf = true, definesPackTurn = true))
         GameState.deathsBlock()?.players?.add(GameState.seats[0])
 
         RoleRoster.applyPendingDeaths()

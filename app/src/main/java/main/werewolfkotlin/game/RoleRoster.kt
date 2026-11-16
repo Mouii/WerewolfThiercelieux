@@ -1,10 +1,10 @@
 package main.werewolfkotlin.game
 
 import model.CharacterGame
+import model.NightSlot
 import model.PowerState
 import model.RoleId
 import model.kindOf
-import model.stickKeyOf
 
 /***
  * Which role is in the game : the roles given to the players, their moment of the night,
@@ -18,33 +18,67 @@ object RoleRoster {
     fun countOfClass(className: String): Int = GameState.allCharacters.count { it.className == className }
 
     /***
-     * Turn of the pack of werewolves : the simple werewolves bring it, otherwise it only exists
-     * if the moderator asked for it in the turn order window (or if somebody is infected)
+     * Turn of the pack of werewolves : the simple werewolves bring it. Without them it still exists,
+     * at its usual place, unless the moderator turned it off in the turn order window
+     * (an infected player always brings it back)
      */
     fun updateWerewolfTurn() {
         val alive = GameState.aliveCharacters
-        val simpleWerewolf: CharacterGame? = alive.firstOrNull { it.className == RoleId.WEREWOLF }
+
+        //The role that carries the pack (the simple werewolf) gives it its moment
+        val packRole: CharacterGame? = alive.firstOrNull { it.definesPackTurn }
         GameState.werewolfTurn = when {
-            simpleWerewolf != null -> simpleWerewolf.order
+            packRole != null -> packRole.order
             GameState.wolfTurnForced || alive.any { it.isInfected } -> RoleOrders.orderOf(RoleId.WEREWOLF)
             else -> -1
         }
+
+        //Every role that plays with the pack follows it, whatever the order the roles were given in
+        if (GameState.werewolfTurn >= 0) {
+            alive.filter { it.playsAt == NightSlot.WEREWOLF_TURN }
+                .forEach { it.order = GameState.werewolfTurn }
+        }
+        sortAlive()
     }
 
     /***
-     * Moment of the night of a new role : the one of its class, the one of the roles it is linked to
-     * (the wolves play with the werewolves), otherwise its usual place
+     * Put a role on the moment of the pack, if that is where it plays
+     */
+    fun placeWithPack(role: CharacterGame) {
+        if (role.playsAt != NightSlot.WEREWOLF_TURN) return
+        if (GameState.werewolfTurn < 0) return
+        role.order = GameState.werewolfTurn
+        sortAlive()
+    }
+
+    /***
+     * Moment of the night of a new role : the moment of the pack when it plays with it,
+     * the moment of a role of the same kind already in the game, otherwise its usual place.
      */
     private fun orderFor(prototype: CharacterGame): Int {
         val alive = GameState.aliveCharacters
+
+        if (prototype.playsAt == NightSlot.WEREWOLF_TURN && GameState.werewolfTurn >= 0)
+            return GameState.werewolfTurn
+
         val sameClass = alive.firstOrNull { it.className == prototype.className }
         if (sameClass != null) return sameClass.order
 
-        if (prototype.rolesToStick.isNotEmpty()) {
-            val linked = alive.firstOrNull { prototype.rolesToStick.contains(stickKeyOf(it)) }
-            if (linked != null) return linked.order
-        }
-        return RoleOrders.orderOf(prototype.className)
+        return freePlaceFrom(RoleOrders.orderOf(prototype.className), prototype)
+    }
+
+    /***
+     * The usual place of a role, moved just after the places already taken by another role.
+     * Two roles only share a moment when they are the same role, or when they play with the pack.
+     */
+    private fun freePlaceFrom(wanted: Int, prototype: CharacterGame): Int {
+        var place = wanted
+        while (GameState.aliveCharacters.any {
+                it.order == place
+                        && it.className != prototype.className
+                        && it.playsAt == NightSlot.OWN_MOMENT
+            }) place++
+        return place
     }
 
     private fun sortAlive() {
@@ -94,14 +128,15 @@ object RoleRoster {
         GameState.deathsBlock()?.players?.removeAll { it === seat }
         GameState.log(GameMessage.PLAYER_DEAD, seat.name, character?.name ?: "—")
 
-        if (character == null) return false
+        if (character != null) {
+            GameState.aliveCharacters.remove(character)
+            GameState.consumables.remove(character)
+            GameState.pendingNocturnal.remove(character)
+        }
 
-        GameState.aliveCharacters.remove(character)
-        GameState.consumables.remove(character)
-        GameState.pendingNocturnal.remove(character)
-
-        //Special powers that depend on this death
-        PowerRules.afterDeath(character)
+        //Special powers that depend on this death. A player without a role counts too :
+        //a role may have chosen him (the mentor of the wild child)
+        PowerRules.afterDeath(character, seat)
         updateWerewolfTurn()
 
         if (GameState.aliveCharacters.isEmpty() && GameState.seats.none { it.alive && it.character == null }) {

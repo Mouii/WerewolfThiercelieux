@@ -3,6 +3,7 @@ package model
 import GameFixtures.role
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import model.NightSlot
 import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -44,13 +45,29 @@ class CharacterGameTest {
     }
 
     @Test
-    fun `the linked roles of a copy can change without touching the source`() {
-        val source = role("Brother", rolesToStick = arrayOf("SISTER-NORMAL"))
+    fun `a copy keeps how the role takes part in the night`() {
+        val source = role(
+            "LittleGirl",
+            playsAt = NightSlot.WEREWOLF_TURN,
+            hasSeparateTurn = true,
+            ownsInfectionBlock = true,
+            definesPackTurn = true
+        )
 
         val copy = source.clone()
-        copy.rolesToStick[0] = "NOBODY"
 
-        assertEquals("SISTER-NORMAL", source.rolesToStick[0])
+        assertEquals(NightSlot.WEREWOLF_TURN, copy.playsAt)
+        assertTrue(copy.hasSeparateTurn)
+        assertTrue(copy.ownsInfectionBlock)
+        assertTrue(copy.definesPackTurn)
+    }
+
+    @Test
+    fun `a role given to a player has not changed yet`() {
+        val source = role("WildChild")
+        source.changeApplied = true
+
+        assertFalse(source.copyAt(10).changeApplied)
     }
 
     @Test
@@ -78,12 +95,13 @@ class CharacterGameTest {
     }
 
     @Test
-    fun `the big bad wolf stays awake after its action`() {
+    fun `a role that has a turn of its own stays awake after its action`() {
         val wolf = role(
-            RoleId.BIG_BAD_WOLF,
+            "BigBadWolf",
             powerState = PowerState.SETUP,
             isWerewolf = true,
-            isNocturnal = true
+            isNocturnal = true,
+            hasSeparateTurn = true
         )
 
         wolf.nightAction()

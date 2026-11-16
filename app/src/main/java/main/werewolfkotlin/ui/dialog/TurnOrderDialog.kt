@@ -13,7 +13,6 @@ import main.werewolfkotlin.game.GameState
 import main.werewolfkotlin.ui.adapter.TurnOrderAdapter
 import main.werewolfkotlin.ui.design.dp
 import main.werewolfkotlin.ui.view.BandEntry
-import model.RoleId
 
 /***
  * Window of the turn order : move the roles (drag'n'drop or arrows), wake them up or put them to sleep.
@@ -49,7 +48,7 @@ object TurnOrderDialog {
         adapter.touchHelper = touchHelper
 
         //Without simple werewolf, the moderator decides if the pack of werewolves is called
-        if (GameState.aliveCharacters.none { it.className == RoleId.WEREWOLF }) {
+        if (GameState.aliveCharacters.none { it.definesPackTurn }) {
             val wolfSwitch = SwitchCompat(activity).apply {
                 text = activity.getString(R.string.WolfTurn_Switch)
                 setTextColor(activity.colorOf(R.color.white))

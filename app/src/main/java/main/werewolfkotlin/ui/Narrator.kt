@@ -48,6 +48,8 @@ object Narrator {
         return GameLabels(
             deathsBlock = application.getString(R.string.Block_Deaths),
             infectedBlock = application.getString(R.string.Block_Infected),
+            packName = application.getString(R.string.WolfTurn_Name),
+            packAction = application.getString(R.string.WolfTurn_Call),
             seatName = { number -> application.getString(R.string.SeatDefaultName, number) }
         )
     }
@@ -71,5 +73,6 @@ object Narrator {
         GameMessage.DEATH_TARGET_REMOVED -> R.string.History_DeathTargetRemoved
         GameMessage.TARGET -> R.string.History_Target
         GameMessage.TARGET_REMOVED -> R.string.History_TargetRemoved
+        GameMessage.ROLE_COPIED -> R.string.History_Copied
     }
 }

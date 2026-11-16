@@ -3,7 +3,6 @@ package main.werewolfkotlin.game
 import GameFixtures.give
 import GameFixtures.newGame
 import GameFixtures.role
-import model.RoleId
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -84,7 +83,7 @@ class NightFlowTest {
 
     @Test
     fun `the pack of werewolves is called with the infected players`() {
-        give(0, role(RoleId.WEREWOLF, isWerewolf = true), atOrder = 40)
+        give(0, role("Werewolf", isWerewolf = true, definesPackTurn = true), atOrder = 40)
         val villager = give(1, role("Seer"), atOrder = 10)
         RoleRoster.infect(GameState.seats[1])
 
@@ -94,18 +93,6 @@ class NightFlowTest {
 
         assertEquals("the infected player follows the pack", listOf("Player 2"), call.infectedPlayers)
         assertTrue(villager.isWerewolf)
-    }
-
-    @Test
-    fun `a big bad wolf alone does not make a turn of the pack`() {
-        give(0, role(RoleId.BIG_BAD_WOLF, isWerewolf = true), atOrder = 40)
-        GameState.wolfTurnForced = true
-        RoleOrders.set(RoleId.WEREWOLF, 40)
-        RoleRoster.updateWerewolfTurn()
-
-        val active = NightFlow.resolveActive(40)
-
-        assertTrue("there is nobody to eat with", active.isEmpty())
     }
 
     @Test

@@ -18,6 +18,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import main.werewolfkotlin.R
 import main.werewolfkotlin.game.EffectBlock
+import main.werewolfkotlin.game.EffectBlocks
 import main.werewolfkotlin.game.GameMessage
 import main.werewolfkotlin.game.GameState
 import main.werewolfkotlin.game.RoleRoster
@@ -134,7 +135,8 @@ class InfoTabs(private val activity: AppCompatActivity) {
                 }
                 header.addView(delete)
             }
-            EffectBlock.Kind.DEATHS -> {}
+            //Nothing to add : the deaths have their own button below, a copied player is only shown
+            EffectBlock.Kind.DEATHS, EffectBlock.Kind.MODEL -> {}
         }
         view.addView(header)
 
@@ -162,6 +164,9 @@ class InfoTabs(private val activity: AppCompatActivity) {
             chips.addView(chip)
         }
         view.addView(chips)
+
+        //The copied player is only shown : the copy cannot be undone
+        if (block.kind == EffectBlock.Kind.MODEL) return view
 
         val buttons = LinearLayout(activity).apply { orientation = LinearLayout.HORIZONTAL }
         val add = MaterialButton(activity).apply {
@@ -240,7 +245,7 @@ class InfoTabs(private val activity: AppCompatActivity) {
                 if (block.kind == EffectBlock.Kind.INFECTION) {
                     RoleRoster.infect(seat)
                 } else {
-                    block.players.add(seat)
+                    EffectBlocks.addPlayer(block, seat)
                     if (block.kind == EffectBlock.Kind.TARGETS)
                         GameState.log(GameMessage.TARGET, block.title, seat.name)
                 }

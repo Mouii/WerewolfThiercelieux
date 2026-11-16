@@ -27,7 +27,7 @@ class DescriptionActivity: AppCompatActivity() {
     private lateinit var binding: ActivityDescriptionBinding
 
     //Specials keys list
-    private val listMode : List<String> = listOf("NORMAL", "AUTHOR")
+    //Only the roles the moderator wrote can be changed or removed
 
     //Selected character in the view
     private var selectedCharacter : CharacterGame? = null
@@ -82,7 +82,7 @@ class DescriptionActivity: AppCompatActivity() {
                 .setTitle(getString(R.string.DescriptionView_DialogTitle))
                 .setMessage(getString(R.string.DescriptionView_DeleteQuestion))
                 .setPositiveButton(getString(R.string.Generic_Yes)) { _, _->
-                    selectedCharacter?.let { RolesRepository.deleteCharacterFromList(it) }
+                    selectedCharacter?.let { RolesRepository.deleteCustom(this, it) }
                     recreate()
                 }
                 .setNegativeButton(getString(R.string.Generic_Cancel), null)
@@ -96,7 +96,7 @@ class DescriptionActivity: AppCompatActivity() {
                 .setTitle(getString(R.string.DescriptionView_DialogTitle))
                 .setMessage(getString(R.string.DescriptionView_ResetQuestion))
                 .setPositiveButton(getString(R.string.Generic_Yes)) { _, _->
-                    RolesRepository.resetCharacters(this@DescriptionActivity)
+                    RolesRepository.deleteAllCustom(this@DescriptionActivity)
                     recreate()
                 }
                 .setNegativeButton(getString(R.string.Generic_Cancel), null)
@@ -128,7 +128,7 @@ class DescriptionActivity: AppCompatActivity() {
         if (editMode) {
             selectedCharacter?.let {
                 intent.putExtra(CreationActivity.EXTRA_ROLE_NAME, it.className)
-                intent.putExtra(CreationActivity.EXTRA_ROLE_MODE, it.mode)
+                intent.putExtra(CreationActivity.EXTRA_ROLE_KEY, it.key)
             }
         }
 
@@ -146,24 +146,22 @@ class DescriptionActivity: AppCompatActivity() {
      */
     private fun setSpinnerType(characterMap : Map<String, CharacterGame>) {
 
-        val roles = characterMap.keys.toList()
+        //The moderator sees the name of each variant, never its key
+        val variants = characterMap.values.toList()
 
-        binding.typeSpinner.adapter = SpinnerAdapter(this, roles)
-        binding.typeSpinner.isEnabled = roles.size > 1 //No selection if single item
+        binding.typeSpinner.adapter = SpinnerAdapter(this, variants.map { it.name })
+        binding.typeSpinner.isEnabled = variants.size > 1 //No selection if single item
 
         binding.typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                // Retrieve the selected item
-                val selectedItem = parent?.getItemAtPosition(position).toString()
-
-                val character = characterMap[selectedItem] ?: return
+                val character = variants.getOrNull(position) ?: return
                 selectedCharacter = character
 
                 binding.imageRole.setImageResource(RoleImages.of(character))
 
                 updateInformation(character)
 
-                activateDeactivateButtons(selectedItem)
+                activateDeactivateButtons(character)
 
             }
 
@@ -201,9 +199,9 @@ class DescriptionActivity: AppCompatActivity() {
     /***
      * Handle the buttons of edition and deletion
      */
-    private fun activateDeactivateButtons(mode: String) {
-        binding.editionButton.isEnabled = !listMode.contains(mode.uppercase())
-        binding.deleteButton.isEnabled = !listMode.contains(mode.uppercase())
+    private fun activateDeactivateButtons(character: CharacterGame) {
+        binding.editionButton.isEnabled = RolesRepository.isEditable(character)
+        binding.deleteButton.isEnabled = RolesRepository.isEditable(character)
     }
 
 }

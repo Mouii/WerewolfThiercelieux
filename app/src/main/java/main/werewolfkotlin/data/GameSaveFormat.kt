@@ -42,7 +42,8 @@ class SavedGame(
 @Serializable
 class SavedRole(
     val className: String,
-    val mode: String,
+    //Key of the variant of the role (see CharacterGame.key)
+    val key: String,
     val order: Int,
     val isNocturnal: Boolean,
     val powerState: String,
@@ -50,6 +51,16 @@ class SavedRole(
     val isInfected: Boolean,
     val doTargeting: Boolean,
     val isAlive: Boolean,
+    //Values a change of the role can touch (see model.RoleChange)
+    val isSolo: Boolean = false,
+    val doKilling: Boolean = false,
+    //"WEREWOLF_TURN" when the role ended up playing with the pack
+    val playsAt: String? = null,
+    //The change of the role already happened : it must not happen again when the game is resumed
+    val changeApplied: Boolean = false,
+    //Role this one copied the behaviour of (its class and the key of its variant), absent when it copied nobody
+    val copiedClass: String? = null,
+    val copiedKey: String? = null,
     //Consumable power : whether the role has one, and whether it was used
     val hasConsumablePower: Boolean = false,
     val consumablePowerUsed: Boolean = false
@@ -74,7 +85,7 @@ class SavedBlock(
     val title: String,
     val kind: String,
     val lights: Boolean,
-    //Role that owns the block : its name, its mode and the name of the role (see model.kindOf)
+    //Role that owns the block : the role, its source and the key of its variant (see model.kindOf)
     val roleKey: List<String>? = null,
     val seatIndexes: List<Int> = emptyList()
 )

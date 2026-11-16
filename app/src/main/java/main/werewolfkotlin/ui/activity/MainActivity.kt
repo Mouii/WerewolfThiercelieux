@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.widget.Toast
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
+import main.werewolfkotlin.R
 import main.werewolfkotlin.data.AppSettings
 import main.werewolfkotlin.data.RolesRepository
 import main.werewolfkotlin.databinding.ActivityMainBinding
@@ -39,11 +41,9 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        if (!RolesRepository.isLoaded) {
-            //If fail first time => not created
-            if (!RolesRepository.loadFromPhone(this)) {
-                RolesRepository.resetCharacters(this)
-            }
+        //The roles are read from their sources : the game, the author, and what the moderator wrote
+        if (!RolesRepository.isLoaded && !RolesRepository.load(this)) {
+            Toast.makeText(this, R.string.MainView_RolesUnreadable, Toast.LENGTH_LONG).show()
         }
 
         binding.selectButton.setOnClickListener { open(SelectActivity::class.java) }
@@ -91,8 +91,8 @@ class MainActivity : AppCompatActivity() {
                     val selectedItem = parent?.getItemAtPosition(position).toString()
                     AppSettings.setLanguageChoice(this@MainActivity, selectedItem, position)
 
-                    //Reset for new import
-                    RolesRepository.resetForTranslation()
+                    //The texts of the roles follow the language : they are read again
+                    RolesRepository.clear()
                     Labels.clear()
 
                     recreate()
@@ -126,9 +126,6 @@ class MainActivity : AppCompatActivity() {
         //Change configuration
         val config = Configuration(context.resources.configuration)
         config.setLocale(locale)
-
-        //Reset important values for restarting
-        RolesRepository.resetDataSaved()
 
         // Create and return a new context with the updated locale
         return context.createConfigurationContext(config)

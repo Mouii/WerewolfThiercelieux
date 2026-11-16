@@ -147,7 +147,10 @@ class SelectActivity : AppCompatActivity() {
 
         for (extension in Extension.values()) {
             //Roles of this extension
-            val roles = RolesRepository.roleTypes.filter { Extension.of(it.first) == extension }
+            val roles = RolesRepository.roleTypes.filter { RolesRepository.extensionOf(it.first) == extension }
+
+            //A box without any role is not shown (the roles of the moderator, while he wrote none)
+            if (roles.isEmpty()) continue
             val enabled = ExtensionSettings.isEnabled(this, extension)
 
             //Cards of the roles, 4 per line

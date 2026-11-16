@@ -25,13 +25,13 @@ object GameSession {
     /***
      * Start the game again : same players, same roles, but nobody is dead, no target, everybody sleeps.
      * Each role comes back to its original state (powers not used, nobody infected...) and keeps its place
-     * in the turn order. [prototypeOf] gives the role of the roles file from its class and its mode.
+     * in the turn order. [prototypeOf] gives the role of the roles file from its class and the key of its variant.
      */
-    fun restart(prototypeOf: (className: String, mode: String) -> CharacterGame?) {
+    fun restart(prototypeOf: (className: String, key: String) -> CharacterGame?) {
         val state = GameState
         val renewed = mutableMapOf<CharacterGame, CharacterGame>()
         for (old in state.allCharacters) {
-            val prototype = prototypeOf(old.className, old.mode)
+            val prototype = prototypeOf(old.className, old.key)
             if (prototype == null) {
                 old.isInfected = false
                 renewed[old] = old

@@ -1,16 +1,16 @@
 package model
 
 /***
- * Names of the roles the rules of the game mention by name.
+ * The only role name the code still needs.
  *
- * A role is identified by this name everywhere : in the roles file, in a saved game,
- * in the turn order and in the "rolesToStick" links. It is a plain text, never a class name,
- * so renaming or minifying the code can never change the identity of a role.
+ * Everything else a role does is described in the roles file : see CharacterGame for the fields
+ * that replaced the old special cases (playsAt, hasSeparateTurn, ownsInfectionBlock,
+ * definesPackTurn, becomes).
  */
 object RoleId {
+    /***
+     * The place of the pack of werewolves in the turn order is remembered under this name,
+     * because the pack is not a role : it has no place of its own to be saved under.
+     */
     const val WEREWOLF = "Werewolf"
-    const val BIG_BAD_WOLF = "BigBadWolf"
-    const val WHITE_WEREWOLF = "WhiteWerewolf"
-    const val WOLF_FATHER = "WolfFather"
-    const val WILD_CHILD = "WildChild"
 }

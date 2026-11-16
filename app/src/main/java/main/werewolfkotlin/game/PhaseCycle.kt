@@ -20,6 +20,7 @@ object PhaseCycle {
                 state.stepPos = -1 // Reset index for the next night
                 state.activeNow = emptyList()
                 state.turn++ //Starting new turn
+                PowerRules.onNewTurn() // The roles that wait for this turn
                 EnumPhase.SLEEPING
             }
 

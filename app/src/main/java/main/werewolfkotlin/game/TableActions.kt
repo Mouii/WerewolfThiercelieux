@@ -13,7 +13,9 @@ object TableActions {
      * Returns the message to show, null if no called role kills (see ui.Narrator for the text).
      */
     fun toggleKill(seat: Seat): GameText? {
-        val killer = GameState.activeNow.firstOrNull { it.doKilling } ?: return null
+        val killerName = GameState.activeNow.firstOrNull { it.doKilling }?.name
+            ?: packWithoutWolvesName()
+            ?: return null
         val block = GameState.deathsBlock() ?: return null
 
         val message = if (block.players.removeAll { it === seat }) {
@@ -22,8 +24,17 @@ object TableActions {
             block.players.add(seat)
             GameMessage.DEATH_TARGET
         }
-        GameState.log(message, killer.name, seat.name)
-        return GameText(message, listOf(killer.name, seat.name))
+        GameState.log(message, killerName, seat.name)
+        return GameText(message, listOf(killerName, seat.name))
+    }
+
+    /***
+     * Name of the pack when it is called without any werewolf role in the game, null otherwise
+     */
+    private fun packWithoutWolvesName(): String? {
+        if (GameState.phase != EnumPhase.NIGHT) return null
+        val called = GameState.nightSteps.getOrNull(GameState.stepPos) ?: return null
+        return if (NightFlow.isPackWithoutWolves(called)) GameState.labels.packName else null
     }
 
     /***
@@ -31,7 +42,10 @@ object TableActions {
      * Returns the message to show, null if no called role has a block of targets.
      */
     fun toggleTarget(seat: Seat): GameText? {
+        //A living player is chosen by a role that chooses the living, a dead one by a role
+        //that chooses the dead (the necromancer)
         val block = GameState.activeNow
+            .filter { it.targetsDead != seat.alive }
             .firstNotNullOfOrNull { c -> GameState.effectBlocks.firstOrNull { it.kind == EffectBlock.Kind.TARGETS && it.roleKey == kindOf(c) } }
             ?: return null
 
@@ -39,7 +53,7 @@ object TableActions {
             block.players.removeAll { it === seat }
             GameMessage.TARGET_REMOVED
         } else {
-            block.players.add(seat)
+            EffectBlocks.addPlayer(block, seat)
             GameMessage.TARGET
         }
         GameState.log(message, block.title, seat.name)

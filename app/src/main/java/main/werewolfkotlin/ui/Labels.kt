@@ -32,7 +32,7 @@ object Labels {
             Extension.VILLAGE -> R.string.Extension_Village
             Extension.CHARACTERS -> R.string.Extension_Characters
             Extension.YEARS_25 -> R.string.Extension_25Years
-            Extension.CUSTOMIZE -> R.string.Extension_Custom
+            Extension.CUSTOM -> R.string.Extension_Custom
         }
     )
 }

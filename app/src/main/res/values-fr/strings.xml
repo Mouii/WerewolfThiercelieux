@@ -4,42 +4,6 @@
     <string name="title_menu">Loup-Garous de Thiercelieux</string>
 
     <!-- Characters -->
-    <string name="Actor">Comédien</string>
-    <string name="Angel">Ange</string>
-    <string name="BearTamer">Dresseur d\'Ours</string>
-    <string name="BigBadWolf">Grand Méchant Loup</string>
-    <string name="Brother">Frère</string>
-    <string name="Colossus">Colosse</string>
-    <string name="Crow">Corbeau</string>
-    <string name="Cupid">Cupidon</string>
-    <string name="Defender">Salvateur</string>
-    <string name="Elder">Ancien</string>
-    <string name="Fireman">Pyromane</string>
-    <string name="Fox">Renard</string>
-    <string name="Gypsy">Bohémienne</string>
-    <string name="Hunter">Chasseur</string>
-    <string name="Idiot">Idiot du Village</string>
-    <string name="LittleGirl">Petite Fille</string>
-    <string name="Manipulator">Abominable Sectaire</string>
-    <string name="Piper">Joueur de Flûte</string>
-    <string name="PowerfulMotherOfWolves">Puissante Mère Des Loups</string>
-    <string name="Puppeteer">Marionnettiste</string>
-    <string name="RustyKnight">Chevalier à l\'Epée Rouillée</string>
-    <string name="Scapegoat">Bouc Emissaire</string>
-    <string name="Seer">Voyante</string>
-    <string name="Servant">Servante Dévouée</string>
-    <string name="Sister">Sœur</string>
-    <string name="StutteringJudge">Juge Bègue</string>
-    <string name="Thief">Voleur</string>
-    <string name="TrainedMonkey">Singe Savant</string>
-    <string name="Villager">Villageois</string>
-    <string name="VillagerVillager">Villageois-Villageois</string>
-    <string name="Werewolf">Loup-Garou</string>
-    <string name="WhiteWerewolf">Loup Blanc</string>
-    <string name="WildChild">Enfant Sauvage</string>
-    <string name="Witch">Sorcière</string>
-    <string name="WolfFather">Grand-père des Loups</string>
-    <string name="WolfHound">Chien-Loup</string>
     <string name="Phase_SLEEPING">Endormissement</string>
     <string name="Phase_NIGHT">Nuit</string>
     <string name="Phase_DAWN">Aube</string>
@@ -48,14 +12,16 @@
     <string name="Power_PERMANENT">Permanent</string>
     <string name="Power_CONSUMABLE">Consommable</string>
     <string name="Power_CONDITIONAL">Conditionnel</string>
-    <string name="Power_UNIQUE">Unique</string>
+    <string name="Power_SETUP">Mise en place</string>
     <string name="Condition_NO_CONDITION">Pas de condition</string>
     <string name="Condition_ONE_WEREWOLF">Un Loup</string>
     <string name="Condition_ONE_VILLAGER">Un Villageois</string>
     <string name="Condition_ALL_WEREWOLVES">Tous les Loups</string>
     <string name="Condition_ALL_VILLAGERS">Tous les Villageois</string>
-    <string name="Condition_LINKED_PLAYERS">Rôles liés</string>
     <string name="Condition_IS_ALONE">Est solitaire</string>
+    <string name="Condition_MY_TARGET_DIES">Sa cible meurt</string>
+    <string name="Condition_TARGET_CHOSEN">Il choisit une cible</string>
+    <string name="Condition_TURN_REACHED">Un tour est atteint</string>
     <string name="Condition_ON_MORNING">Au matin</string>
 
     <!-- Generic -->
@@ -133,13 +99,11 @@
     <string name="CreationView_WerewolfText">Détermine si le rôle peut être assimilé à un Loup-Garou.</string>
     <string name="CreationView_Mode">Mode</string>
     <string name="CreationView_HintMode">Entrer le titre du mode</string>
-    <string name="CreationView_ModeText">Entrer la clé d\'identification du rôle. Les valeurs \"NORMAL\" et \"AUTHOR\" ne sont pas autorisées.</string>
+    <string name="CreationView_ModeText">Nom de votre variante, tel qu’il sera affiché au moment de choisir un rôle.</string>
     <string name="CreationView_PowerSpinner">Pouvoir</string>
-    <string name="CreationView_PowerText">Spécifier les pouvoirs que possèdent le rôle : \nPERMANENT : Le pouvoir s\'applique constamment. Sélectionner cette option si le rôle n\'a pas de pouvoir. \nCONSUMABLE : Le pouvoir peut être consommé pendant la partie. Il sera possible de modifier l\'option \"Se réveille la nuit\" pendant la partie pour désactiver le rôle en utilisant la vue dédiée à cet effet. Si le rôle ne doit pas se réveiller la nuit par défaut, le configurer de la sorte dans les paramètres de rôle.\nCONDITIONAL : Le pouvoir peu évoluer en fonction des conditions spécifiées dans la liste ci-dessous. \nUNIQUE : Le rôle est appelé la nuit une seule fois. Fonctionne uniquement avec des rôles pouvant se réveiller la nuit.</string>
+    <string name="CreationView_PowerText">Spécifier les pouvoirs que possèdent le rôle : \nPERMANENT : Le pouvoir s\'applique constamment. Sélectionner cette option si le rôle n\'a pas de pouvoir. \nCONSUMABLE : Le pouvoir peut être consommé pendant la partie. Il sera possible de modifier l\'option \"Se réveille la nuit\" pendant la partie pour désactiver le rôle en utilisant la vue dédiée à cet effet. Si le rôle ne doit pas se réveiller la nuit par défaut, le configurer de la sorte dans les paramètres de rôle.\nCONDITIONAL : Le pouvoir peu évoluer en fonction des conditions spécifiées dans la liste ci-dessous. \nSETUP : Le rôle est appelé la nuit une seule fois. Fonctionne uniquement avec des rôles pouvant se réveiller la nuit.</string>
     <string name="CreationView_ConditionSpinner">Condition</string>
-    <string name="CreationView_ConditionText">Pour modifier ce paramètre, le type de pouvoir \"CONDITIONAL\" doit être sélectionné. Spécifie les conditions de réveil appliquées au rôle : \nNO_CONDITION : Valeur par défaut, utilisée pour des pouvoirs sans condition.\nONE_WEREWOLF : Le joueur se réveille si au moins un Loup-Garou est mort.\nONE_VILLAGER : Le joueur se réveille si au moins un Villageois est mort.\nALL_WEREWOLVES : Le joueur se réveille si tous les Loup-Garous sont morts.\nALL_VILLAGERS : Le joueur se réveille si tous les Villageois sont morts.\nLINKED_PLAYERS : Le joueur se réveille si tous les rôles spécifiés sont morts.\nIS_ALONE : Le joueur se réveille s\'il est le dernier à avoir ce rôle. Fonctionne uniquement avec les rôles pouvant avoir de multiples occurrences.\nON_MORNING : Le pouvoir s\'active quand le matin arrive.</string>
-    <string name="CreationView_Linked">Rôles liés</string>
-    <string name="CreationView_LinkedButton">Lier</string>
+    <string name="CreationView_ConditionText">Pour modifier ce paramètre, le type de pouvoir \"CONDITIONAL\" doit être sélectionné. Indique ce qui doit se produire pour que le rôle change (une variante change de la même façon que le rôle dont elle est tirée) : \nNO_CONDITION : Rien, le rôle ne change jamais.\nONE_WEREWOLF : Un joueur du camp des Loups-Garous meurt.\nONE_VILLAGER : Un joueur du camp du Village meurt.\nALL_WEREWOLVES : Tous les autres Loups-Garous sont morts.\nALL_VILLAGERS : Tous les Villageois sont morts.\nIS_ALONE : Le joueur est le dernier à avoir ce rôle. Fonctionne uniquement avec les rôles pouvant avoir de multiples occurrences.\nMY_TARGET_DIES : Un joueur choisi par le rôle meurt.\nTARGET_CHOSEN : Le rôle vient de choisir un joueur.\nTURN_REACHED : La partie atteint un tour donné.\nON_MORNING : Le matin arrive.</string>
     <string name="CreationView_Action">Action</string>
     <string name="CreationView_ActionHint">Action de nuit</string>
     <string name="CreationView_ActionText">Spécifier le texte qui sera affiché lorsque le rôle se réveille la nuit. Si le rôle ne se réveille pas la nuit, le texte ne sera jamais affiché.</string>
@@ -148,7 +112,6 @@
     <string name="CreationView_DescriptionText">Décrire les actions du rôle.</string>
     <string name="CreationView_ValidButton">Valider</string>
     <string name="CreationView_Title">Création de rôle</string>
-    <string name="CreationView_Incomplete">Renseignez le rôle et sa catégorie avant d\'enregistrer</string>
 
     <!-- FAQ View -->
     <string name="FaqView_title">F.A.Q.</string>
@@ -207,6 +170,7 @@
     <string name="Block_Infected">Infectés</string>
     <string name="Pack_Infected">Joueurs infectés, éveillés aussi : %1$s</string>
     <string name="WolfTurn_Name">Tour des loups</string>
+    <string name="WolfTurn_Call">Les Loups-Garous choisissent un joueur à dévorer.</string>
     <string name="WolfTurn_Switch">Tour des loups</string>
     <string name="RoleView_Alive">%1$d/%2$d en vie</string>
     <string name="InformationView_TabPlayers">Joueurs</string>
@@ -224,6 +188,7 @@
     <string name="History_Alive">%1$s (%2$s) est remis(e) en vie</string>
     <string name="History_Target">%1$s : cible %2$s</string>
     <string name="History_TargetRemoved">%1$s : %2$s n\'est plus une cible</string>
+    <string name="History_Copied">%1$s copie le rôle %2$s (%3$s)</string>
     <string name="History_Infected">%1$s (%2$s) est infecté(e)</string>
     <string name="History_Disinfected">%1$s (%2$s) n\'est plus infecté(e)</string>
     <string name="History_Awake">%1$s se réveille désormais la nuit</string>
@@ -243,7 +208,6 @@
     <string name="Extension_NewMoon">Nouvelle Lune</string>
     <string name="Extension_Village">Le Village</string>
     <string name="Extension_Characters">Personnages</string>
-    <string name="Extension_Custom">Personnalisé</string>
     <string name="Select_Title">Préparation de la partie</string>
     <string name="Select_Extensions">EXTENSIONS</string>
     <string name="Select_Players">JOUEURS</string>
@@ -259,11 +223,15 @@
     <string name="Variant_Choose">Choisir</string>
     <string name="History_DeathTarget">%1$s : %2$s est désigné(e) pour mourir</string>
     <string name="History_DeathTargetRemoved">%1$s : %2$s n\'est plus désigné(e) pour mourir</string>
+    <string name="Extension_Custom">Mes rôles</string>
     <string name="Extension_25Years">25 ans</string>
     <string name="Restart_Title">Recommencer la partie</string>
     <string name="Restart_Confirm">Annuler les morts et les cibles et revenir au début de la partie ? Les joueurs et leurs rôles sont conservés.</string>
     <string name="History_Restarted">La partie a été recommencée</string>
     <string name="RandomPick_Help">Touchez un rôle pour l\'ajouter, appui long pour en retirer un.</string>
+    <string name="RandomPick_HowMany">Ce rôle existe en plusieurs exemplaires. Combien voulez-vous en donner ?</string>
+    <string name="RandomPick_One">Un seul</string>
+    <string name="RandomPick_All">Tous (%1$d)</string>
     <string name="RandomPick_Selected">%1$d rôle(s) choisi(s) · %2$d joueur(s) sans rôle</string>
     <string name="RandomPick_TooMany">Vous avez choisi trop de rôles pour %1$d joueurs.</string>
     <string name="RandomPick_Replace">%1$d joueur(s) ayant déjà un rôle seront remplacés si vous validez.</string>
@@ -273,4 +241,7 @@
     <string name="RandomReplace_Title">Joueurs à remplacer</string>
     <string name="RandomReplace_Help">Cochez %1$d joueur(s) dont le rôle sera remplacé (%2$d coché(s)).</string>
     <string name="GameView_Previous">&lt;</string>
+    <string name="CreationView_Incomplete">Choisissez un rôle et donnez un nom à votre variante</string>
+    <string name="MainView_RolesUnreadable">Les rôles du jeu sont illisibles</string>
+    <string name="CreationView_NameTaken">Une autre variante de ce rôle porte déjà ce nom</string>
 </resources>

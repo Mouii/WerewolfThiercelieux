@@ -338,6 +338,16 @@ class GameActivity : AppCompatActivity() {
     private fun onSeatTap(index: Int) {
         val seat: Seat = GameState.seats[index]
 
+        //A dead player can only be chosen by a called role that chooses among the dead
+        if (!seat.alive && GameState.phase == EnumPhase.NIGHT) {
+            val target = TableActions.toggleTarget(seat)
+            if (target != null) {
+                Toast.makeText(this, Narrator.say(this, target), Toast.LENGTH_SHORT).show()
+                refreshUi()
+                return
+            }
+        }
+
         if (seat.alive) {
             if (GameState.phase == EnumPhase.NIGHT) {
                 val kill = TableActions.toggleKill(seat)
@@ -381,7 +391,7 @@ class GameActivity : AppCompatActivity() {
      * Start the game again : same players, same roles, but nobody is dead, no target, everybody sleeps
      */
     private fun restartGame() {
-        GameSession.restart { className, mode -> RolesRepository.prototypeOf(className, mode) }
+        GameSession.restart { className, key -> RolesRepository.prototypeOf(className, key) }
 
         binding.startNightButton.isEnabled = true
         setBackground(GameState.phase)

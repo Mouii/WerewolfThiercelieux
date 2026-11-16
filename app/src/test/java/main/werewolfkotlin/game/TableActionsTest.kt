@@ -3,7 +3,6 @@ package main.werewolfkotlin.game
 import GameFixtures.give
 import GameFixtures.newGame
 import GameFixtures.role
-import model.RoleId
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -22,7 +21,7 @@ class TableActionsTest {
 
     @Test
     fun `the victim of the werewolves goes in the block of the deaths`() {
-        val wolf = give(0, role(RoleId.WEREWOLF, isWerewolf = true, doKilling = true))
+        val wolf = give(0, role("Werewolf", isWerewolf = true, doKilling = true))
         GameState.activeNow = listOf(wolf)
 
         val said = TableActions.toggleKill(GameState.seats[1])
@@ -34,7 +33,7 @@ class TableActionsTest {
 
     @Test
     fun `choosing the same victim again takes it back`() {
-        val wolf = give(0, role(RoleId.WEREWOLF, isWerewolf = true, doKilling = true))
+        val wolf = give(0, role("Werewolf", isWerewolf = true, doKilling = true))
         GameState.activeNow = listOf(wolf)
 
         TableActions.toggleKill(GameState.seats[1])

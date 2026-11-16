@@ -23,7 +23,8 @@ enum class GameMessage {
     DEATH_TARGET,           //a victim was chosen               : role, player
     DEATH_TARGET_REMOVED,   //a victim was taken back           : role, player
     TARGET,                 //a player was targeted             : block, player
-    TARGET_REMOVED          //a target was taken back           : block, player
+    TARGET_REMOVED,         //a target was taken back           : block, player
+    ROLE_COPIED             //a role took the behaviour of another : role, copied role, player
 }
 
 /***
@@ -58,11 +59,16 @@ class GameLabels(
     val deathsBlock: String,
     //Title of the block that holds the infected players
     val infectedBlock: String,
+    //The pack of werewolves when no player holds a werewolf role : its name and what it does
+    val packName: String,
+    val packAction: String,
     //Name of a player who did not type his name : the number of his seat is given
     val seatName: (seatNumber: Int) -> String
 ) {
     companion object {
         /** Labels used when no screen gave any : tests, and a badly started game */
-        val NONE = GameLabels("Deaths", "Infected") { number -> "Player $number" }
+        val NONE = GameLabels("Deaths", "Infected", "Werewolves", "The werewolves choose a player to eat.") { number ->
+            "Player $number"
+        }
     }
 }
